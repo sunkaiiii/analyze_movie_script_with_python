@@ -12,8 +12,8 @@ from sklearn.metrics import classification_report
 from sklearn.externals import joblib
 import scipy as sp
 
-pos_file=open('emotion/pos.txt')
-neg_file=open('emotion/neg.txt')
+pos_file=open('chinese_token/positive.txt',encoding='utf-8')
+neg_file=open('chinese_token/negative.txt',encoding='utf-8')
 pos=pos_file.read().split('\n')
 neg=neg_file.read().split('\n')
 pos_tag=np.ones(len(pos),dtype=int).tolist()
@@ -29,7 +29,8 @@ count_vec = TfidfVectorizer(binary=False, decode_error='ignore')
 sp.save('train_data.npy',x_train)
 x_train = count_vec.fit_transform(x_train)
 clf = MultinomialNB().fit(x_train, y_train)
-x_test=['垃圾 的 马桶 质量 感觉 非常糟糕','舒适 的 卫生 环境']
+# joblib.dump(clf,'emotion_model.model')
+x_test=['爱上','']
 x_test = count_vec.transform(x_test)
 
 y_test=[0,1]
