@@ -38,6 +38,8 @@ class Session():
         self.session_charactor_dic={}
         for i in Global_Variables.name_list:
             self.session_charactor_dic[i]=Charactor(i)
+        self.session_all_charactor=[]
+        self.session_all_charactor_set=set()
         self.read_session_lines()
 
     def read_session_lines(self):
@@ -55,12 +57,12 @@ class Session():
             else:
                 session_info=i.split(' ')
                 if self.mode==0:
-                    self.session_number=int(session_info[0].strip('.').strip(' ').strip('\ufeff'))
+                    self.session_number=session_info[0].strip('.').strip(' ').strip('\ufeff')
                     self.session_time=session_info[1].strip(' ')
                     self.session_place=session_info[2].strip(' ')
                     self.session_location=session_info[3].strip(' ').strip('\n')
                 else:
-                    self.session_number=int(session_info[0].strip('.').strip(' ').strip('\ufeff'))
+                    self.session_number=session_info[0].strip('.').strip(' ').strip('\ufeff')
                     self.session_location=session_info[1].strip(' ')
                     self.session_time=session_info[2].strip(' ')
                     self.session_place=session_info[3].strip(' ').strip('\n')
@@ -69,11 +71,13 @@ class Session():
         self.session_negative_words_set=set(self.session_negative_words)
         self.session_emotion_words_set=set(self.session_emotion_words)
         self.cal_words_amount()
+        # self.show_info()
 
     def cal_words_amount(self,charactor=''):
         if len(charactor)==0:
             for line in self.line_list:
                 if line.type=='talk':
+                    self.session_all_charactor.append(line.who_said_no_cut)
                     if line.who_said in Global_Variables.name_list:
                         said_word=line.content
                         self.session_charactor_dic[line.who_said].appearance=True
@@ -91,6 +95,8 @@ class Session():
                         self.session_charactor_dic[line.who_said].charactor_world_amount+=len(said_word)
             for v in self.session_charactor_dic.values():
                 self.session_words_amount+=v.charactor_world_amount
+            self.session_all_charactor_set=set(self.session_all_charactor)
+
 
 
     def show_info(self,show_line_detail=0):

@@ -16,10 +16,12 @@ class Line():
         self.noun = []
         self.verb = []
         self.other_character = []
+        self.who_said_no_cut=""
         if ':' in line_str or '：' in line_str:
             self.type='talk'
             line_str=line_str.replace('：',':')
             name=line_str.split(':')[0]
+            self.who_said_no_cut=name
             name_words=pseg.cut(name)
             for  word in name_words:
                 if word.word in Global_Variables.name_list:

@@ -1,6 +1,6 @@
 
 name_list = []
-filename = 'name.txt'
+filename = 'name_shi.txt'
 emotion_path = 'emotion\\'
 pos_file_name = 'pos.txt'
 neg_file_name = 'neg.txt'

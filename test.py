@@ -1,5 +1,9 @@
 
 
-a={'a':1,'b':2}
-for i,v in a.items():
-    print(i,v)
+a={}
+a['asd']=1
+if a.setdefault('asd',0)==0:
+    print(a)
+
+a['asd']+=1
+print(a)
