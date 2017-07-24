@@ -37,7 +37,7 @@ class Script:
 
     def cal_overrall_count(self):
         """
-        统计每个演员的总情感词数
+        统计每个角色的台词数
         """
         for session in self.session_list:
             for keys,session_charactor_info in session.session_charactor_dic.items():

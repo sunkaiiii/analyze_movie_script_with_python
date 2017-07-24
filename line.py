@@ -8,7 +8,7 @@ jieba.load_userdict('jieba_name.txt')
 读取的剧本的一行的内容
 '''
 class Line():
-    def __init__(self,line_str,mode=0):
+    def __init__(self,line_str,mode=1):
         self.mode=mode
         self.who_said = ''
         self.emotion = 0
