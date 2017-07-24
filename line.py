@@ -3,7 +3,10 @@ import jieba.posseg as pseg
 import Global_Variables
 jieba.load_userdict('jieba_name.txt')
 
-# print(name_list)
+'''
+----------line.py------------
+读取的剧本的一行的内容
+'''
 class Line():
     def __init__(self,line_str,mode=0):
         self.mode=mode
@@ -17,11 +20,11 @@ class Line():
         self.verb = []
         self.other_character = []
         self.who_said_no_cut=""
-        if ':' in line_str or '：' in line_str:
+        if ':' in line_str or '：' in line_str: #当有冒号时，认为是一个对话
             self.type='talk'
             line_str=line_str.replace('：',':')
             name=line_str.split(':')[0]
-            self.who_said_no_cut=name
+            self.who_said_no_cut=name  #当剧本不完全是XX:的形式而是带有定语或者别的词的时候，再进行一次切割
             name_words=pseg.cut(name)
             for  word in name_words:
                 if word.word in Global_Variables.name_list:
@@ -61,6 +64,7 @@ class Line():
         print('noun'+str(self.noun))
         print('verb'+str(self.verb))
         print('other_chracter'+str(self.other_character))
+
 if __name__=="__main__":
     a=1
     test=Line('可他这是杀鸡给猴看！打狗还得看主人呢! 明明知道我是您的团练教头他还敢打！ 黄四郎:那，你就让他打了？')

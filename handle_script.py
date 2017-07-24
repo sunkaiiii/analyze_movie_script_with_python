@@ -3,9 +3,16 @@ import os
 from imp import reload
 import Global_Variables
 
+"""
+----------handle_scipt.py-------------
+             记录整个剧本信息
+"""
 
 class Script:
-    def __init__(self,filename,mode=0):
+    '''
+    记录整个剧本的信息，包含多个场景的类的实例
+    '''
+    def __init__(self,filename,mode=1):
         self.mode=mode
         self.script_name=''
         self.session_list=[]
@@ -23,23 +30,34 @@ class Script:
         name=os.path.splitext(filename)[0]
         self.script_name=name.split('\\')[len(name.split('\\'))-1]
         script=open(filename,encoding='utf-8').read()
-        split_script=script.split('\n\n')
+        split_script=script.split('\n\n') #以双回车判断是否为一个场
         for s in split_script:
             ss=session.Session(s,self.mode)
             self.session_list.append(ss)
 
     def cal_overrall_count(self):
+        """
+        统计每个演员的总情感词数
+        """
         for session in self.session_list:
             for keys,session_charactor_info in session.session_charactor_dic.items():
                 self.charactor_overrall_word_count_dic[keys]+=session_charactor_info.charactor_world_amount
 
     def cal_all_character(self):
+        """
+        计算角色（包含非主要角色）出场次数
+        """
         for session in self.session_list:
             for name in session.session_all_charactor_set:
                 self.all_charactor_count.setdefault(name,0)
                 self.all_charactor_count[name]+=1
+
+        '''输出所有角色出现次数的排序（未分词）到屏幕，可以发现主要人物'''
         # print(sorted(self.all_charactor_count.items(),key=lambda x:x[1],reverse=True))
     def cal_character_apear_count(self):
+        """
+        计算主要角色的出场次数
+        """
         for session in self.session_list:
             for name,apear in session.session_charactor_dic.items():
                 self.charactor_overral_apear_in_session.setdefault(name,0)

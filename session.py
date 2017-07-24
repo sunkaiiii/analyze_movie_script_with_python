@@ -4,12 +4,20 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import scipy as sp
 import Global_Variables
 import jieba
-import math
+
+"""
+------------session.py--------------
+记录一个场次的内容，里面包含多个行的Line类实体
+"""
+
 clf=joblib.load('emotion_model.model')
 count_vec = TfidfVectorizer(binary=False, decode_error='ignore')
 x_train = sp.load('train_data.npy')
 
 class Charactor():
+    '''
+    记录一个场当中演员的信息的类
+    '''
     def __init__(self,name=""):
         self.name=name
         self.charactor_worlds=[]
@@ -17,10 +25,17 @@ class Charactor():
         self.charactor_positive_emotion=[]
         self.charactor_nagetive_emotion=[]
         self.charactor_emotion=[]
-        self.appearance=False
+        self.appearance=False #是否在这个场景出现
         self.charactor_value=0
+
 class Session():
-    def __init__(self,session_content,mode=0):
+    def __init__(self,session_content,mode=1):
+        '''
+        :param session_content: 切割好的一场的所有内容
+        :param mode: 1、读取场次内容的顺序为场景位置、时间、内外
+                                2、读取场次你内容的顺序为时间，内外，场景位置
+        '''
+
         self.mode=mode
         self.session_number = 0
         self.session_time = ''
@@ -31,20 +46,22 @@ class Session():
         self.session_positive_words = []
         self.session_negative_words = []
         self.session_emotion_words = []
-        self.session_positive_words_set = []
-        self.session_negative_words_set = []
-        self. session_emotion_words_set = []
+        self.session_positive_words_set = ()
+        self.session_negative_words_set = ()
+        self. session_emotion_words_set = ()
         self.session_positive_value=''
         self.session_negative_value=''
         self.session_emotion_value = ''
         self.session_content=session_content
         self.session_words_amount=0
         self.session_charactor_dic={}
-        for i in Global_Variables.name_list:
+        for i in Global_Variables.name_list: #使用字典存放场景角色的信息
             self.session_charactor_dic[i]=Charactor(i)
-        self.session_all_charactor=[]
+        self.session_all_charactor=[] #存放未切割的对话人物，可用于寻找主要角色（人工或继续分词）
         self.session_all_charactor_set=set()
         self.read_session_lines()
+        self.cal_words_amount()
+        self.compare_emotion()
 
     def read_session_lines(self):
         count = 0
@@ -61,12 +78,12 @@ class Session():
             else:
                 session_info=i.split(' ')
                 if self.mode==0:
-                    self.session_number=session_info[0].strip('.').strip(' ').strip('\ufeff')
+                    self.session_number=session_info[0].strip('.').strip('、').strip(' ').strip('\ufeff')
                     self.session_time=session_info[1].strip(' ')
                     self.session_place=session_info[2].strip(' ')
                     self.session_location=session_info[3].strip(' ').strip('\n')
                 else:
-                    self.session_number = session_info[0].strip('.').strip(' ').strip('\ufeff')
+                    self.session_number = session_info[0].strip('.').strip('、').strip(' ').strip('\ufeff')
                     self.session_location=session_info[1].strip(' ')
                     self.session_time=session_info[2].strip(' ')
                     self.session_place=session_info[3].strip(' ').strip('\n')
@@ -74,11 +91,15 @@ class Session():
         self.session_positive_words_set=set(self.session_positive_words)
         self.session_negative_words_set=set(self.session_negative_words)
         self.session_emotion_words_set=set(self.session_emotion_words)
-        self.cal_words_amount()
-        self.compare_emotion()
         # self.show_info()
 
     def cal_words_amount(self, charactor=''):
+        '''
+        计算角色的情感词数
+        :param charactor: 默认计算全部角色在这个场的情感词数
+                                      如果输入角色名，也可单独计算角色数并返回结果（功能未做）
+        :return:
+        '''
         if len(charactor) == 0:
             for line in self.line_list:
                 for charactor in line.other_character:
@@ -99,14 +120,13 @@ class Session():
                                 self.session_charactor_dic[line.who_said].charactor_nagetive_emotion.append(word)
                                 self.session_charactor_dic[line.who_said].charactor_emotion.append(word)
                         for i in Global_Variables.punctuation_mark:
-                            said_word=said_word.replace(i,'')
+                            said_word=said_word.replace(i,'') #去除标点符号
                         self.session_charactor_dic[line.who_said].charactor_world_amount+=len(said_word)
             for v in self.session_charactor_dic.values():
                 self.session_words_amount+=v.charactor_world_amount
             self.session_all_charactor_set=set(self.session_all_charactor)
 
     def compare_emotion(self):
-        '''剧本节奏暂定使用积极词/消极词*255'''
         value=float(len(self.session_positive_words))**1.75*2.55
         self.session_positive_value=value
         value=float(len(self.session_negative_words))**1.75*2.55
@@ -120,6 +140,9 @@ class Session():
             self.session_charactor_dic[name].charactor_value=value
 
     def show_info(self, show_line_detail=0):
+        '''
+        :param show_line_detail: 1为显示行具体信息，0为只显示场的信息
+        '''
         print('场次编号:' + str(self.session_number))
         print('场次时间:' + str(self.session_time))
         print('室内室外:' + str(self.session_place))
