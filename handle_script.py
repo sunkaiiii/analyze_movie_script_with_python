@@ -7,6 +7,8 @@ import Global_Variables
 ----------handle_scipt.py-------------
              记录整个剧本信息
 """
+if not os.path.exists('out'):
+    os.mkdir('out')
 
 class Script:
     '''
@@ -66,33 +68,33 @@ class Script:
         # print(self.charactor_overral_apear_in_session)
 
     def write_character_total_words(self):
-        f=open(self.script_name+'_total_words.txt','w')
+        f=open('out\\'+self.script_name+'_total_words.txt','w')
         for k,v in self.charactor_overrall_word_count_dic.items():
             str2=k+' '+str(v)+'\n'
             f.write(str2)
         f.close()
 
     def write_charactor_overral_apear(self):
-        f=open(self.script_name+'_total_apear.txt','w')
+        f=open('out\\'+self.script_name+'_total_apear.txt','w')
         for k,v in self.charactor_overral_apear_in_session.items():
             str2=k+' '+str(v)+'\n'
             f.write(str2)
         f.close()
     def write_session_emotion(self):
-        f=open(self.script_name+'_session_emotion.txt','w')
+        f=open('out\\'+self.script_name+'_session_emotion.txt','w')
         for session in self.session_list:
             str2=str(session.session_number)+' '+str(session.session_positive_value)+' '+str(session.session_negative_value)+' '+str(session.session_emotion_value)+'\n'
             f.write(str2)
         f.close()
         for name in Global_Variables.name_list:
-            f=open(self.script_name+'_'+name+'_in_session_emotion.txt','w')
+            f=open('out\\'+self.script_name+'_'+name+'_in_session_emotion.txt','w')
             for session in self.session_list:
                 str2=str(session.session_number)+' '+str(session.session_charactor_dic[name].charactor_value)+'\n'
                 f.write(str2)
             f.close()
 
     def write_session_words(self):
-        f=open(self.script_name+'_session_wrods.txt','w')
+        f=open('out\\'+self.script_name+'_session_wrods.txt','w')
         for session in self.session_list:
             str2=str(session.session_number)+' '+str(session.session_words_amount)+'\n'
             f.write(str2)
