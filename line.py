@@ -1,3 +1,4 @@
+#coding=utf-8
 import jieba
 import jieba.posseg as pseg
 import Global_Variables

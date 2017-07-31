@@ -1,3 +1,4 @@
+#coding=utf-8
 import line
 from sklearn.externals import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer

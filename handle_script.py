@@ -1,3 +1,4 @@
+#coding=utf-8
 import session
 import os
 from imp import reload
