@@ -1,0 +1,123 @@
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:13:55] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:14:24] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:14:47.697842 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:14:49] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:17:32.325816 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:17:32] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:18:09.789995 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:18:09] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:23:34.410406 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:23:36.941560 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:23:36] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:29:38.377404 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:29:40.698467 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:29:40] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:32:34.974790 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:32:37.738554 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:32:37] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:52:32.249733 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:52:34.538430 分析完成
+ERROR:root:
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:52:34] "POST /upload HTTP/1.1" 500 -
+INFO:root:2017-08-01 09:52:49.106721 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:52:51.421868 分析完成
+ERROR:root:
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:52:51] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:54:02.115037 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:54:04.435665 分析完成
+ERROR:root:
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:54:04] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:55:47.990473 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:55:50.276835 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:55:50] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:56:20.643555 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:56:22.979418 分析完成
+ERROR:root:
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:56:22] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 09:57:17.696869 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:57:19.984490 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:57:19] "POST /upload HTTP/1.1" 200 -
+INFO:root:2017-08-01 09:57:27.687457 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 09:57:30.060595 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 09:57:30] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:03:06.487115 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 10:03:08.838225 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:03:08] "POST /upload HTTP/1.1" 200 -
+INFO:root:2017-08-01 10:03:13.323276 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 10:03:15.775199 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:03:15] "POST /upload HTTP/1.1" 200 -
+INFO:root:2017-08-01 10:03:24.436347 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 10:03:26.854538 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:03:26] "POST /upload HTTP/1.1" 200 -
+INFO:root:2017-08-01 10:03:28.123951 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 10:03:30.459901 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:03:30] "POST /upload HTTP/1.1" 200 -
+INFO:root:2017-08-01 10:03:31.145286 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 10:03:33.597753 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:03:33] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:10:34.030135 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 10:10:36.320457 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:10:36] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:11:01.177796 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 10:11:03.547699 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:11:03] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:17:31.794158 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:17:31] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:18:01.537627 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:18:01] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:18:20.825317 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:18:20] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:19:59.286530 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:19:59] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:20:10.731887 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:20:10] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:21:03.847960 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:21:03] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 10:21:31.900594 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 10:21:31] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 11:41:51.779033 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+INFO:root:2017-08-01 11:41:54.031016 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 11:41:54] "POST /upload HTTP/1.1" 200 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 11:56:29.618627 传入<FileStorage: '疯狂的石头.txt' (None)>文件
+ERROR:root:
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 11:56:29] "POST /upload HTTP/1.1" 500 -
+INFO:werkzeug: * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+INFO:root:2017-08-01 11:58:14.621251 传入<FileStorage: '白鹿原_改.docx' (None)>文件
+INFO:root:2017-08-01 11:58:14.768393 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 11:58:14] "POST /upload HTTP/1.1" 200 -
+INFO:root:2017-08-01 11:58:24.630653 传入<FileStorage: '白鹿原_改.docx' (None)>文件
+INFO:root:2017-08-01 11:58:24.730943 分析完成
+INFO:werkzeug:127.0.0.1 - - [01/Aug/2017 11:58:24] "POST /upload HTTP/1.1" 200 -

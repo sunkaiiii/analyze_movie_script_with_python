@@ -3,6 +3,7 @@ import session
 import os
 from imp import reload
 import Global_Variables
+from docx import Document
 
 """
 ----------handle_scipt.py-------------
@@ -32,7 +33,12 @@ class Script:
     def read_script_file(self,filename):
         name=os.path.splitext(filename)[0]
         self.script_name=name.split('\\')[len(name.split('\\'))-1]
-        script=open(filename,encoding='utf-8').read()
+        script=""
+        # script=open(filename,encoding='utf-8').read()
+        document = Document(filename)
+        for para in document.paragraphs:
+            script+=para.text+'\n'
+        # print(script)
         split_script=script.split('\n\n') #以双回车判断是否为一个场
         for s in split_script:
             ss=session.Session(s,self.mode)
@@ -108,9 +114,9 @@ class Script:
             for i in self.session_list:
                 i.show_info(show_line_detail=show_line_detail)
 if __name__=="__main__":
-    script=Script('疯狂的石头.txt',mode=1)
+    script=Script('白鹿原_改.docx',mode=1)
     # print(script.script_name)
-    # script.showinfo(show_session_detail=1)
+    script.showinfo(show_session_detail=1)
     script.write_character_total_words()
     script.write_charactor_overral_apear()
     script.write_session_emotion()
