@@ -12,7 +12,6 @@ import jieba
 """
 
 
-
 class Charactor():
     '''
     记录一个场当中演员的信息的类
@@ -33,8 +32,8 @@ class Session():
     def __init__(self, session_content, mode=1):
         '''
         :param session_content: 切割好的一场的所有内容
-        :param mode: 0、读取场次内容的顺序为场景位置、时间、内外
-                                1、读取场次你内容的顺序为时间，内外，场景位置
+        :param mode: 0、详细格式的场景信息的切割
+                                1、简单格式的剧本场景信息的切割
         '''
 
         self.mode = mode
@@ -67,7 +66,7 @@ class Session():
         self.compare_emotion()
 
     def read_session_lines(self):
-        count = 0
+        count = 0   #count记录是否为场景信息，当为0的时候即为场景信息行
         for i in self.session_content.split('\n'):
             if len(str(i).strip('\n').strip(' ')) == 0:
                 continue
@@ -84,9 +83,9 @@ class Session():
                     session_info = session_info.replace('：', ':')
                     session_info = session_info.split(':')
                     ok = False
-                    for index in range(0, len(Global_Variables.session_info_title)):
+                    for index in range(0, len(Global_Variables.session_info_title)): #找到切割出来的标头是对应的什么常吃信息
                         if session_info[0].strip('\ufeff') in Global_Variables.session_info_title[index]:
-                            ok = True
+                            ok = True   #当OK不为True的时候，认为场景信息已经读取完成
                             if index == 0:
                                 self.session_number = session_info[1].strip('.').strip('、').strip(' ').strip('\ufeff')
                             elif index == 1:
@@ -110,6 +109,7 @@ class Session():
                             self.session_number = num
                             break
                     session_info = i.replace(num, '').replace('.', '').replace('、', '').replace(" ", '')
+                    '''找到对应的日夜内外的文字信息，删除对应的段，最后留下的极为场景地点'''
                     for time in Global_Variables.time:
                         if time in session_info:
                             self.session_time=time
