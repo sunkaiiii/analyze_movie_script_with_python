@@ -20,8 +20,7 @@ def upload_file():
         logging.info(getTIme() + " 传入" + str(f) + "文件")
         if not os.path.exists("upload"):
             os.mkdir("upload")
-        time = getTIme().replace(":", ".")
-        filename = "upload\\" + os.path.splitext(str(f.filename))[0] + time + os.path.splitext(str(f.filename))[1]
+        filename = "upload\\" + f.filename
         f.save(filename)
         try:
             a = handle_script.Script(filename)

@@ -15,6 +15,3 @@ from docx import Document
 #     print("!@3")
 #     print(para.text)
 
-a='123'
-b='123'
-print(b in a)

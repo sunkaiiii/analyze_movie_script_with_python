@@ -11,9 +11,6 @@ import jieba
 记录一个场次的内容，里面包含多个行的Line类实体
 """
 
-clf = joblib.load('emotion_model.model')
-count_vec = TfidfVectorizer(binary=False, decode_error='ignore')
-x_train = sp.load('train_data.npy')
 
 
 class Charactor():

@@ -2,7 +2,7 @@
 import jieba
 import jieba.posseg as pseg
 import Global_Variables
-jieba.load_userdict('jieba_name.txt')
+jieba.load_userdict('user_dic.txt')
 
 '''
 ----------line.py------------

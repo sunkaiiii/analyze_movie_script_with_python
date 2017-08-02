@@ -1,7 +1,7 @@
 #coding=utf-8
+import mySqlDB
 import session
 import os
-from imp import reload
 import Global_Variables
 from docx import Document
 
@@ -22,6 +22,7 @@ class Script:
         self.session_list=[]
         self.charactor_overrall_word_count_dic={}
         self.charactor_overral_apear_in_session={}
+        self.charactor=Global_Variables.name_list #暂时读文件、后续会改
         for i in Global_Variables.name_list:
             self.charactor_overrall_word_count_dic[i]=0
         self.all_charactor_count={}
@@ -106,6 +107,17 @@ class Script:
             str2=str(session.session_number)+' '+str(session.session_words_amount)+'\n'
             f.write(str2)
         f.close()
+    def write_info_to_mysql(self):
+        role_info=[]
+        for role_name,word_count in self.charactor_overrall_word_count_dic.items():
+            # print(role_name,self.charactor_overral_apear_in_session[role_name],word_count)
+            role_info.append((role_name,int(word_count),int(self.charactor_overral_apear_in_session[role_name])))
+        # print(role_info)
+        mySqlDB.write_script_role_info(role_info)
+        role_dic={}
+        # for role_name in self.charactor:
+        #     role_dic[role_name]=mySqlDB.
+
 
     def showinfo(self,show_session_detail=0,show_line_detail=0):
         for k,v in self.charactor_overrall_word_count_dic.items():
@@ -114,10 +126,12 @@ class Script:
             for i in self.session_list:
                 i.show_info(show_line_detail=show_line_detail)
 if __name__=="__main__":
+    # print(1)
     script=Script('白鹿原_改.docx',mode=1)
+    # script.write_info_to_mysql()
     # print(script.script_name)
     script.showinfo(show_session_detail=1)
-    script.write_character_total_words()
-    script.write_charactor_overral_apear()
-    script.write_session_emotion()
-    script.write_session_words()
+    # script.write_character_total_words()
+    # script.write_charactor_overral_apear()
+    # script.write_session_emotion()
+    # script.write_session_words()
