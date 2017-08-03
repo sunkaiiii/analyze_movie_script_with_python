@@ -32,6 +32,7 @@ class Script:
         self.cal_overrall_count()
         self.cal_all_character()
         self.cal_character_apear_count()
+        self.write_to_the_sql()
 
     def read_script_file(self, filename):
         name = os.path.splitext(filename)[0]
@@ -65,7 +66,7 @@ class Script:
                 self.all_charactor_count[name] += 1
 
         '''输出所有角色出现次数的排序（未分词）到屏幕，可以发现主要人物'''
-        # print(sorted(self.all_charactor_count.items(),key=lambda x:x[1],reverse=True))
+        print(sorted(self.all_charactor_count.items(), key=lambda x: x[1], reverse=True))
 
     def cal_character_apear_count(self):
         """
@@ -77,6 +78,35 @@ class Script:
                 if apear.appearance:
                     self.charactor_overral_apear_in_session[name] += 1
                     # print(self.charactor_overral_apear_in_session)
+
+    def write_to_the_sql(self):
+        lib_thesaurus_args = []
+        for session in self.session_list:
+            '''此处变量名与数据库中字段名对应，方便使用'''
+            script_number = session.session_number
+            content = session.session_content
+            role = ""
+            role_number=0
+            for name in session.session_charactor_dic.keys():
+                if session.session_charactor_dic[name].appearance:
+                    role += name + '|'
+                    role_number+=1
+            period = session.session_time
+            scene = session.session_place
+            surrondings = session.session_location
+            # role_number = len(session.session_all_charactor_set)
+            lib_thesaurus_args.append((script_number, content, role, period, scene, surrondings, role_number))
+        for i in lib_thesaurus_args:
+            print(i)
+        lib_prority_args = []
+        for role_name, word_count in self.charactor_overrall_word_count_dic.items():
+            # print(role_name,self.charactor_overral_apear_in_session[role_name],word_count)
+            lib_prority_args.append(
+                (role_name, int(word_count), int(self.charactor_overral_apear_in_session[role_name])))
+        for i in lib_prority_args:
+            print(i)
+
+            # mySqlDB.write_script_role_info(lib_prority_args)
 
     def write_character_total_words(self):
         f = open('out\\' + self.script_name + '_total_words.txt', 'w')
@@ -114,17 +144,6 @@ class Script:
             f.write(str2)
         f.close()
 
-    def write_info_to_mysql(self):
-        role_info = []
-        for role_name, word_count in self.charactor_overrall_word_count_dic.items():
-            # print(role_name,self.charactor_overral_apear_in_session[role_name],word_count)
-            role_info.append((role_name, int(word_count), int(self.charactor_overral_apear_in_session[role_name])))
-        # print(role_info)
-        mySqlDB.write_script_role_info(role_info)
-        role_dic = {}
-        # for role_name in self.charactor:
-        #     role_dic[role_name]=mySqlDB.
-
     def showinfo(self, show_session_detail=0, show_line_detail=0):
         for k, v in self.charactor_overrall_word_count_dic.items():
             print(k + str(v))
@@ -138,7 +157,7 @@ if __name__ == "__main__":
     script = Script('白鹿原_改.docx', mode=1)
     # script.write_info_to_mysql()
     # print(script.script_name)
-    script.showinfo(show_session_detail=1)
+    # script.showinfo(show_session_detail=1)
     # script.write_character_total_words()
     # script.write_charactor_overral_apear()
     # script.write_session_emotion()

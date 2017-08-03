@@ -29,7 +29,8 @@ def convert_userdic(user_dic):
     return user_dic_convert
 
 
-word_list = save_userdic_to_file()
+word_list_dic = save_userdic_to_file()
+# print(word_list_dic)
 name_list = []
 filename = 'name_bai.txt'
 emotion_path = 'emotion\\'

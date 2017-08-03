@@ -1,6 +1,10 @@
 import  MySQLdb
+"""
+----------mySqlDB.py-------------
+处理数据库增、删、改、查的请求
+"""
 db=MySQLdb.connect(host='192.168.1.130',user='root',password='root',db='fbt',port=3306)
-db.set_character_set('utf8')
+db.set_character_set('utf8') #不设置这个读取和插入中文时会乱码
 
 def write_script_role_info(args):
     c=db.cursor()
