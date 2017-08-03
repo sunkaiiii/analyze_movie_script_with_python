@@ -15,7 +15,6 @@ from docx import Document
 #     print("!@3")
 #     print(para.text)
 
-a={"asd":[3],"asdf":[4]}
-b={'asd':[2],'asdf':[5]}
-c=dict(a,**b)
-print(c)
+a={'a':1,'b':2,'c':3}
+
+print(max(a.values()))

@@ -4,6 +4,8 @@ import jieba.posseg as pseg
 import Global_Variables
 
 jieba.load_userdict('user_dic.txt')
+for word in Global_Variables.name_list:
+    jieba.add_word(word,10000)
 
 '''
 ----------line.py------------
@@ -16,8 +18,6 @@ class Line():
         self.mode = mode
         self.who_said = ''
         self.emotion = 0
-        self.positive = []
-        self.nagetive = []
         self.emotion_word_dic = {}
         self.content = ''
         self.type = ''
@@ -37,17 +37,6 @@ class Line():
                     if word.word in Global_Variables.word_list_dic[name]:
                         # print(name, word.word)
                         self.emotion_word_dic[name].append(word.word)
-                '''
-                以下为即将废除的代码
-                '''
-                ##############
-                if word.word in Global_Variables.name_list:
-                    self.who_said = word.word
-                elif word.word in Global_Variables.negative_words:
-                    self.nagetive.append(word.word)
-                elif word.word in Global_Variables.positive_words:
-                    self.positive.append(word.word)
-                ################
                 if "n" in word.flag:
                     self.noun.append(word.word)
                 elif 'v' in word.flag:
@@ -65,15 +54,6 @@ class Line():
                 if cut_word.word in Global_Variables.word_list_dic[name]:
                     # print(name, cut_word.word)
                     self.emotion_word_dic[name].append(cut_word.word)
-            '''
-            以下为即将废除的代码
-            '''
-            ##############
-            if cut_word.word in Global_Variables.negative_words:
-                self.nagetive.append(cut_word.word)
-            if cut_word.word in Global_Variables.positive_words:
-                self.positive.append(cut_word.word)
-            ################
             if cut_word.word in Global_Variables.name_list:
                 self.other_character.append(cut_word.word)
             elif "n" in cut_word.flag:
@@ -86,8 +66,6 @@ class Line():
             print(self.who_said + ':' + self.content)
         else:
             print(self.content)
-        print('positive:' + str(self.positive))
-        print('negative:' + str(self.nagetive))
         print('noun' + str(self.noun))
         print('verb' + str(self.verb))
         print('other_chracter' + str(self.other_character))

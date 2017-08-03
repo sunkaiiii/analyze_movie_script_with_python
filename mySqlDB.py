@@ -8,7 +8,20 @@ db.set_character_set('utf8') #不设置这个读取和插入中文时会乱码
 
 def write_script_role_info(args):
     c=db.cursor()
-    sql="""insert into script_role(name,lines_amount,number_of_appearances) values (%s,%s,%s)"""
+    sql="""insert into script_role(name,lines_amount,script_id,number_of_appearances) values (%s,%s,%s,%s)"""
+    c.executemany(sql,args)
+    db.commit()
+    c.close()
+
+def write_script_detail_info(args):
+    c=db.cursor()
+    sql="""insert into script_detail(script_id,script_number,content, role, period, scene, surroundings, role_number) values(%s,%s,%s,%s,%s,%s,%s,%s)"""
+    c.executemany(sql,args)
+    db.commit()
+    c.close()
+def write_participle_info(args):
+    c=db.cursor()
+    sql="""insert into participle(word,screenings,version) values(%s,%s,%s)"""
     c.executemany(sql,args)
     db.commit()
     c.close()
@@ -33,5 +46,7 @@ def read_lib_thesaurus(type=''):
 
 
 
+
 if __name__=="__main__":
-    print(read_lib_thesaurus())
+    # print(read_lib_thesaurus())
+    write_script_detail_info([('14','1412sdfdsfs','123|1234','1','内','2','3')])
