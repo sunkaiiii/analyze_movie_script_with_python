@@ -14,8 +14,8 @@
       <file leaf-file-name="Global_Variables.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Global_Variables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-273">
-              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state relative-caret-position="402">
+              <caret line="46" column="41" lean-forward="true" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
               <folding />
             </state>
           </provider>
@@ -24,8 +24,8 @@
       <file leaf-file-name="handle_script.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/handle_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="108" column="18" lean-forward="false" selection-start-line="108" selection-start-column="18" selection-end-line="108" selection-end-column="18" />
+            <state relative-caret-position="319">
+              <caret line="384" column="44" lean-forward="true" selection-start-line="384" selection-start-column="44" selection-end-line="384" selection-end-column="44" />
               <folding>
                 <element signature="e#15#29#0" expanded="true" />
               </folding>
@@ -36,8 +36,8 @@
       <file leaf-file-name="session.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/session.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="141" column="112" lean-forward="false" selection-start-line="141" selection-start-column="112" selection-end-line="141" selection-end-column="112" />
+            <state relative-caret-position="216">
+              <caret line="20" column="39" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="39" />
               <folding>
                 <element signature="e#15#26#0" expanded="true" />
               </folding>
@@ -48,8 +48,8 @@
       <file leaf-file-name="line.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/line.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-395">
-              <caret line="35" column="43" lean-forward="false" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
+            <state relative-caret-position="135">
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding>
                 <element signature="e#15#27#0" expanded="true" />
               </folding>
@@ -60,8 +60,8 @@
       <file leaf-file-name="mySqlDB.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mySqlDB.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+            <state relative-caret-position="504">
+              <caret line="38" column="13" lean-forward="false" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -78,7 +78,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>session_number</find>
       <find>session_emotion_value</find>
       <find>charactor_positive_emotion</find>
       <find>prin</find>
@@ -105,8 +104,9 @@
       <find>print</find>
       <find>line.</find>
       <find>line.emotion_word_dic</find>
-      <find>who_said</find>
       <find>charactor_worlds</find>
+      <find>who_said</find>
+      <find>get_script_role_id</find>
       <find>charactor_emotion_dic</find>
     </findStrings>
     <replaceStrings>
@@ -131,17 +131,17 @@
         <option value="$PROJECT_DIR$/webserviceTest.py" />
         <option value="$PROJECT_DIR$/train_emotion_word.py" />
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/mySqlDB.py" />
-        <option value="$PROJECT_DIR$/Global_Variables.py" />
         <option value="$PROJECT_DIR$/line.py" />
         <option value="$PROJECT_DIR$/session.py" />
+        <option value="$PROJECT_DIR$/Global_Variables.py" />
+        <option value="$PROJECT_DIR$/mySqlDB.py" />
         <option value="$PROJECT_DIR$/handle_script.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="113" />
-    <option name="y" value="-19" />
+    <option name="x" value="-63" />
+    <option name="y" value="64" />
     <option name="width" value="1126" />
     <option name="height" value="828" />
   </component>
@@ -544,46 +544,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mySqlDB.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/line.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-395">
-          <caret line="35" column="43" lean-forward="false" selection-start-line="35" selection-start-column="43" selection-end-line="35" selection-end-column="43" />
+        <state relative-caret-position="135">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
             <element signature="e#15#27#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Global_Variables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="46" column="41" lean-forward="true" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/session.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="141" column="112" lean-forward="false" selection-start-line="141" selection-start-column="112" selection-end-line="141" selection-end-column="112" />
+        <state relative-caret-position="216">
+          <caret line="20" column="39" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="39" />
           <folding>
             <element signature="e#15#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Global_Variables.py">
+    <entry file="file://$PROJECT_DIR$/mySqlDB.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-273">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state relative-caret-position="504">
+          <caret line="38" column="13" lean-forward="false" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/handle_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="108" column="18" lean-forward="false" selection-start-line="108" selection-start-column="18" selection-end-line="108" selection-end-column="18" />
+        <state relative-caret-position="319">
+          <caret line="384" column="44" lean-forward="true" selection-start-line="384" selection-start-column="44" selection-end-line="384" selection-end-column="44" />
           <folding>
             <element signature="e#15#29#0" expanded="true" />
           </folding>
