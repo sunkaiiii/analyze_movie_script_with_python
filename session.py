@@ -42,6 +42,7 @@ class Session():
         self.main_emotion = ""
         self.line_list = []
         self.session_content = ''
+        self.session_emotion_value=0
         self.session_emotion_words_dic = {}
         self.session_emotion_words_set_dic = {}
         for name in Global_Variables.word_list_dic.keys():
@@ -82,9 +83,9 @@ class Session():
                             elif index == 1:
                                 self.session_location = session_info[1].strip(' ')
                             elif index == 2:
-                                self.session_place = session_info[1].strip(' ')
+                                self.session_time = session_info[1].replace(' ','').replace('\n','')
                             elif index == 3:
-                                self.session_time = session_info[1].strip(' ')
+                                self.session_place = session_info[1].strip(' ').replace(' ', '').replace('\n', '')
                             elif index == 4:
                                 self.main_people = session_info[1].strip(' ')
                             elif index == 5:

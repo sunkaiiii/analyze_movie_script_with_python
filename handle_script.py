@@ -35,39 +35,34 @@ class Script:
 
     def __init__(self, filename, script_id, mode=1):
         self.mode = mode
+        self.file_text=self.read_script_file(filename)
         self.character_biographies_dic = {}
         if self.mode == 1:
-            self.find_main_charactor(filename)
+            self.find_main_charactor(self.file_text)
         elif self.mode == 0:
-            self.read_character_biographies(filename)
-
-
-            self.script_id = script_id  # 此处不应为固定值，而应该是获取id值，只是测试用设定为固定值
-            self.script_name = ''
-            self.session_list = []
-            self.charactor_overrall_word_count_dic = {}
-            self.charactor_overral_apear_in_session = {}
-            self.charactor = Global_Variables.name_list
-            for i in Global_Variables.name_list:
-                self.charactor_overrall_word_count_dic[i] = 0
-            self.all_charactor_count = {}
-            self.read_script_file(filename)
-            self.cal_overrall_count()
-            self.cal_all_character()
-            self.cal_character_apear_count()
-            # self.write_to_the_sql()
+            self.file_text=self.read_character_biographies(self.file_text)
+        self.script_id = script_id  # 此处不应为固定值，而应该是获取id值，只是测试用设定为固定值
+        self.script_name = ''
+        self.session_list = []
+        self.charactor_overrall_word_count_dic = {}
+        self.charactor_overral_apear_in_session = {}
+        self.charactor = Global_Variables.name_list
+        for i in Global_Variables.name_list:
+            self.charactor_overrall_word_count_dic[i] = 0
+        self.all_charactor_count = {}
+        self.handle_session(self.file_text)
+        self.cal_overrall_count()
+        self.cal_all_character()
+        self.cal_character_apear_count()
+        # self.write_to_the_sql()
 
     '''
     当传入的是mode=1也就是简版剧本的时候，暂时的操作是先读取一遍剧本，寻找主要角色
     '''
 
-    def find_main_charactor(self, filename,mode=0):
-        document = Document(filename)
-        script = ''
-        user_dic = {}
-        for para in document.paragraphs:
-            script += para.text + '\n'
-        session_list = script.split('\n\n')
+    def find_main_charactor(self, file_text,mode=0):
+        user_dic={}
+        session_list = file_text.split('\n\n')
         for session in session_list:
             session = session.split('\n')
             for line in session:
@@ -77,20 +72,29 @@ class Script:
                         charactor = line.split(':')[0]
                         user_dic.setdefault(charactor, 0)
                         user_dic[charactor] += 1
+                    elif mode==0:
+                        info_list=Global_Variables.session_info_title
+                        info_list.extend(Global_Variables.character_biographies)
+                        if line.split(':')[0] in info_list:
+                            continue
+                        else:
+                            charactor=line.split(':')[0]
+                            user_dic.setdefault(charactor, 0)
+                            user_dic[charactor] += 1
                     # elif mode==0:
                     #
         user_dic = sorted(user_dic.items(), key=lambda x: x[1], reverse=True)
+        # print(user_dic)
         Global_Variables.name_list = []
-        for i in range(0, 7):
+        character_range=5
+        for i in range(0, character_range):
             Global_Variables.name_list.append(user_dic[i][0])
-            # print(Global_Variables.name_list)
+        # print(Global_Variables.name_list)
 
-    def read_character_biographies(self, filename):
-        script = ""
-        document = Document(filename)
-        for para in document.paragraphs:
-            script += para.text + '\n'
+    def read_character_biographies(self, file_text):
+        script = file_text
         session_list = script.split('\n\n')
+        new_text = ''
         for session in session_list:
             num = -1
             name = ''
@@ -106,6 +110,8 @@ class Script:
             for line in session:
                 line = line.replace('：', ":").replace(' ', '').replace('\n', '').replace('\ufeff', '')
                 if ':' in line:
+                    script_line=line
+                    is_info=False
                     line = line.split(':')
                     info = line[0]
                     for index in range(0, len(Global_Variables.character_biographies)):
@@ -113,30 +119,44 @@ class Script:
                             data = line[1]
                             if index == 0:
                                 num = int(data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', ''))
+                                is_info=True
                             elif index == 1:
                                 name = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
+                                is_info = True
                             elif index == 2:
                                 gender = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
+                                is_info = True
                                 if '男' in gender:
                                     gender = 0
                                 else:
                                     gender = 1
                             elif index == 3:
                                 role = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
+                                is_info = True
                             elif index == 4:
                                 age = int(data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff','').replace('岁', ''))
+                                is_info = True
                             elif index == 5:
                                 career = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
+                                is_info = True
                             elif index == 6:
                                 constellation = Global_Variables.constellation[
                                     data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')]
+                                is_info = True
                             elif index == 7:
                                 blood = Global_Variables.blood[
                                     data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')]
+                                is_info = True
                             elif index == 8:
                                 introduction = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff','')
+                                is_info = True
                             elif index == 9:
                                 temperament = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
+                                is_info = True
+                    if not is_info:
+                        new_text+=script_line+'\n'
+                else:
+                    new_text+=line+'\n'
             '''检查输出'''
             # print(str(num),
             #       str(name),
@@ -152,11 +172,15 @@ class Script:
                 self.character_biographies_dic.setdefault(name, character_biographies(num,name, gender, role, age, career,
                                                                                       constellation, blood,
                                                                                       introduction, temperament))
+            new_text+='\n'
+        # print(new_text)
+        new_text=new_text.replace('人物小传','')
         Global_Variables.name_list = []
         Global_Variables.name_list.extend(self.character_biographies_dic.keys())
         # print(self.character_biographies_dic)
-        print(Global_Variables.name_list)
-
+        # self.find_main_charactor(filename)
+        # print(Global_Variables.name_list)
+        return new_text
 
 
         # print(script)
@@ -170,6 +194,9 @@ class Script:
         for para in document.paragraphs:
             script += para.text + '\n'
         # print(script)
+        return script
+
+    def handle_session(self,script):
         split_script = script.split('\n\n')  # 以双回车判断是否为一个场
         for s in split_script:
             ss = session.Session(s, self.mode)
@@ -247,8 +274,6 @@ class Script:
                  character_biographies.age, character_biographies.career, character_biographies.constellation,
                  character_biographies.temperament, character_biographies.introduction, self.script_id, int(word_count),
                  int(self.charactor_overral_apear_in_session[role_name])))
-        for i in script_roles:
-            print(i)
         return script_roles
 
     def cal_participle(self):
@@ -267,8 +292,11 @@ class Script:
 
     def write_to_the_sql(self):
         script_detail_args = self.cal_script_detail()
+        print(script_detail_args)
         script_roles = self.cal_script_role()
+        print(script_roles)
         participle_args = self.cal_participle()
+        print(participle_args)
         print('写入数据库')
         print('写入剧本信息表')
         mySqlDB.write_script_detail_info(script_detail_args)
@@ -292,7 +320,8 @@ if __name__ == "__main__":
     # script0 = Script('疯狂的石头_改.docx', 1, mode=1)
     # script = Script('让子弹飞、新、改.docx', 2,mode=1)
     script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 0, mode=0)
-    mySqlDB.write_script_role_info(script.cal_script_role())
+    script.showinfo(show_session_detail=1)
+    # mySqlDB.write_script_role_info(script.cal_script_role())
     # script.write_info_to_mysql()
     # print(script.script_name)
     # script.showinfo(show_session_detail=1)
