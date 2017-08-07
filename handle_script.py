@@ -26,6 +26,8 @@ class character_biographies:
         self.blood = blood
         self.introduction = introduction
         self.temperament = temperament
+        self.relationship_to=''
+        self.relation_content=''
 
 
 class Script:
@@ -35,12 +37,23 @@ class Script:
 
     def __init__(self, filename, script_id, mode=1):
         self.mode = mode
+        print('读取剧本')
         self.file_text=self.read_script_file(filename)
+        print('读取剧本成功')
         self.character_biographies_dic = {}
         if self.mode == 1:
+            print('程序推测主角')
             self.find_main_charactor(self.file_text)
+            main_role=''
+            for i in Global_Variables.name_list:
+                self.character_biographies_dic.setdefault(i,character_biographies())
+                main_role+=i+','
+            print('推测主角为'+main_role)
+
         elif self.mode == 0:
+            print('读取人物小传')
             self.file_text=self.read_character_biographies(self.file_text)
+            print('读取人物小传完成')
         self.script_id = script_id  # 此处不应为固定值，而应该是获取id值，只是测试用设定为固定值
         self.script_name = ''
         self.session_list = []
@@ -50,11 +63,19 @@ class Script:
         for i in Global_Variables.name_list:
             self.charactor_overrall_word_count_dic[i] = 0
         self.all_charactor_count = {}
+        print('处理场次信息')
         self.handle_session(self.file_text)
+        print('处理场次信息完成')
+        print('统计角色台词数')
         self.cal_overrall_count()
+        print('统计角色台词数完成')
+        print('计算非主角出场次数')
         self.cal_all_character()
+        print('计算非主角出场次数完成')
+        print('计算主要角色出场次数')
         self.cal_character_apear_count()
-        # self.write_to_the_sql()
+        print('计算主要角色出场次数完成')
+        self.write_to_the_sql()
 
     '''
     当传入的是mode=1也就是简版剧本的时候，暂时的操作是先读取一遍剧本，寻找主要角色
@@ -197,10 +218,14 @@ class Script:
         return script
 
     def handle_session(self,script):
+        count=0
         split_script = script.split('\n\n')  # 以双回车判断是否为一个场
         for s in split_script:
             ss = session.Session(s, self.mode)
             self.session_list.append(ss)
+            count+=1
+            if count%20==0:
+                print('已处理'+str(count)+'场')
 
     def cal_overrall_count(self):
         """
@@ -292,11 +317,8 @@ class Script:
 
     def write_to_the_sql(self):
         script_detail_args = self.cal_script_detail()
-        print(script_detail_args)
         script_roles = self.cal_script_role()
-        print(script_roles)
         participle_args = self.cal_participle()
-        print(participle_args)
         print('写入数据库')
         print('写入剧本信息表')
         mySqlDB.write_script_detail_info(script_detail_args)
@@ -316,11 +338,11 @@ class Script:
 
 if __name__ == "__main__":
     # print(1)
-    # script0=Script('白鹿原_改.docx',0,mode=1)
-    # script0 = Script('疯狂的石头_改.docx', 1, mode=1)
+    script=Script('白鹿原_改.docx',0,mode=1)
+    # script = Script('疯狂的石头_改.docx', 1, mode=1)
     # script = Script('让子弹飞、新、改.docx', 2,mode=1)
-    script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 0, mode=0)
-    script.showinfo(show_session_detail=1)
+    # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 0, mode=0)
+    # script.showinfo(show_session_detail=1)
     # mySqlDB.write_script_role_info(script.cal_script_role())
     # script.write_info_to_mysql()
     # print(script.script_name)

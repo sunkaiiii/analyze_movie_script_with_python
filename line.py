@@ -32,11 +32,13 @@ class Line():
             self.who_said_no_cut = name  # 当剧本不完全是XX:的形式而是带有定语或者别的词的时候，再进行一次切割
             name_words = pseg.cut(name)
             for word in name_words:
-                for name in Global_Variables.word_list_dic.keys():
-                    self.emotion_word_dic.setdefault(name, [])
-                    if word.word in Global_Variables.word_list_dic[name]:
-                        # print(name, word.word)
-                        self.emotion_word_dic[name].append(word.word)
+                if word.word in Global_Variables.name_list:
+                    self.who_said=word.word
+                    continue
+                for word_name in Global_Variables.word_list_dic.keys():
+                    self.emotion_word_dic.setdefault(word_name, [])
+                    if word.word in Global_Variables.word_list_dic[word_name]:
+                        self.emotion_word_dic[word_name].append(word.word)
                 if "n" in word.flag:
                     self.noun.append(word.word)
                 elif 'v' in word.flag:

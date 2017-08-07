@@ -139,7 +139,7 @@ class Session():
                         for word in cut_said_word:
                             for name, words in Global_Variables.word_list_dic.items():
                                 if word in words:
-                                    self.session_charactor_dic[line.who_said].charactor_emotion_dic[name].extend(words)
+                                    self.session_charactor_dic[line.who_said].charactor_emotion_dic[name].append(word)
                                     # print(self.session_charactor_dic[line.who_said].charactor_emotion_dic)
                         for i in Global_Variables.punctuation_mark:
                             said_word = said_word.replace(i, '')  # 去除标点符号
@@ -158,6 +158,13 @@ class Session():
         print('场景地点:' + str(self.session_location))
         print('场景台词数:' + str(self.session_words_amount))
         print('场景情感值:' + str(self.session_emotion_value))
+        for Charactor in self.session_charactor_dic.values():
+            if len(Charactor.charactor_worlds)>0:
+                print(Charactor.name+','+str(Charactor.charactor_worlds))
+            for key,values in Charactor.charactor_emotion_dic.items():
+                if len(values)>0:
+                    print(key+str(values))
+
         if show_line_detail == 1:
             for line in self.line_list:
                 line.showInfo()
