@@ -1,52 +1,58 @@
-import  MySQLdb
+import MySQLdb
+
 """
 ----------mySqlDB.py-------------
 处理数据库增、删、改、查的请求
 """
-db=MySQLdb.connect(host='192.168.1.130',user='root',password='root',db='fbt',port=3306)
-db.set_character_set('utf8') #不设置这个读取和插入中文时会乱码
+db = MySQLdb.connect(host='192.168.1.130', user='root', password='root', db='fbt', port=3306)
+db.set_character_set('utf8')  # 不设置这个读取和插入中文时会乱码
+
 
 def write_script_role_info(args):
-    c=db.cursor()
-    sql="""insert into script_role(name,lines_amount,script_id,number_of_appearances) values (%s,%s,%s,%s)"""
-    c.executemany(sql,args)
+    c = db.cursor()
+    sql = """insert into script_role(name,number,gender,age,career,constellation,temperament,introduction,script_id,lines_amount,number_of_appearances) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+    c.executemany(sql, args)
     db.commit()
     c.close()
 
+
 def write_script_detail_info(args):
-    c=db.cursor()
-    sql="""insert into script_detail(script_id,script_number,content, role, period, scene, surroundings, role_number) values(%s,%s,%s,%s,%s,%s,%s,%s)"""
-    c.executemany(sql,args)
+    c = db.cursor()
+    sql = """insert into script_detail(script_id,script_number,content, role, period, scene, surroundings, role_number) values(%s,%s,%s,%s,%s,%s,%s,%s)"""
+    c.executemany(sql, args)
     db.commit()
     c.close()
+
+
 def write_participle_info(args):
-    c=db.cursor()
-    sql="""insert into participle(word,screenings,version) values(%s,%s,%s)"""
-    c.executemany(sql,args)
+    c = db.cursor()
+    sql = """insert into participle(word,screenings,version) values(%s,%s,%s)"""
+    c.executemany(sql, args)
     db.commit()
     c.close()
+
+
 def get_script_role_id(args):
-    c=db.cursor()
-    sql="""select id from script_role where name='"""+args+'\''
+    c = db.cursor()
+    sql = """select id from script_role where name='""" + args + '\''
     c.execute(sql)
-    result=c.fetchone()
+    result = c.fetchone()
     c.close()
     return result[0]
 
+
 def read_lib_thesaurus(type=''):
-    if type=='':
-        sql="""select word,type_cn from lib_thesaurus"""
+    if type == '':
+        sql = """select word,type_cn from lib_thesaurus"""
     else:
-        sql="""select word,type_cn from lib_thesaurus where type_cn='"""+type+'\''
-    c=db.cursor()
+        sql = """select word,type_cn from lib_thesaurus where type_cn='""" + type + '\''
+    c = db.cursor()
     c.execute(sql)
-    result=c.fetchall()
+    result = c.fetchall()
     c.close()
     return result
 
 
-
-
-if __name__=="__main__":
+if __name__ == "__main__":
     # print(read_lib_thesaurus())
-    write_script_detail_info([('14','1412sdfdsfs','123|1234','1','内','2','3')])
+    write_script_detail_info([('14', '1412sdfdsfs', '123|1234', '1', '内', '2', '3')])

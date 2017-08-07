@@ -21,23 +21,28 @@ def convert_userdic(user_dic):
         key = section[1].replace(' ', '').replace('\u3000', '')
         user_dic_convert.setdefault(key, [])
         user_dic_convert[key].append(section[0].replace('\u3000', ''))
-    # count=0
-    # for k,v in user_dic_convert.items():
+        # count=0
+        # for k,v in user_dic_convert.items():
         # count+=len(v)
         # print(k,v)
     # print(count)
     return user_dic_convert
 
 
-word_list_dic = save_userdic_to_file()
+word_list_dic = save_userdic_to_file()  # 读取数据库的词库，并保存在本地供jieba分词学习（也可以保存在List中，用循环使用addword给jieba提供词库）
 # print(word_list_dic)
 name_list = []
 filename = 'name_bai.txt'
 puncutation_file = 'punctuation_mark.txt'
-time = {'日':1, '晚上':2, '昼':3, '夜':4, '晨':5, '凌晨':6, '清晨':7, '早晨':8, '上午':9, '中午':10, '正午':11, '下午':12, '昏':13, '傍晚':14, '佛晓':15, '黎明':16, '日出':17, '日落':18}
-place = {'外':1, '内':2}
+time = {'日': 1, '晚上': 2, '昼': 3, '夜': 4, '晨': 5, '凌晨': 6, '清晨': 7, '早晨': 8, '上午': 9, '中午': 10, '正午': 11, '下午': 12,
+        '昏': 13, '傍晚': 14, '佛晓': 15, '黎明': 16, '日出': 17, '日落': 18}
+place = {'外': 1, '内': 2, '室内': 3, '室外': 4, '户内': 5, '户外': 6}
 session_info_title = ['场次序号', '地点', '时间', '场景', '主要人物', '主要人物感情色彩']
-# file = open(filename, 'r', encoding='utf-8').read().split('\n')
-# for i in file:
-#     name_list.append(i.split(' ')[0].strip('\ufeff').strip(' '))
+character_biographies = ['编号', '姓名', '性别', '角色', '年龄', '职业', '星座', '血型', '人物背景', '人物性格']
+constellation = {'白羊座': 0, '金牛座': 1, '双子座': 2, '巨蟹座': 3, '狮子座': 4, '处女座': 5, '天秤座': 6, '天蝎座': 7, '射手座': 8, '摩羯座': 9,
+                 '水瓶座': 10, '双鱼座': 11,
+                 '白羊': 0, '金牛': 1, '双子': 2, '巨蟹': 3, '狮子': 4, '处女': 5, '天秤': 6, '天蝎': 7, '射手': 8, '摩羯': 9, '水瓶': 10,
+                 '双鱼': 11}
+blood = {'A型': 0, 'B型': 1, 'O型': 2, 'AB型': 3,
+         'A': 0, 'B': 1, 'O': 2, 'AB': 3}
 punctuation_mark = set(open(puncutation_file, encoding='utf-8').read().split('\n'))
