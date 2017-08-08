@@ -17,14 +17,9 @@ from audioop import reverse
 import sys  
 
 class Hibiscus():
-    def analyseNovel(self,filename):
-        if not os.path.exists(filename):
-            pass
-        with codecs.open(filename,encoding='gbk') as file:
-            content = file.read()
+    def analyseNovel(self,content):
+        content = content
         txtlist = hibiscusTools.getAllChineseCharacters(content)
-        
-        
         self.novelInfo = {}
         index = 0
         for txt in txtlist:
@@ -43,8 +38,10 @@ class Hibiscus():
                 
         self.charCount = index
         self.calculte()
+        result=self.outResult()
+        return result
         
-    def outExcel(self,filename):
+    def outResult(self):
         wb = Workbook()
         table = wb.add_sheet(u'新词')
         table.write(0,0,u'单词')
@@ -57,15 +54,15 @@ class Hibiscus():
                 lst.append(v)
         
         lst = sorted(lst,key=lambda x:x['count'],reverse=True)
-        
-        line = 1
-        for index ,item in enumerate(lst):
-            table.write(line,0,item['word'])
-            table.write(line,1,item['count'])
-            table.write(line,2,item['solidification'])
-            table.write(line,3,item['freedom'])
-            line +=1
-        wb.save('./'+os.path.splitext(os.path.basename(filename))[0] +'.xls')
+
+        count=0;
+        result=[]
+        for index,item in enumerate(lst):
+            result.append(item['word'])
+            count+=1
+            if count==5:
+                break
+        return  result
         
     def calculte(self):
         for word,info in self.novelInfo.items():
@@ -94,10 +91,7 @@ class Hibiscus():
 
 
 def excute(name):
-    filename = name
     hibi = Hibiscus()
-    hibi.analyseNovel(filename) 
-    hibi.outExcel(filename)  
 	
 if __name__ == '__main__':
-    excute( '2.txt'.decode('utf-8'))
+    excute()

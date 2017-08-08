@@ -5,6 +5,8 @@ import os
 import Global_Variables
 from docx import Document
 import jieba
+import hibiscusMain
+from xlwt import *
 jieba.load_userdict('user_dic.txt')
 jieba.add_word('男主角', 1000)
 jieba.add_word('女主角', 1000)
@@ -48,12 +50,15 @@ class character_biographies:
             except:
                 continue
                 # print(self.relationship)
-class shunjingbiao:
-    def __init__(self,script_id=-1,session_number=-1):
-        self.script_id=script_id
-        self.sesison_num=session_number
-        self.place={}
 
+class shunchangbiao:
+    def __init__(self,script_id=-1,script_num=-1,script_content='',time='',role=[]):
+        self.script_id=script_id
+        self.script_num=script_num
+        self.script_content=script_content
+        self.time=time
+        self.role=role
+        self.pagenum=float(self.script_num)/50.0
 
 class Script:
     '''
@@ -62,27 +67,27 @@ class Script:
 
     def __init__(self, filename, script_id, mode=1):
         self.mode = mode
+        self.script_name = ''
         print('读取剧本')
         self.file_text = self.read_script_file(filename)
         self.character_biographies_dic = {}
-        if self.mode == 1:
-            print('程序推测主角')
-            self.find_main_charactor(self.file_text)
-            main_role = ''
-            for i in Global_Variables.name_list:
-                self.character_biographies_dic.setdefault(i, character_biographies())
-                main_role += i + ','
-            print('推测主角为' + main_role)
-
-        elif self.mode == 0:
+        Global_Variables.name_list = []
+        print('程序推测主角')
+        self.find_main_charactor(self.file_text,self.mode)
+        main_role = ''
+        for i in Global_Variables.name_list:
+            self.character_biographies_dic.setdefault(i, character_biographies())
+            main_role += i + ','
+        print('推测主角为' + main_role)
+        if self.mode == 0:
             print('读取人物小传')
             self.file_text = self.read_character_biographies(self.file_text)
         self.script_id = script_id  # 此处不应为固定值，而应该是获取id值，只是测试用设定为固定值
-        self.script_name = ''
         self.session_list = []
         self.charactor_overrall_word_count_dic = {}
         self.charactor_overral_apear_in_session = {}
         self.charactor_emetion_word_in_session = {}
+        self.shunchangbiao={}
         self.charactor = Global_Variables.name_list
         for i in Global_Variables.name_list:
             self.charactor_overrall_word_count_dic[i] = 0
@@ -95,42 +100,50 @@ class Script:
         self.cal_all_character()
         print('计算主要角色出场次数')
         self.cal_character_apear_count()
-        self.write_to_the_sql()
+        print('生成顺场景表')
+        self.create_shunchangbiao()
+
+        # self.write_to_the_sql()
 
     '''
     当传入的是mode=1也就是简版剧本的时候，暂时的操作是先读取一遍剧本，寻找主要角色
     '''
 
     def find_main_charactor(self, file_text, mode=0):
-        user_dic = {}
-        session_list = file_text.split('\n\n')
-        for session in session_list:
-            session = session.split('\n')
-            for line in session:
-                line = line.replace('：', ":").replace(' ', '').replace('\n', '').replace('\ufeff', '')
-                if ':' in line:
-                    if mode == 1:
-                        charactor = line.split(':')[0]
-                        user_dic.setdefault(charactor, 0)
-                        user_dic[charactor] += 1
-                    elif mode == 0:
-                        info_list = Global_Variables.session_info_title
-                        info_list.extend(Global_Variables.character_biographies)
-                        if line.split(':')[0] in info_list:
-                            continue
-                        else:
+        if mode==0:
+            result=hibiscusMain.Hibiscus().analyseNovel(self.file_text)
+            for c in result:
+                Global_Variables.name_list.append(c)
+        elif mode==1:
+            user_dic = {}
+            session_list = file_text.split('\n\n')
+            for session in session_list:
+                session = session.split('\n')
+                for line in session:
+                    line = line.replace('：', ":").replace(' ', '').replace('\n', '').replace('\ufeff', '')
+                    if ':' in line:
+                        if mode == 1:
                             charactor = line.split(':')[0]
                             user_dic.setdefault(charactor, 0)
                             user_dic[charactor] += 1
-                            # elif mode==0:
-                            #
-        user_dic = sorted(user_dic.items(), key=lambda x: x[1], reverse=True)
-        # print(user_dic)
-        Global_Variables.name_list = []
-        character_range = 5
-        for i in range(0, character_range):
-            Global_Variables.name_list.append(user_dic[i][0])
-            # print(Global_Variables.name_list)
+                        elif mode == 0:
+                            info_list = Global_Variables.session_info_title
+                            info_list.extend(Global_Variables.character_biographies)
+                            if line.split(':')[0] in info_list:
+                                continue
+                            else:
+                                charactor = line.split(':')[0]
+                                user_dic.setdefault(charactor, 0)
+                                user_dic[charactor] += 1
+                                # elif mode==0:
+                                #
+            user_dic = sorted(user_dic.items(), key=lambda x: x[1], reverse=True)
+            # print(user_dic)
+            Global_Variables.name_list = []
+            character_range = 5
+            for i in range(0, character_range):
+                Global_Variables.name_list.append(user_dic[i][0])
+                # print(Global_Variables.name_list)
 
     def read_character_biographies(self, file_text):
         script = file_text
@@ -221,8 +234,6 @@ class Script:
             new_text += '\n'
         # print(new_text)
         new_text = new_text.replace('人物小传', '')
-        Global_Variables.name_list = []
-        Global_Variables.name_list.extend(self.character_biographies_dic.keys())
         # print(self.character_biographies_dic)
         # self.find_main_charactor(filename)
         # print(Global_Variables.name_list)
@@ -354,6 +365,102 @@ class Script:
         #     print(i)
         return participle_args
 
+    def create_shunchangbiao(self):
+        wb = Workbook()
+        table = wb.add_sheet('顺景表')
+        Workbook.height
+        style = XFStyle()
+        alignment = Alignment()
+        alignment.horz = Alignment.HORZ_CENTER
+        alignment.vert=Alignment.VERT_CENTER
+        style.alignment = alignment
+        in_place=0
+        out_place=0
+        location_count={}
+        in_place_time_count={}
+        out_place_time_count={}
+        table.write_merge(2, 3, 1, 1, '场景', style)
+        table.write_merge(2, 3, 2, 2, '拍摄地点', style)
+        table.write_merge(2, 3, 3, 3, '场次', style)
+        table.write_merge(2, 3, 4, 4, '气氛', style)
+        table.write_merge(2, 3, 5, 5, '页数/行', style)
+        table.write_merge(2,3,6,6,'主要内容',style)
+        table.write(2, 7, '角色', style)
+        table.write(3, 7, '演员', style)
+        index = 8
+        for role in Global_Variables.name_list:
+            table.write(2, index, role, style)
+            index += 1
+        table.write(2, index, '特约及群众演员', style)
+        index += 1
+        table.write(2, index, '服化道', style)
+        index += 1
+        table.write_merge(2, 3, index, index, '其他', style)
+        index += 1
+        table.write_merge(2, 3, index, index, '计划时间', style)
+        index += 1
+        table.write_merge(2, 3, index, index, '备注', style)
+        table.write_merge(1, 1, 0, index, '《' + self.script_name + '》顺景表',style)
+        width=index
+        index=4
+        font = Font
+        role={}
+        for session in self.session_list:
+            self.shunchangbiao.setdefault(session.session_location,[])
+            role.setdefault(session.session_number,[])
+            if(session.session_place in Global_Variables.in_place):
+                in_place+=1
+                in_place_time_count.setdefault(session.session_time,0)
+                in_place_time_count[session.session_time]+=1
+            else:
+                out_place+=1
+                out_place_time_count.setdefault(session.session_time,0)
+                out_place_time_count[session.session_time]+=1
+            location_count.setdefault(session.session_location,0)
+            location_count[session.session_location]+=1
+            for character in session.session_charactor_dic.items():
+                if character[1].appearance:
+                    role[session.session_number].append(character[0])
+            self.shunchangbiao[session.session_location].append(shunchangbiao(self.script_id,session.session_number,session.session_content,session.session_time,role))
+        self.shunchangbiao=sorted(self.shunchangbiao.items(), key=lambda x: len(x[1]), reverse=True) #按场景出现多到少的顺序排序
+        for i in self.shunchangbiao:
+            i2=i[1]
+            old_index=index
+            for i3 in i2:
+                # print(i[0],i3.role)
+                table.write(index,3,str(i3.script_num),style)
+                table.write(index,4,i3.time)
+                table.write(index,5,str(round(i3.pagenum,3)))
+                column_index=8
+                for character in Global_Variables.name_list:
+                    if character in role[i3.script_num]:
+                        table.write(index,column_index,'√',style)
+                    column_index+=1
+                index+=1
+            table.write_merge(old_index,index-1,1,1,i[0],style)
+            table.write_merge(old_index,index-1,2,2,'',style)
+        table.write_merge(index,index,1,4,'全片场次总计：')
+        table.write(index,5,str(len(self.session_list))+'场',style)
+        index+=1
+        table.write_merge(index,index,1,2,"内景：")
+        string=''
+        string+=str(in_place)+'场'+'（'
+        for k,v in in_place_time_count.items():
+            string+=k+'：'+str(v)+'场、'
+        string=string[:-1]+'）'
+        table.write_merge(index,index,3,width,string)
+        index+=1
+        table.write_merge(index, index, 1, 2, "外景：")
+        string = ''
+        string += str(out_place) + '场' + '（'
+        for k, v in out_place_time_count.items():
+            string += k + '：' + str(v) + '场、'
+        string = string[:-1] + '）'
+        table.write_merge(index,index,3,width,string)
+        wb.save(self.script_name+'.xls')
+
+
+
     def write_to_the_sql(self):
         script_detail_args = self.cal_script_detail()
         script_roles = self.cal_script_role()
@@ -384,13 +491,6 @@ if __name__ == "__main__":
     script = Script('白鹿原_改.docx', 0, mode=1)
     script = Script('疯狂的石头_改.docx', 1, mode=1)
     script = Script('让子弹飞、新、改.docx', 2,mode=1)
-    # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 0, mode=0)
+    # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 3, mode=0)
     # script.showinfo(show_session_detail=1)
-    # mySqlDB.write_script_role_info(script.cal_script_role())
-    # script.write_info_to_mysql()
-    # print(script.script_name)
-    # script.showinfo(show_session_detail=1)
-    # script.write_character_total_words()
-    # script.write_charactor_overral_apear()
-    # script.write_session_emotion()
-    # script.write_session_words()
+
