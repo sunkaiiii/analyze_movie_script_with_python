@@ -5,8 +5,6 @@ import os
 import Global_Variables
 from docx import Document
 import jieba
-import jieba.posseg as pseg
-
 jieba.load_userdict('user_dic.txt')
 jieba.add_word('男主角', 1000)
 jieba.add_word('女主角', 1000)
@@ -50,6 +48,11 @@ class character_biographies:
             except:
                 continue
                 # print(self.relationship)
+class shunjingbiao:
+    def __init__(self,script_id=-1,session_number=-1):
+        self.script_id=script_id
+        self.sesison_num=session_number
+        self.place={}
 
 
 class Script:
