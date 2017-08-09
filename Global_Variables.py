@@ -47,6 +47,7 @@ constellation = {'白羊座': 0, '金牛座': 1, '双子座': 2, '巨蟹座': 3,
                  '双鱼': 11}
 blood = {'A型': 0, 'B型': 1, 'O型': 2, 'AB型': 3,
          'A': 0, 'B': 1, 'O': 2, 'AB': 3}
-sensitive_word=[]
+sensitive_word=['他妈']
+ad_word=['汽车']
 stop_word=set(open(stopword_file,encoding='utf-8').read().split('\n'))
 punctuation_mark = set(open(puncutation_file, encoding='utf-8').read().split('\n'))

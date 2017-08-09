@@ -31,12 +31,32 @@ def write_participle_info(args):
     db.commit()
     c.close()
 
+
 def write_lib_session_emotionword(args):
-    c=db.cursor()
-    sql="""insert into lib_session_emotionword(word,word_type,who,script_id,script_number) values(%s,%s,%s,%s,%s)"""
-    c.executemany(sql,args)
+    c = db.cursor()
+    sql = """insert into lib_session_emotionword(word,word_type,who,script_id,script_number) values(%s,%s,%s,%s,%s)"""
+    c.executemany(sql, args)
     db.commit()
     c.close()
+
+
+def write_sequence_scene_detail(args):
+    '''写入顺景表详情库'''
+    c = db.cursor()
+    sql = """insert into sequence_scene_detail(scene,script_number,page_number,content) values(%s,%s,%s,%s)"""
+    c.executemany(sql, args)
+    db.commit()
+    c.close()
+
+
+def write_sequence_screenings_detail(args):
+    '''写入顺场表详情库'''
+    c = db.cursor()
+    sql = """insert into sequence_screenings_detail(surrounding,scene,script_number,page_number,content) values(%s,%s,%s,%s,%s)"""
+    c.executemany(sql, args)
+    db.commit()
+    c.close()
+
 
 def get_script_role_id(args):
     c = db.cursor()

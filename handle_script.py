@@ -113,10 +113,12 @@ class Script:
         print('计算主要角色出场次数')
         self.cal_character_apear_count()
         print('生成顺场景表')
+        self.shunjingbiao_args = []
+        self.shunchangbiao_args = []
         self.cal_shunchangjingbiaoxinxi()
         self.create_shunchangjingbiao()
 
-        # self.write_to_the_sql()
+        self.write_to_the_sql()
 
     '''
     当传入的是mode=1也就是简版剧本的时候，暂时的操作是先读取一遍剧本，寻找主要角色
@@ -406,7 +408,8 @@ class Script:
                 shunjingbiao(self.script_id, session.session_number, session.session_content,
                              session.session_main_content, session.session_time,
                              self.role))
-        self.shunjingbiao = sorted(self.shunjingbiao.items(), key=lambda x: len(x[1]), reverse=True)  # 按场景出现多到少的顺序排序，返回一个二维list
+        self.shunjingbiao = sorted(self.shunjingbiao.items(), key=lambda x: len(x[1]),
+                                   reverse=True)  # 按场景出现多到少的顺序排序，返回一个二维list
 
     def create_base_excel(self, table, type=0):
         '''type=0的时候为顺景表，type=1的时候是顺场表,结束后返回生成的Excel表头'''
@@ -454,6 +457,7 @@ class Script:
 
     def write_info_into_excel(self, table, style, index, type):
         '''将场景信息写入相应的列中'''
+        '''type=0的时候为顺景表，type=1的时候是顺场表,结束后返回生成的Excel表头'''
         if type == 0:
             for i in self.shunjingbiao:
                 i2 = i[1]
@@ -466,6 +470,7 @@ class Script:
                     table.write(index, 5, str(round(i3.pagenum, 3)))
                     # table.write(index,6,i3.main_content)
                     column_index = 8
+                    self.shunjingbiao_args.append((i[0], self.script_id, str(round(i3.pagenum, 3)), i3.main_content))
                     for character in Global_Variables.name_list:
                         if character in self.role[i3.script_num]:
                             table.write(index, column_index, '√', style)
@@ -482,6 +487,10 @@ class Script:
                 table.write(index, 4, str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)), style)
                 # table.write(index,5,session.session_main_content)
                 column_index = 7
+                self.shunchangbiao_args.append((session.session_place, session.session_location,
+                                                self.script_id,
+                                                str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)),
+                                                session.session_main_content))
                 for character in Global_Variables.name_list:
                     if session.session_charactor_dic[character].appearance:
                         table.write(index, column_index, '√', style)
@@ -545,20 +554,23 @@ class Script:
         return table
 
     def write_to_the_sql(self):
-        script_detail_args = self.cal_script_detail()
-        script_roles = self.cal_script_role()
-        participle_args = self.cal_participle()
-        print('计算主角在每场中的情感词')
-        session_emotionword_args = self.cal_session_role_word()
-        print('写入数据库')
-        print('写入剧本信息表')
-        mySqlDB.write_script_detail_info(script_detail_args)
-        print("写入剧本角色表")
-        mySqlDB.write_script_role_info(script_roles)
-        print("写入中间词表")
-        mySqlDB.write_participle_info(participle_args)
-        print("写入角色场景情感表")
-        mySqlDB.write_lib_session_emotionword(session_emotionword_args)
+        # script_detail_args = self.cal_script_detail()
+        # script_roles = self.cal_script_role()
+        # participle_args = self.cal_participle()
+        # print('计算主角在每场中的情感词')
+        # session_emotionword_args = self.cal_session_role_word()
+        # print('写入数据库')
+        # print('写入剧本信息表')
+        # mySqlDB.write_script_detail_info(script_detail_args)
+        # print("写入剧本角色表")
+        # mySqlDB.write_script_role_info(script_roles)
+        # print("写入中间词表")
+        # mySqlDB.write_participle_info(participle_args)
+        # print("写入角色场景情感表")
+        # mySqlDB.write_lib_session_emotionword(session_emotionword_args)
+        print('写入顺场景表')
+        mySqlDB.write_sequence_scene_detail(self.shunjingbiao_args)
+        mySqlDB.write_sequence_screenings_detail(self.shunchangbiao_args)
         print("写入完成")
 
     def showinfo(self, show_session_detail=0, show_line_detail=0):
@@ -572,7 +584,7 @@ class Script:
 if __name__ == "__main__":
     # print(1)
     script = Script('白鹿原_改.docx', 0, mode=1)
-    # script = Script('疯狂的石头_改.docx', 1, mode=1)
-    # script = Script('让子弹飞、新、改.docx', 2, mode=1)
+    script = Script('疯狂的石头_改.docx', 1, mode=1)
+    script = Script('让子弹飞、新、改.docx', 2, mode=1)
     # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 3, mode=0)
     # script.showinfo(show_session_detail=1)

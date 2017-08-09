@@ -24,6 +24,8 @@ class Line():
         self.noun = []
         self.verb = []
         self.other_character = []
+        self.sensitive_word=[]
+        self.ad_word=[]
         self.who_said_no_cut = ""
         if ':' in line_str or '：' in line_str:  # 当有冒号时，认为是一个对话
             self.type = 'talk'
@@ -56,6 +58,10 @@ class Line():
                 if cut_word.word in Global_Variables.word_list_dic[name]:
                     # print(name, cut_word.word)
                     self.emotion_word_dic[name].append(cut_word.word)
+            if cut_word.word in Global_Variables.sensitive_word:
+                self.sensitive_word.append(cut_word.word)
+            if cut_word.word in Global_Variables.ad_word:
+                self.ad_word.append(cut_word.word)
             if cut_word.word in Global_Variables.name_list:
                 self.other_character.append(cut_word.word)
             elif "n" in cut_word.flag:

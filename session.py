@@ -46,6 +46,12 @@ class Session():
         self.session_emotion_value=0
         self.session_emotion_words_dic = {}
         self.session_emotion_words_set_dic = {}
+        self.session_sensitive_word=[]
+        self.session_sensitive_word_set=()
+        self.session_sensitive_word_count_dic={}
+        self.session_ad_word=[]
+        self.session_ad_word_set=[]
+        self.session_ad_word_count_dic={}
         for name in Global_Variables.word_list_dic.keys():
             self.session_emotion_words_dic.setdefault(name, [])
             self.session_emotion_words_set_dic.setdefault(name, set())
@@ -57,6 +63,8 @@ class Session():
         self.session_all_charactor = []  # 存放未切割的对话人物，可用于寻找主要角色（人工或继续分词）
         self.session_all_charactor_set = set()
         self.read_session_lines()
+        self.cal_sensitive_words()
+        self.cal_ad_words()
         self.cal_words_amount()
         self.cal_main_content()
 
@@ -119,36 +127,49 @@ class Session():
             self.session_emotion_words_set_dic[name] = set(word)
             # self.show_info()
 
-    def cal_words_amount(self, charactor_setting=''):
+    def cal_sensitive_words(self):
+        for line in self.line_list:
+            self.session_sensitive_word.extend(line.sensitive_word)
+        self.session_sensitive_word_set=set(self.session_sensitive_word)
+        for word in self.session_sensitive_word:
+            self.session_sensitive_word_count_dic.setdefault(word,0)
+            self.session_sensitive_word_count_dic[word]+=1
+
+    def cal_ad_words(self):
+        for line in self.line_list:
+            self.session_ad_word.extend(line.ad_word)
+        self.session_ad_word_set=set(self.session_ad_word)
+        for word in self.session_ad_word:
+            self.session_ad_word_count_dic.setdefault(word,0)
+            self.session_ad_word_count_dic[word]+=1
+
+    def cal_words_amount(self):
         '''
         计算角色的情感词数
-        :param charactor: 默认计算全部角色在这个场的情感词数
-                                      如果输入角色名，也可单独计算角色数并返回结果（功能未做）
         :return:
         '''
-        if len(charactor_setting) == 0:
-            for line in self.line_list:
-                for charactor in line.other_character:
-                    # print(charactor)
-                    self.session_charactor_dic[charactor].appearance = True
-                if line.type == 'talk':
-                    self.session_all_charactor.append(line.who_said_no_cut)
-                    if line.who_said in Global_Variables.name_list:
-                        said_word = line.content
-                        self.session_charactor_dic[line.who_said].appearance = True
-                        self.session_charactor_dic[line.who_said].charactor_worlds.append(said_word)
-                        cut_said_word = jieba.cut(said_word)
-                        for word in cut_said_word:
-                            for name, words in Global_Variables.word_list_dic.items():
-                                if word in words:
-                                    self.session_charactor_dic[line.who_said].charactor_emotion_dic[name].append(word)
-                                    # print(self.session_charactor_dic[line.who_said].charactor_emotion_dic)
-                        for i in Global_Variables.punctuation_mark:
-                            said_word = said_word.replace(i, '')  # 去除标点符号
-                        self.session_charactor_dic[line.who_said].charactor_world_amount += len(said_word)
-            for v in self.session_charactor_dic.values():
-                self.session_words_amount += v.charactor_world_amount
-            self.session_all_charactor_set = set(self.session_all_charactor)
+        for line in self.line_list:
+            for charactor in line.other_character:
+                # print(charactor)
+                self.session_charactor_dic[charactor].appearance = True
+            if line.type == 'talk':
+                self.session_all_charactor.append(line.who_said_no_cut)
+                if line.who_said in Global_Variables.name_list:
+                    said_word = line.content
+                    self.session_charactor_dic[line.who_said].appearance = True
+                    self.session_charactor_dic[line.who_said].charactor_worlds.append(said_word)
+                    cut_said_word = jieba.cut(said_word)
+                    for word in cut_said_word:
+                        for name, words in Global_Variables.word_list_dic.items():
+                            if word in words:
+                                self.session_charactor_dic[line.who_said].charactor_emotion_dic[name].append(word)
+                                # print(self.session_charactor_dic[line.who_said].charactor_emotion_dic)
+                    for i in Global_Variables.punctuation_mark:
+                        said_word = said_word.replace(i, '')  # 去除标点符号
+                    self.session_charactor_dic[line.who_said].charactor_world_amount += len(said_word)
+        for v in self.session_charactor_dic.values():
+            self.session_words_amount += v.charactor_world_amount
+        self.session_all_charactor_set = set(self.session_all_charactor)
 
     def cal_main_content(self):
         repeat_character=False
@@ -179,6 +200,8 @@ class Session():
         print('场景台词数:' + str(self.session_words_amount))
         print('场景情感值:' + str(self.session_emotion_value))
         print('主要内容:'+str(self.session_main_content))
+        print('敏感词为:'+str(self.session_sensitive_word))
+        print('广告词'+str(self.session_ad_word))
         for Charactor in self.session_charactor_dic.values():
             if len(Charactor.charactor_worlds)>0:
                 print(Charactor.name+','+str(Charactor.charactor_worlds))
