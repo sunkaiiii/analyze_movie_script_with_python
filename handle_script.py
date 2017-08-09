@@ -54,11 +54,11 @@ class character_biographies:
 
 
 class shunjingbiao:
-    def __init__(self, script_id=-1, script_num=-1, script_content='', main_content="",time='', role=[]):
+    def __init__(self, script_id=-1, script_num=-1, script_content='', main_content="", time='', role=[]):
         self.script_id = script_id
         self.script_num = script_num
         self.script_content = script_content
-        self.main_content=main_content
+        self.main_content = main_content
         self.time = time
         self.role = role
         self.pagenum = float(len(self.script_content.split('\n'))) / 50.0
@@ -308,6 +308,7 @@ class Script:
                     # print(self.charactor_overral_apear_in_session)
 
     def cal_script_detail(self):
+        '''读取用于写入scrit_detal表的信息'''
         script_detail_args = []
         for session in self.session_list:
             '''此处变量名与数据库中字段名对应，方便使用'''
@@ -339,6 +340,7 @@ class Script:
         return script_detail_args
 
     def cal_script_role(self):
+        '''读取用于写入script_role表的信息'''
         script_roles = []
         for role_name, word_count in self.charactor_overrall_word_count_dic.items():
             # print(role_name,self.charactor_overral_apear_in_session[role_name],word_count)
@@ -351,6 +353,7 @@ class Script:
         return script_roles
 
     def cal_session_role_word(self):
+        '''计用于写入数据库的角色情感词'''
         args = []
         for session in self.session_list:
             self.charactor_emetion_word_in_session.setdefault(session.session_number, [])
@@ -378,9 +381,11 @@ class Script:
         return participle_args
 
     def cal_shunchangjingbiaoxinxi(self):
+        """计算用于写入excel表格的顺场景表信息"""
         for session in self.session_list:
             self.shunjingbiao.setdefault(session.session_location, [])
             self.role.setdefault(session.session_number, [])
+            '''分类相关的place，并计算室内场景和室外场景的数量以及这个室内室外中的场景时间计数'''
             if (session.session_place in Global_Variables.in_place):
                 self.in_place += 1
                 self.in_place_time_count.setdefault(session.session_time, 0)
@@ -389,18 +394,22 @@ class Script:
                 self.out_place += 1
                 self.out_place_time_count.setdefault(session.session_time, 0)
                 self.out_place_time_count[session.session_time] += 1
+            '''计算地点计数'''
             self.location_count.setdefault(session.session_location, 0)
             self.location_count[session.session_location] += 1
+            '''统计角色在场景中出现的情况'''
             for character in session.session_charactor_dic.items():
                 if character[1].appearance:
                     self.role[session.session_number].append(character[0])
+            '''将在一个location的放入一个字典，里面存有具体的每个场景的顺景表的类'''
             self.shunjingbiao[session.session_location].append(
-                shunjingbiao(self.script_id, session.session_number, session.session_content, session.session_main_content,session.session_time,
+                shunjingbiao(self.script_id, session.session_number, session.session_content,
+                             session.session_main_content, session.session_time,
                              self.role))
-        self.shunjingbiao = sorted(self.shunjingbiao.items(), key=lambda x: len(x[1]), reverse=True)  # 按场景出现多到少的顺序排序
+        self.shunjingbiao = sorted(self.shunjingbiao.items(), key=lambda x: len(x[1]), reverse=True)  # 按场景出现多到少的顺序排序，返回一个二维list
 
     def create_base_excel(self, table, type=0):
-        '''type=0的时候为顺景表，type=1的时候是顺场表'''
+        '''type=0的时候为顺景表，type=1的时候是顺场表,结束后返回生成的Excel表头'''
         style = XFStyle()
         alignment = Alignment()
         alignment.horz = Alignment.HORZ_CENTER
@@ -444,6 +453,7 @@ class Script:
         return table, index, style
 
     def write_info_into_excel(self, table, style, index, type):
+        '''将场景信息写入相应的列中'''
         if type == 0:
             for i in self.shunjingbiao:
                 i2 = i[1]
@@ -479,6 +489,14 @@ class Script:
                 index += 1
             return table, index
 
+    def create_shunchangjingbiao(self):
+        wb = Workbook()
+        table_shunjingbiao = wb.add_sheet('顺景表')
+        table_shunchangbiao = wb.add_sheet('顺场表')
+        table_shunjingbiao = self.create_shunjingbiao(table_shunjingbiao)
+        table_shunchangbiao = self.create_shunchangbiao(table_shunchangbiao)
+        wb.save(self.script_name + '_顺场景表' + '.xls')
+
     def create_shunjingbiao(self, table):
         table, index, style = self.create_base_excel(table, type=0)
         width = index
@@ -503,13 +521,13 @@ class Script:
             string += k + '：' + str(v) + '场、'
         string = string[:-1] + '）'
         table.write_merge(index, index, 3, width, string)
-        index+=1
-        string=''
+        index += 1
+        string = ''
         for i in self.shunjingbiao:
-            if len(i[1])>1:
-                string+=i[0]+'：'+str(len(i[1]))+'场'+'、'
-        string=string[:-1]
-        table.write_merge(index,index,1,width,string)
+            if len(i[1]) > 1:
+                string += i[0] + '：' + str(len(i[1])) + '场' + '、'
+        string = string[:-1]
+        table.write_merge(index, index, 1, width, string)
         return table
 
     def create_shunchangbiao(self, table):
@@ -525,14 +543,6 @@ class Script:
                               character + ':' + str(self.charactor_overral_apear_in_session[character]) + '场')
             index += 1
         return table
-
-    def create_shunchangjingbiao(self):
-        wb = Workbook()
-        table_shunjingbiao = wb.add_sheet('顺景表')
-        table_shunchangbiao = wb.add_sheet('顺场表')
-        table_shunjingbiao = self.create_shunjingbiao(table_shunjingbiao)
-        table_shunchangbiao = self.create_shunchangbiao(table_shunchangbiao)
-        wb.save(self.script_name + '_顺场景表' + '.xls')
 
     def write_to_the_sql(self):
         script_detail_args = self.cal_script_detail()
