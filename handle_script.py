@@ -54,10 +54,11 @@ class character_biographies:
 
 
 class shunjingbiao:
-    def __init__(self, script_id=-1, script_num=-1, script_content='', time='', role=[]):
+    def __init__(self, script_id=-1, script_num=-1, script_content='', main_content="",time='', role=[]):
         self.script_id = script_id
         self.script_num = script_num
         self.script_content = script_content
+        self.main_content=main_content
         self.time = time
         self.role = role
         self.pagenum = float(len(self.script_content.split('\n'))) / 50.0
@@ -91,14 +92,14 @@ class Script:
         self.charactor_overral_apear_in_session = {}
         self.charactor_emetion_word_in_session = {}
         self.shunjingbiao = {}
-        self.shunchangbiao={}
+        self.shunchangbiao = {}
         self.in_place = 0
         self.out_place = 0
         self.location_count = {}
         self.in_place_time_count = {}
         self.out_place_time_count = {}
         self.role = {}
-        self.timecount={}
+        self.timecount = {}
         self.charactor = Global_Variables.name_list
         for i in Global_Variables.name_list:
             self.charactor_overrall_word_count_dic[i] = 0
@@ -394,17 +395,18 @@ class Script:
                 if character[1].appearance:
                     self.role[session.session_number].append(character[0])
             self.shunjingbiao[session.session_location].append(
-                shunjingbiao(self.script_id, session.session_number, session.session_content, session.session_time,
-                              self.role))
+                shunjingbiao(self.script_id, session.session_number, session.session_content, session.session_main_content,session.session_time,
+                             self.role))
         self.shunjingbiao = sorted(self.shunjingbiao.items(), key=lambda x: len(x[1]), reverse=True)  # 按场景出现多到少的顺序排序
-    def create_base_excel(self, table,type=0):
+
+    def create_base_excel(self, table, type=0):
         '''type=0的时候为顺景表，type=1的时候是顺场表'''
         style = XFStyle()
         alignment = Alignment()
         alignment.horz = Alignment.HORZ_CENTER
         alignment.vert = Alignment.VERT_CENTER
         style.alignment = alignment
-        if type==0:
+        if type == 0:
             table.write_merge(2, 3, 1, 1, '场景', style)
             table.write_merge(2, 3, 2, 2, '拍摄地点', style)
             table.write_merge(2, 3, 3, 3, '场次', style)
@@ -415,14 +417,14 @@ class Script:
             table.write(3, 7, '演员', style)
             index = 8
         else:
-            table.write_merge(2,3,1,1,'场次',style)
-            table.write_merge(2,3,2,2,'场景',style)
-            table.write_merge(2,3,3,3,'气氛',style)
-            table.write_merge(2,3,4,4,'页数',style)
-            table.write_merge(2,3,5,5,'主要内容',style)
-            table.write(2,6,'角色',style)
-            table.write(3,6,'演员',style)
-            index=7
+            table.write_merge(2, 3, 1, 1, '场次', style)
+            table.write_merge(2, 3, 2, 2, '场景', style)
+            table.write_merge(2, 3, 3, 3, '气氛', style)
+            table.write_merge(2, 3, 4, 4, '页数', style)
+            table.write_merge(2, 3, 5, 5, '主要内容', style)
+            table.write(2, 6, '角色', style)
+            table.write(3, 6, '演员', style)
+            index = 7
         for role in Global_Variables.name_list:
             table.write(2, index, role, style)
             index += 1
@@ -440,17 +442,19 @@ class Script:
         else:
             table.write_merge(1, 1, 0, index, '《' + self.script_name + '》顺场表', style)
         return table, index, style
-    def write_info_into_excel(self,table,style,index,type):
-        if type==0:
+
+    def write_info_into_excel(self, table, style, index, type):
+        if type == 0:
             for i in self.shunjingbiao:
                 i2 = i[1]
                 old_index = index
-                index=index
+                index = index
                 for i3 in i2:
                     # print(i[0],i3.role)
                     table.write(index, 3, str(i3.script_num), style)
                     table.write(index, 4, i3.time)
                     table.write(index, 5, str(round(i3.pagenum, 3)))
+                    # table.write(index,6,i3.main_content)
                     column_index = 8
                     for character in Global_Variables.name_list:
                         if character in self.role[i3.script_num]:
@@ -459,28 +463,28 @@ class Script:
                     index += 1
                 table.write_merge(old_index, index - 1, 1, 1, i[0], style)
                 table.write_merge(old_index, index - 1, 2, 2, '', style)
-            return table,index
+            return table, index
         else:
             for session in self.session_list:
-                table.write(index,1,session.session_number,style)
-                table.write(index,2,session.session_location,style)
-                table.write(index,3,session.session_time,style)
-                table.write(index,4,str(round(float(len(session.session_content.split('\n')))/50.0,3)),style)
-                column_index=7
+                table.write(index, 1, session.session_number, style)
+                table.write(index, 2, session.session_location, style)
+                table.write(index, 3, session.session_time, style)
+                table.write(index, 4, str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)), style)
+                # table.write(index,5,session.session_main_content)
+                column_index = 7
                 for character in Global_Variables.name_list:
                     if session.session_charactor_dic[character].appearance:
                         table.write(index, column_index, '√', style)
                     column_index += 1
-                index+=1
-            return table,index
+                index += 1
+            return table, index
 
-
-    def create_shunjingbiao(self,table):
-        table, index, style = self.create_base_excel(table,type=0)
+    def create_shunjingbiao(self, table):
+        table, index, style = self.create_base_excel(table, type=0)
         width = index
         index = 4
         font = Font
-        table,index=self.write_info_into_excel(table,style,index,type=0)
+        table, index = self.write_info_into_excel(table, style, index, type=0)
         table.write_merge(index, index, 1, 4, '全片场次总计：')
         table.write(index, 5, str(len(self.session_list)) + '场', style)
         index += 1
@@ -499,29 +503,36 @@ class Script:
             string += k + '：' + str(v) + '场、'
         string = string[:-1] + '）'
         table.write_merge(index, index, 3, width, string)
+        index+=1
+        string=''
+        for i in self.shunjingbiao:
+            if len(i[1])>1:
+                string+=i[0]+'：'+str(len(i[1]))+'场'+'、'
+        string=string[:-1]
+        table.write_merge(index,index,1,width,string)
         return table
 
-    def create_shunchangbiao(self,table):
-        table, index, style = self.create_base_excel(table,type=1)
-        width=index
-        index=4
+    def create_shunchangbiao(self, table):
+        table, index, style = self.create_base_excel(table, type=1)
+        width = index
+        index = 4
         font = Font
-        table, index = self.write_info_into_excel(table, style, index,type=1)
-        table.write_merge(index,index,1,width,'角色场次',style)
-        index+=1
+        table, index = self.write_info_into_excel(table, style, index, type=1)
+        table.write_merge(index, index, 1, width, '角色场次', style)
+        index += 1
         for character in Global_Variables.name_list:
-            table.write_merge(index,index,1,width,character+':'+str(self.charactor_overral_apear_in_session[character])+'场')
-            index+=1
+            table.write_merge(index, index, 1, width,
+                              character + ':' + str(self.charactor_overral_apear_in_session[character]) + '场')
+            index += 1
         return table
 
     def create_shunchangjingbiao(self):
         wb = Workbook()
         table_shunjingbiao = wb.add_sheet('顺景表')
         table_shunchangbiao = wb.add_sheet('顺场表')
-        table_shunjingbiao=self.create_shunjingbiao(table_shunjingbiao)
-        table_shunchangbiao=self.create_shunchangbiao(table_shunchangbiao)
+        table_shunjingbiao = self.create_shunjingbiao(table_shunjingbiao)
+        table_shunchangbiao = self.create_shunchangbiao(table_shunchangbiao)
         wb.save(self.script_name + '_顺场景表' + '.xls')
-
 
     def write_to_the_sql(self):
         script_detail_args = self.cal_script_detail()

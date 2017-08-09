@@ -14,8 +14,8 @@
       <file leaf-file-name="Global_Variables.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Global_Variables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
+            <state relative-caret-position="270">
+              <caret line="31" column="103" lean-forward="false" selection-start-line="31" selection-start-column="103" selection-end-line="31" selection-end-column="103" />
               <folding />
             </state>
           </provider>
@@ -24,8 +24,8 @@
       <file leaf-file-name="handle_script.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/handle_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-10814">
-              <caret line="112" column="40" lean-forward="true" selection-start-line="112" selection-start-column="40" selection-end-line="112" selection-end-column="40" />
+            <state relative-caret-position="247">
+              <caret line="457" column="26" lean-forward="true" selection-start-line="457" selection-start-column="26" selection-end-line="457" selection-end-column="26" />
               <folding>
                 <element signature="e#15#29#0" expanded="true" />
               </folding>
@@ -36,18 +36,18 @@
       <file leaf-file-name="session.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/session.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="23" column="23" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="23" />
+            <state relative-caret-position="1512">
+              <caret line="166" column="0" lean-forward="false" selection-start-line="166" selection-start-column="0" selection-end-line="168" selection-end-column="86" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Worksheet.py" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/xlwt/Worksheet.py">
+      <file leaf-file-name="line.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/line.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="1087" column="0" lean-forward="false" selection-start-line="1087" selection-start-column="0" selection-end-line="1087" selection-end-column="0" />
+            <state relative-caret-position="-524">
+              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="24" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -64,8 +64,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>time</find>
-      <find>Global_Variables.time</find>
       <find>Global_Variables.place</find>
       <find>other_character</find>
       <find>emotion</find>
@@ -92,8 +90,10 @@
       <find>shunchangbiao</find>
       <find>script_num</find>
       <find>charactor_overral_apear_in_session</find>
-      <find>shunjingbiao</find>
       <find>script</find>
+      <find>self.shunjingbiao</find>
+      <find>shunjingbiao</find>
+      <find>session_content</find>
     </findStrings>
     <replaceStrings>
       <replace>from Global_Variables import Global_Variables</replace>
@@ -118,25 +118,25 @@
         <option value="$PROJECT_DIR$/webserviceTest.py" />
         <option value="$PROJECT_DIR$/train_emotion_word.py" />
         <option value="$PROJECT_DIR$/line.py" />
-        <option value="$PROJECT_DIR$/session.py" />
         <option value="$PROJECT_DIR$/mySqlDB.py" />
         <option value="$PROJECT_DIR$/hibiscusMain.py" />
         <option value="$USER_HOME$/Anaconda3/Lib/site-packages/pyExcelerator/__init__.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/Global_Variables.py" />
+        <option value="$PROJECT_DIR$/session.py" />
         <option value="$PROJECT_DIR$/handle_script.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="151" />
-    <option name="y" value="-24" />
+    <option name="x" value="187" />
+    <option name="y" value="-18" />
     <option name="width" value="976" />
     <option name="height" value="967" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -149,7 +149,21 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="fb" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fb" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -343,10 +357,10 @@
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.handle_script" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test" />
-        <item index="2" class="java.lang.String" itemvalue="Python.session" />
-        <item index="3" class="java.lang.String" itemvalue="Python.line" />
-        <item index="4" class="java.lang.String" itemvalue="Python.Global_Variables" />
+        <item index="1" class="java.lang.String" itemvalue="Python.session" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Global_Variables" />
+        <item index="3" class="java.lang.String" itemvalue="Python.test" />
+        <item index="4" class="java.lang.String" itemvalue="Python.line" />
       </list>
     </recent_temporary>
   </component>
@@ -402,7 +416,7 @@
     <frame x="-9" y="-9" width="1938" height="1098" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.7254697" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.53862214" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -522,13 +536,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/line.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-648">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hibiscusMain.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1458">
@@ -548,14 +555,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Global_Variables.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/xlwt/Row.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
@@ -572,18 +571,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/line.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-524">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="24" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Global_Variables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="31" column="103" lean-forward="false" selection-start-line="31" selection-start-column="103" selection-end-line="31" selection-end-column="103" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/session.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="23" column="23" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="23" />
+        <state relative-caret-position="1512">
+          <caret line="166" column="0" lean-forward="false" selection-start-line="166" selection-start-column="0" selection-end-line="168" selection-end-column="86" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/handle_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10814">
-          <caret line="112" column="40" lean-forward="true" selection-start-line="112" selection-start-column="40" selection-end-line="112" selection-end-column="40" />
+        <state relative-caret-position="247">
+          <caret line="457" column="26" lean-forward="true" selection-start-line="457" selection-start-column="26" selection-end-line="457" selection-end-column="26" />
           <folding>
             <element signature="e#15#29#0" expanded="true" />
           </folding>

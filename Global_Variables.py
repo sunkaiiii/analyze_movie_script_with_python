@@ -30,10 +30,10 @@ def convert_userdic(user_dic):
 
 
 word_list_dic = save_userdic_to_file()  # 读取数据库的词库，并保存在本地供jieba分词学习（也可以保存在List中，用循环使用addword给jieba提供词库）
-# print(word_list_dic)
 name_list = []
 filename = 'name_bai.txt'
 puncutation_file = 'punctuation_mark.txt'
+stopword_file='stop_words.txt'
 time = {'日': 1, '晚上': 2, '昼': 3, '夜': 4, '晨': 5, '凌晨': 6, '清晨': 7, '早晨': 8, '上午': 9, '中午': 10, '正午': 11, '下午': 12,
         '昏': 13, '傍晚': 14, '佛晓': 15, '黎明': 16, '日出': 17, '日落': 18}
 place = {'外': 1, '内': 2, '室内': 3, '室外': 4, '户内': 5, '户外': 6}
@@ -47,7 +47,5 @@ constellation = {'白羊座': 0, '金牛座': 1, '双子座': 2, '巨蟹座': 3,
                  '双鱼': 11}
 blood = {'A型': 0, 'B型': 1, 'O型': 2, 'AB型': 3,
          'A': 0, 'B': 1, 'O': 2, 'AB': 3}
-stop_word=["的", "了", "在", "是", "我", "有", "和", "就",
-        "不", "人", "都", "一", "一个", "上", "也", "很", "到", "说", "要", "去", "你",
-        "会", "着", "没有", "看", "好", "自己", "这" ]
+stop_word=set(open(stopword_file,encoding='utf-8').read().split('\n'))
 punctuation_mark = set(open(puncutation_file, encoding='utf-8').read().split('\n'))

@@ -42,6 +42,7 @@ class Session():
         self.main_emotion = ""
         self.line_list = []
         self.session_content = ''
+        self.session_main_content=''
         self.session_emotion_value=0
         self.session_emotion_words_dic = {}
         self.session_emotion_words_set_dic = {}
@@ -57,6 +58,7 @@ class Session():
         self.session_all_charactor_set = set()
         self.read_session_lines()
         self.cal_words_amount()
+        self.cal_main_content()
 
     def read_session_lines(self):
         count = 0  # count记录是否为场景信息，当为0的时候即为场景信息行
@@ -148,6 +150,24 @@ class Session():
                 self.session_words_amount += v.charactor_world_amount
             self.session_all_charactor_set = set(self.session_all_charactor)
 
+    def cal_main_content(self):
+        repeat_character=False
+        for line in self.line_list:
+            if line.type=='event':
+                line_cut=jieba.cut(line.content)
+                for word in line_cut:
+                    if word in  Global_Variables.name_list and not repeat_character:
+                        self.session_main_content+=word
+                        repeat_character=True
+                    elif word in line.verb:
+                        self.session_main_content+=word
+                        repeat_character=False
+        for word in Global_Variables.stop_word:
+            self.session_main_content=self.session_main_content.replace(word,'')
+        # for k,v in Global_Variables.word_list_dic.items():
+        #     for word in v:
+        #         self.session_main_content=self.session_main_content.replace(word,'')
+
     def show_info(self, show_line_detail=0):
         '''
         :param show_line_detail: 1为显示行具体信息，0为只显示场的信息
@@ -158,6 +178,7 @@ class Session():
         print('场景地点:' + str(self.session_location))
         print('场景台词数:' + str(self.session_words_amount))
         print('场景情感值:' + str(self.session_emotion_value))
+        print('主要内容:'+str(self.session_main_content))
         for Charactor in self.session_charactor_dic.values():
             if len(Charactor.charactor_worlds)>0:
                 print(Charactor.name+','+str(Charactor.charactor_worlds))
