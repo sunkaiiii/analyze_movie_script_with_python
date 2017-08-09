@@ -7,6 +7,7 @@ from docx import Document
 import jieba
 import hibiscusMain
 from xlwt import *
+
 jieba.load_userdict('user_dic.txt')
 jieba.add_word('男主角', 1000)
 jieba.add_word('女主角', 1000)
@@ -51,14 +52,16 @@ class character_biographies:
                 continue
                 # print(self.relationship)
 
-class shunchangbiao:
-    def __init__(self,script_id=-1,script_num=-1,script_content='',time='',role=[]):
-        self.script_id=script_id
-        self.script_num=script_num
-        self.script_content=script_content
-        self.time=time
-        self.role=role
-        self.pagenum=float(self.script_num)/50.0
+
+class shunjingbiao:
+    def __init__(self, script_id=-1, script_num=-1, script_content='', time='', role=[]):
+        self.script_id = script_id
+        self.script_num = script_num
+        self.script_content = script_content
+        self.time = time
+        self.role = role
+        self.pagenum = float(len(self.script_content.split('\n'))) / 50.0
+
 
 class Script:
     '''
@@ -73,7 +76,7 @@ class Script:
         self.character_biographies_dic = {}
         Global_Variables.name_list = []
         print('程序推测主角')
-        self.find_main_charactor(self.file_text,self.mode)
+        self.find_main_charactor(self.file_text, self.mode)
         main_role = ''
         for i in Global_Variables.name_list:
             self.character_biographies_dic.setdefault(i, character_biographies())
@@ -87,7 +90,15 @@ class Script:
         self.charactor_overrall_word_count_dic = {}
         self.charactor_overral_apear_in_session = {}
         self.charactor_emetion_word_in_session = {}
+        self.shunjingbiao = {}
         self.shunchangbiao={}
+        self.in_place = 0
+        self.out_place = 0
+        self.location_count = {}
+        self.in_place_time_count = {}
+        self.out_place_time_count = {}
+        self.role = {}
+        self.timecount={}
         self.charactor = Global_Variables.name_list
         for i in Global_Variables.name_list:
             self.charactor_overrall_word_count_dic[i] = 0
@@ -101,7 +112,8 @@ class Script:
         print('计算主要角色出场次数')
         self.cal_character_apear_count()
         print('生成顺场景表')
-        self.create_shunchangbiao()
+        self.cal_shunchangjingbiaoxinxi()
+        self.create_shunchangjingbiao()
 
         # self.write_to_the_sql()
 
@@ -110,11 +122,11 @@ class Script:
     '''
 
     def find_main_charactor(self, file_text, mode=0):
-        if mode==0:
-            result=hibiscusMain.Hibiscus().analyseNovel(self.file_text)
+        if mode == 0:
+            result = hibiscusMain.Hibiscus().analyseNovel(self.file_text)
             for c in result:
                 Global_Variables.name_list.append(c)
-        elif mode==1:
+        elif mode == 1:
             user_dic = {}
             session_list = file_text.split('\n\n')
             for session in session_list:
@@ -338,18 +350,17 @@ class Script:
         return script_roles
 
     def cal_session_role_word(self):
-        args=[]
+        args = []
         for session in self.session_list:
             self.charactor_emetion_word_in_session.setdefault(session.session_number, [])
             for Charactor in session.session_charactor_dic.values():
                 self.charactor_emetion_word_in_session[session.session_number].append(Charactor)
                 # print(self.charactor_emetion_word_in_session)
-                for key,value in Charactor.charactor_emotion_dic.items():
+                for key, value in Charactor.charactor_emotion_dic.items():
                     for word in value:
-                        args.append((word,key,Charactor.name,self.script_id,session.session_number))
+                        args.append((word, key, Charactor.name, self.script_id, session.session_number))
         # print(args)
-        return(args)
-
+        return (args)
 
     def cal_participle(self):
         participle_args = []
@@ -365,29 +376,53 @@ class Script:
         #     print(i)
         return participle_args
 
-    def create_shunchangbiao(self):
-        wb = Workbook()
-        table = wb.add_sheet('顺景表')
-        Workbook.height
+    def cal_shunchangjingbiaoxinxi(self):
+        for session in self.session_list:
+            self.shunjingbiao.setdefault(session.session_location, [])
+            self.role.setdefault(session.session_number, [])
+            if (session.session_place in Global_Variables.in_place):
+                self.in_place += 1
+                self.in_place_time_count.setdefault(session.session_time, 0)
+                self.in_place_time_count[session.session_time] += 1
+            else:
+                self.out_place += 1
+                self.out_place_time_count.setdefault(session.session_time, 0)
+                self.out_place_time_count[session.session_time] += 1
+            self.location_count.setdefault(session.session_location, 0)
+            self.location_count[session.session_location] += 1
+            for character in session.session_charactor_dic.items():
+                if character[1].appearance:
+                    self.role[session.session_number].append(character[0])
+            self.shunjingbiao[session.session_location].append(
+                shunjingbiao(self.script_id, session.session_number, session.session_content, session.session_time,
+                              self.role))
+        self.shunjingbiao = sorted(self.shunjingbiao.items(), key=lambda x: len(x[1]), reverse=True)  # 按场景出现多到少的顺序排序
+    def create_base_excel(self, table,type=0):
+        '''type=0的时候为顺景表，type=1的时候是顺场表'''
         style = XFStyle()
         alignment = Alignment()
         alignment.horz = Alignment.HORZ_CENTER
-        alignment.vert=Alignment.VERT_CENTER
+        alignment.vert = Alignment.VERT_CENTER
         style.alignment = alignment
-        in_place=0
-        out_place=0
-        location_count={}
-        in_place_time_count={}
-        out_place_time_count={}
-        table.write_merge(2, 3, 1, 1, '场景', style)
-        table.write_merge(2, 3, 2, 2, '拍摄地点', style)
-        table.write_merge(2, 3, 3, 3, '场次', style)
-        table.write_merge(2, 3, 4, 4, '气氛', style)
-        table.write_merge(2, 3, 5, 5, '页数/行', style)
-        table.write_merge(2,3,6,6,'主要内容',style)
-        table.write(2, 7, '角色', style)
-        table.write(3, 7, '演员', style)
-        index = 8
+        if type==0:
+            table.write_merge(2, 3, 1, 1, '场景', style)
+            table.write_merge(2, 3, 2, 2, '拍摄地点', style)
+            table.write_merge(2, 3, 3, 3, '场次', style)
+            table.write_merge(2, 3, 4, 4, '气氛', style)
+            table.write_merge(2, 3, 5, 5, '页数/行', style)
+            table.write_merge(2, 3, 6, 6, '主要内容', style)
+            table.write(2, 7, '角色', style)
+            table.write(3, 7, '演员', style)
+            index = 8
+        else:
+            table.write_merge(2,3,1,1,'场次',style)
+            table.write_merge(2,3,2,2,'场景',style)
+            table.write_merge(2,3,3,3,'气氛',style)
+            table.write_merge(2,3,4,4,'页数',style)
+            table.write_merge(2,3,5,5,'主要内容',style)
+            table.write(2,6,'角色',style)
+            table.write(3,6,'演员',style)
+            index=7
         for role in Global_Variables.name_list:
             table.write(2, index, role, style)
             index += 1
@@ -400,65 +435,92 @@ class Script:
         table.write_merge(2, 3, index, index, '计划时间', style)
         index += 1
         table.write_merge(2, 3, index, index, '备注', style)
-        table.write_merge(1, 1, 0, index, '《' + self.script_name + '》顺景表',style)
+        if type == 0:
+            table.write_merge(1, 1, 0, index, '《' + self.script_name + '》顺景表', style)
+        else:
+            table.write_merge(1, 1, 0, index, '《' + self.script_name + '》顺场表', style)
+        return table, index, style
+    def write_info_into_excel(self,table,style,index,type):
+        if type==0:
+            for i in self.shunjingbiao:
+                i2 = i[1]
+                old_index = index
+                index=index
+                for i3 in i2:
+                    # print(i[0],i3.role)
+                    table.write(index, 3, str(i3.script_num), style)
+                    table.write(index, 4, i3.time)
+                    table.write(index, 5, str(round(i3.pagenum, 3)))
+                    column_index = 8
+                    for character in Global_Variables.name_list:
+                        if character in self.role[i3.script_num]:
+                            table.write(index, column_index, '√', style)
+                        column_index += 1
+                    index += 1
+                table.write_merge(old_index, index - 1, 1, 1, i[0], style)
+                table.write_merge(old_index, index - 1, 2, 2, '', style)
+            return table,index
+        else:
+            for session in self.session_list:
+                table.write(index,1,session.session_number,style)
+                table.write(index,2,session.session_location,style)
+                table.write(index,3,session.session_time,style)
+                table.write(index,4,str(round(float(len(session.session_content.split('\n')))/50.0,3)),style)
+                column_index=7
+                for character in Global_Variables.name_list:
+                    if session.session_charactor_dic[character].appearance:
+                        table.write(index, column_index, '√', style)
+                    column_index += 1
+                index+=1
+            return table,index
+
+
+    def create_shunjingbiao(self,table):
+        table, index, style = self.create_base_excel(table,type=0)
+        width = index
+        index = 4
+        font = Font
+        table,index=self.write_info_into_excel(table,style,index,type=0)
+        table.write_merge(index, index, 1, 4, '全片场次总计：')
+        table.write(index, 5, str(len(self.session_list)) + '场', style)
+        index += 1
+        table.write_merge(index, index, 1, 2, "内景：")
+        string = ''
+        string += str(self.in_place) + '场' + '（'
+        for k, v in self.in_place_time_count.items():
+            string += k + '：' + str(v) + '场、'
+        string = string[:-1] + '）'
+        table.write_merge(index, index, 3, width, string)
+        index += 1
+        table.write_merge(index, index, 1, 2, "外景：")
+        string = ''
+        string += str(self.out_place) + '场' + '（'
+        for k, v in self.out_place_time_count.items():
+            string += k + '：' + str(v) + '场、'
+        string = string[:-1] + '）'
+        table.write_merge(index, index, 3, width, string)
+        return table
+
+    def create_shunchangbiao(self,table):
+        table, index, style = self.create_base_excel(table,type=1)
         width=index
         index=4
         font = Font
-        role={}
-        for session in self.session_list:
-            self.shunchangbiao.setdefault(session.session_location,[])
-            role.setdefault(session.session_number,[])
-            if(session.session_place in Global_Variables.in_place):
-                in_place+=1
-                in_place_time_count.setdefault(session.session_time,0)
-                in_place_time_count[session.session_time]+=1
-            else:
-                out_place+=1
-                out_place_time_count.setdefault(session.session_time,0)
-                out_place_time_count[session.session_time]+=1
-            location_count.setdefault(session.session_location,0)
-            location_count[session.session_location]+=1
-            for character in session.session_charactor_dic.items():
-                if character[1].appearance:
-                    role[session.session_number].append(character[0])
-            self.shunchangbiao[session.session_location].append(shunchangbiao(self.script_id,session.session_number,session.session_content,session.session_time,role))
-        self.shunchangbiao=sorted(self.shunchangbiao.items(), key=lambda x: len(x[1]), reverse=True) #按场景出现多到少的顺序排序
-        for i in self.shunchangbiao:
-            i2=i[1]
-            old_index=index
-            for i3 in i2:
-                # print(i[0],i3.role)
-                table.write(index,3,str(i3.script_num),style)
-                table.write(index,4,i3.time)
-                table.write(index,5,str(round(i3.pagenum,3)))
-                column_index=8
-                for character in Global_Variables.name_list:
-                    if character in role[i3.script_num]:
-                        table.write(index,column_index,'√',style)
-                    column_index+=1
-                index+=1
-            table.write_merge(old_index,index-1,1,1,i[0],style)
-            table.write_merge(old_index,index-1,2,2,'',style)
-        table.write_merge(index,index,1,4,'全片场次总计：')
-        table.write(index,5,str(len(self.session_list))+'场',style)
+        table, index = self.write_info_into_excel(table, style, index,type=1)
+        table.write_merge(index,index,1,width,'角色场次',style)
         index+=1
-        table.write_merge(index,index,1,2,"内景：")
-        string=''
-        string+=str(in_place)+'场'+'（'
-        for k,v in in_place_time_count.items():
-            string+=k+'：'+str(v)+'场、'
-        string=string[:-1]+'）'
-        table.write_merge(index,index,3,width,string)
-        index+=1
-        table.write_merge(index, index, 1, 2, "外景：")
-        string = ''
-        string += str(out_place) + '场' + '（'
-        for k, v in out_place_time_count.items():
-            string += k + '：' + str(v) + '场、'
-        string = string[:-1] + '）'
-        table.write_merge(index,index,3,width,string)
-        wb.save(self.script_name+'.xls')
+        for character in Global_Variables.name_list:
+            table.write_merge(index,index,1,width,character+':'+str(self.charactor_overral_apear_in_session[character])+'场')
+            index+=1
+        return table
 
+    def create_shunchangjingbiao(self):
+        wb = Workbook()
+        table_shunjingbiao = wb.add_sheet('顺景表')
+        table_shunchangbiao = wb.add_sheet('顺场表')
+        table_shunjingbiao=self.create_shunjingbiao(table_shunjingbiao)
+        table_shunchangbiao=self.create_shunchangbiao(table_shunchangbiao)
+        wb.save(self.script_name + '_顺场景表' + '.xls')
 
 
     def write_to_the_sql(self):
@@ -489,8 +551,7 @@ class Script:
 if __name__ == "__main__":
     # print(1)
     script = Script('白鹿原_改.docx', 0, mode=1)
-    script = Script('疯狂的石头_改.docx', 1, mode=1)
-    script = Script('让子弹飞、新、改.docx', 2,mode=1)
+    # script = Script('疯狂的石头_改.docx', 1, mode=1)
+    # script = Script('让子弹飞、新、改.docx', 2, mode=1)
     # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 3, mode=0)
     # script.showinfo(show_session_detail=1)
-
