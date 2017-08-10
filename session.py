@@ -112,12 +112,12 @@ class Session():
                             break
                     session_info = i.replace(num, '').replace('.', '').replace('、', '').replace(" ", '')
                     '''找到对应的日夜内外的文字信息，删除对应的段，最后留下的极为场景地点'''
-                    for time in Global_Variables.time.keys():
+                    for time in Global_Variables.time:
                         if time in session_info:
                             self.session_time = time
                             session_info = session_info.replace(time, '')
                             break
-                    for place in Global_Variables.place.keys():
+                    for place in Global_Variables.place:
                         if place in session_info:
                             self.session_place = place
                             session_info = session_info.replace(place, "")

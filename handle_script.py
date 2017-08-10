@@ -69,7 +69,7 @@ class Script:
     记录整个剧本的信息，包含多个场景的类的实例
     '''
 
-    def __init__(self, filename, script_id, mode=1):
+    def __init__(self, filename, mode=1):
         self.mode = mode
         self.script_name = ''
         print('读取剧本')
@@ -86,7 +86,7 @@ class Script:
         if self.mode == 0:
             print('读取人物小传')
             self.file_text = self.read_character_biographies(self.file_text)
-        self.script_id = script_id  # 此处不应为固定值，而应该是获取id值，只是测试用设定为固定值
+        self.script_id = 0
         self.session_list = []
         self.charactor_overrall_word_count_dic = {}
         self.charactor_overral_apear_in_session = {}
@@ -112,13 +112,18 @@ class Script:
         self.cal_all_character()
         print('计算主要角色出场次数')
         self.cal_character_apear_count()
+        print('写入项目信息到数据库')
+        self.project_id = self.get_project_id()
+        self.write_project_info_to_sql()
+        self.script_id = self.get_script_id()
         print('生成顺场景表')
         self.shunjingbiao_args = []
         self.shunchangbiao_args = []
+        self.all_page_num = 0;
         self.cal_shunchangjingbiaoxinxi()
         self.create_shunchangjingbiao()
 
-        self.write_to_the_sql()
+        self.write_info_to_the_sql()
 
     '''
     当传入的是mode=1也就是简版剧本的时候，暂时的操作是先读取一遍剧本，寻找主要角色
@@ -314,29 +319,35 @@ class Script:
         script_detail_args = []
         for session in self.session_list:
             '''此处变量名与数据库中字段名对应，方便使用'''
-            script_id = self.script_id  # 剧本id暂时为0，稍后修改
+            script_id = self.script_id
             script_number = session.session_number
             content = session.session_content
             role = ""
+            role_id = ''
             role_number = 0
             for name in session.session_charactor_dic.keys():
                 if session.session_charactor_dic[name].appearance:
                     role += name + '|'
                     role_number += 1
+                    role_id += str(mySqlDB.get_script_role_id(name)) + '|'
+            role = role[:-1]
+            role_id = role_id[:-1]
             if len(session.session_time) > 0:
-                Global_Variables.time.setdefault(session.session_time, max(Global_Variables.time.values()) + 1)
-                period = Global_Variables.time[session.session_time]
+                if session.session_time not in Global_Variables.time:
+                    Global_Variables.time.append(session.session_time)
+                period = session.session_time
             else:
                 period = 0
             scene = session.session_location
             if len(session.session_place) > 0:
-                Global_Variables.place.setdefault(session.session_place, max(Global_Variables.place.values()) + 1)
-                surroundings = Global_Variables.place[session.session_place]
+                if session.session_place not in Global_Variables.place:
+                    Global_Variables.place.append(session.session_place)
+                surroundings = session.session_place
             else:
                 surroundings = 0
             # role_number = len(session.session_all_charactor_set)
             script_detail_args.append(
-                (script_id, script_number, content, role, period, scene, surroundings, role_number))
+                (script_id, script_number, role_id, content, role, period, scene, surroundings, role_number))
         # for i in script_detail_args:
         #     print(i)
         return script_detail_args
@@ -370,14 +381,11 @@ class Script:
 
     def cal_participle(self):
         participle_args = []
-        verson = self.script_id  # 剧本版本暂时定位0，以后会改
+        script_id = self.script_id
         for session in self.session_list:
-            words = []
-            for word_list in session.session_emotion_words_dic.values():
-                words.extend(word_list)
-            words = set(words)
-            for word in words:
-                participle_args.append((word, session.session_number, verson))
+            for type, word_list in session.session_emotion_words_dic.items():
+                for word in word_list:
+                    participle_args.append((word, session.session_number, script_id, type))
         # for i in participle_args:
         #     print(i)
         return participle_args
@@ -470,11 +478,16 @@ class Script:
                     table.write(index, 5, str(round(i3.pagenum, 3)))
                     # table.write(index,6,i3.main_content)
                     column_index = 8
-                    self.shunjingbiao_args.append((i[0], self.script_id, str(round(i3.pagenum, 3)), i3.main_content))
+                    main_role=''
+                    self.all_page_num += i3.pagenum
                     for character in Global_Variables.name_list:
                         if character in self.role[i3.script_num]:
                             table.write(index, column_index, '√', style)
+                            main_role+=character+'|'
                         column_index += 1
+                    main_role=main_role[:-1]
+                    self.shunjingbiao_args.append(
+                        [i[0], self.script_id, str(round(i3.pagenum, 3)), i3.main_content,main_role])
                     index += 1
                 table.write_merge(old_index, index - 1, 1, 1, i[0], style)
                 table.write_merge(old_index, index - 1, 2, 2, '', style)
@@ -487,14 +500,17 @@ class Script:
                 table.write(index, 4, str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)), style)
                 # table.write(index,5,session.session_main_content)
                 column_index = 7
-                self.shunchangbiao_args.append((session.session_place, session.session_location,
-                                                self.script_id,
-                                                str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)),
-                                                session.session_main_content))
+                main_role=""
                 for character in Global_Variables.name_list:
                     if session.session_charactor_dic[character].appearance:
                         table.write(index, column_index, '√', style)
+                        main_role+=character+'|'
                     column_index += 1
+                main_role=main_role[:-1]
+                self.shunchangbiao_args.append([session.session_place, session.session_location,session.session_time,
+                                                self.script_id,
+                                                str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)),
+                                                session.session_main_content,main_role])
                 index += 1
             return table, index
 
@@ -553,22 +569,66 @@ class Script:
             index += 1
         return table
 
-    def write_to_the_sql(self):
-        # script_detail_args = self.cal_script_detail()
-        # script_roles = self.cal_script_role()
-        # participle_args = self.cal_participle()
-        # print('计算主角在每场中的情感词')
-        # session_emotionword_args = self.cal_session_role_word()
-        # print('写入数据库')
-        # print('写入剧本信息表')
-        # mySqlDB.write_script_detail_info(script_detail_args)
-        # print("写入剧本角色表")
-        # mySqlDB.write_script_role_info(script_roles)
-        # print("写入中间词表")
-        # mySqlDB.write_participle_info(participle_args)
-        # print("写入角色场景情感表")
-        # mySqlDB.write_lib_session_emotionword(session_emotionword_args)
+    def get_project_id(self):
+        project_name = self.script_name.split('_')[0][:-12]
+        return mySqlDB.get_project_id([project_name])
+
+    def get_script_id(self):
+        return mySqlDB.get_script_id([self.script_name])
+
+    def get_sequence_scene_id(self):
+        return mySqlDB.get_sequence_scene_id([self.script_id])
+
+    def get_sequence_screening_id(self):
+        return mySqlDB.get_sequence_screenings_id([self.script_id])
+
+    def extend_sequnce_args(self):
+        sequence_scene_id = self.get_sequence_scene_id()
+        sequence_screening_id = self.get_sequence_screening_id()
+        for i in range(len(self.shunjingbiao_args)):
+            self.shunjingbiao_args[i].append(sequence_scene_id)
+            self.shunjingbiao_args[i]=tuple(self.shunjingbiao_args[i])
+        for i in range(len(self.shunchangbiao_args)):
+            self.shunchangbiao_args[i].append(sequence_screening_id)
+            self.shunchangbiao_args[i]=tuple(self.shunchangbiao_args[i])
+
+
+    def write_project_info_to_sql(self):
+        script_name = self.script_name.split('_')[0][:-12]
+        type = '4,5'  # 编造的数据
+        word_count = 0
+        for count in self.charactor_overrall_word_count_dic.values():
+            word_count += int(count)
+        script_number = len(self.session_list)
+        version = self.script_name
+        project_id = self.project_id
+        args = (script_name, type, word_count, script_number, version, project_id)
+        mySqlDB.write_script(args)
+
+    def write_info_to_the_sql(self):
+        print('写入数据库')
+        script_roles = self.cal_script_role()
+        print("写入剧本角色表")
+        mySqlDB.write_script_role_info(script_roles)
+        script_detail_args = self.cal_script_detail()
+        participle_args = self.cal_participle()
+        print('计算主角在每场中的情感词')
+        session_emotionword_args = self.cal_session_role_word()
+        print('写入剧本信息表')
+        mySqlDB.write_script_detail_info(script_detail_args)
+        print("写入中间词表")
+        mySqlDB.write_participle_info(participle_args)
+        print("写入角色场景情感表")
+        mySqlDB.write_lib_session_emotionword(session_emotionword_args)
         print('写入顺场景表')
+        mySqlDB.write_sequence_screenings((self.project_id, self.script_id, len(self.session_list), self.all_page_num,
+                                           self.script_name, 1,
+                                           os.getcwd() + '\\' + self.script_name + '_顺场景表' + '.xls'))
+        mySqlDB.write_sequence_scene((self.project_id, self.script_id, len(self.session_list), self.all_page_num,
+                                      self.script_name, 1, os.getcwd() + '\\' + self.script_name + '_顺场景表' + '.xls'))
+        mySqlDB.upadte_sequence_scene((self.script_id, self.script_id))
+        mySqlDB.update_sequence_screenings((self.script_id, self.script_id))
+        self.extend_sequnce_args()
         mySqlDB.write_sequence_scene_detail(self.shunjingbiao_args)
         mySqlDB.write_sequence_screenings_detail(self.shunchangbiao_args)
         print("写入完成")
@@ -583,8 +643,8 @@ class Script:
 
 if __name__ == "__main__":
     # print(1)
-    script = Script('白鹿原_改.docx', 0, mode=1)
-    script = Script('疯狂的石头_改.docx', 1, mode=1)
-    script = Script('让子弹飞、新、改.docx', 2, mode=1)
+    script = Script('白鹿原201708101054.docx', mode=1)
+    script = Script('让子弹飞201708101126.docx', mode=1)
+    script=Script('疯狂的石头201708101529.docx',mode=1)
     # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 3, mode=0)
     # script.showinfo(show_session_detail=1)
