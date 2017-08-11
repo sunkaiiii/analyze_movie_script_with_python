@@ -2,7 +2,7 @@
 import line
 import Global_Variables
 import jieba
-
+from textrank4zh import TextRank4Sentence
 """
 ------------session.py--------------
 记录一个场次的内容，里面包含多个行的Line类实体
@@ -172,22 +172,31 @@ class Session():
         self.session_all_charactor_set = set(self.session_all_charactor)
 
     def cal_main_content(self):
-        repeat_character=False
-        for line in self.line_list:
-            if line.type=='event':
-                line_cut=jieba.cut(line.content)
-                for word in line_cut:
-                    if word in  Global_Variables.name_list and not repeat_character:
-                        self.session_main_content+=word
-                        repeat_character=True
-                    elif word in line.verb:
-                        self.session_main_content+=word
-                        repeat_character=False
-        for word in Global_Variables.stop_word:
-            self.session_main_content=self.session_main_content.replace(word,'')
+        # repeat_character=False
+        # for line in self.line_list:
+        #     if line.type=='event':
+        #         line_cut=jieba.cut(line.content)
+        #         for word in line_cut:
+        #             if word in  Global_Variables.name_list and not repeat_character:
+        #                 self.session_main_content+=word
+        #                 repeat_character=True
+        #             elif word in line.verb:
+        #                 self.session_main_content+=word
+        #                 repeat_character=False
+        # for word in Global_Variables.stop_word:
+        #     self.session_main_content=self.session_main_content.replace(word,'')
         # for k,v in Global_Variables.word_list_dic.items():
         #     for word in v:
         #         self.session_main_content=self.session_main_content.replace(word,'')
+        content=""
+        for line in self.line_list:
+            if line.type=='event':
+                content+=line.content
+        tr4s=TextRank4Sentence()
+        tr4s.analyze(text=content,lower=True,source='all_filters')
+        for item in tr4s.get_key_sentences(2):
+            self.session_main_content+=item.sentence
+        # print(self.session_main_content)
 
     def show_info(self, show_line_detail=0):
         '''

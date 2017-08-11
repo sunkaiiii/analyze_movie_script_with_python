@@ -76,6 +76,11 @@ class Script:
         self.file_text = self.read_script_file(filename)
         self.character_biographies_dic = {}
         Global_Variables.name_list = []
+        if self.mode == 0 or self.mode == 2:
+            print('读取人物小传')
+            self.file_text = self.read_character_biographies(self.file_text)
+        if self.mode == 2:
+            self.mode = 1
         print('程序推测主角')
         self.find_main_charactor(self.file_text, self.mode)
         main_role = ''
@@ -83,9 +88,6 @@ class Script:
             self.character_biographies_dic.setdefault(i, character_biographies())
             main_role += i + ','
         print('推测主角为' + main_role)
-        if self.mode == 0:
-            print('读取人物小传')
-            self.file_text = self.read_character_biographies(self.file_text)
         self.script_id = 0
         self.session_list = []
         self.charactor_overrall_word_count_dic = {}
@@ -131,9 +133,10 @@ class Script:
 
     def find_main_charactor(self, file_text, mode=0):
         if mode == 0:
-            result = hibiscusMain.Hibiscus().analyseNovel(self.file_text)
-            for c in result:
-                Global_Variables.name_list.append(c)
+            a = 1
+            # result = hibiscusMain.Hibiscus().analyseNovel(self.file_text)
+            # for c in result:
+            #     Global_Variables.name_list.append(c)
         elif mode == 1:
             user_dic = {}
             session_list = file_text.split('\n\n')
@@ -198,6 +201,7 @@ class Script:
                                 is_info = True
                             elif index == 1:
                                 name = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
+                                Global_Variables.name_list.append(name)
                                 is_info = True
                             elif index == 2:
                                 gender = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
@@ -212,7 +216,7 @@ class Script:
                             elif index == 4:
                                 age = int(data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff',
                                                                                                           '').replace(
-                                    '岁', ''))
+                                    '岁', '').replace('。', ''))
                                 is_info = True
                             elif index == 5:
                                 career = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
@@ -279,6 +283,8 @@ class Script:
         count = 0
         split_script = script.split('\n\n')  # 以双回车判断是否为一个场
         for s in split_script:
+            if (len(s) <= 7):
+                continue
             ss = session.Session(s, self.mode)
             self.session_list.append(ss)
             count += 1
@@ -383,15 +389,15 @@ class Script:
 
     def cal_participle(self):
         participle_args = []
-        word_dic={}
+        word_dic = {}
         script_id = self.script_id
         for session in self.session_list:
             for type, word_list in session.session_emotion_words_dic.items():
                 for word in word_list:
-                    word_dic.setdefault((word,session.session_number,type),0)
-                    word_dic[(word,session.session_number,type)]+=1
-        for word_item,count in word_dic.items():
-            participle_args.append((word_item[0],word_item[1],script_id,word_item[2],count))
+                    word_dic.setdefault((word, session.session_number, type), 0)
+                    word_dic[(word, session.session_number, type)] += 1
+        for word_item, count in word_dic.items():
+            participle_args.append((word_item[0], word_item[1], script_id, word_item[2], count))
         # for i in participle_args:
         #     print(i)
         return participle_args
@@ -484,16 +490,16 @@ class Script:
                     table.write(index, 5, str(round(i3.pagenum, 3)))
                     # table.write(index,6,i3.main_content)
                     column_index = 8
-                    main_role=''
+                    main_role = ''
                     self.all_page_num += i3.pagenum
                     for character in Global_Variables.name_list:
                         if character in self.role[i3.script_num]:
                             table.write(index, column_index, '√', style)
-                            main_role+=character+'|'
+                            main_role += character + '|'
                         column_index += 1
-                    main_role=main_role[:-1]
+                    main_role = main_role[:-1]
                     self.shunjingbiao_args.append(
-                        [i[0], i3.script_num, str(round(i3.pagenum, 3)), i3.main_content,main_role])
+                        [i[0], i3.script_num, str(round(i3.pagenum, 3)), i3.main_content, main_role])
                     index += 1
                 table.write_merge(old_index, index - 1, 1, 1, i[0], style)
                 table.write_merge(old_index, index - 1, 2, 2, '', style)
@@ -506,17 +512,17 @@ class Script:
                 table.write(index, 4, str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)), style)
                 # table.write(index,5,session.session_main_content)
                 column_index = 7
-                main_role=""
+                main_role = ""
                 for character in Global_Variables.name_list:
                     if session.session_charactor_dic[character].appearance:
                         table.write(index, column_index, '√', style)
-                        main_role+=character+'|'
+                        main_role += character + '|'
                     column_index += 1
-                main_role=main_role[:-1]
-                self.shunchangbiao_args.append([session.session_place, session.session_location,session.session_time,
+                main_role = main_role[:-1]
+                self.shunchangbiao_args.append([session.session_place, session.session_location, session.session_time,
                                                 session.session_number,
                                                 str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)),
-                                                session.session_main_content,main_role])
+                                                session.session_main_content, main_role])
                 index += 1
             return table, index
 
@@ -553,7 +559,7 @@ class Script:
                 string += i[0] + '：' + str(len(i[1])) + '场' + '、'
         string = string[:-1]
         table.write_merge(index, index, 1, width, string)
-        wb.save(self.script_name+'_顺景表.xls')
+        wb.save(self.script_name + '_顺景表.xls')
 
     def create_shunchangbiao(self):
         wb = Workbook()
@@ -569,7 +575,7 @@ class Script:
             table.write_merge(index, index, 1, width,
                               character + ':' + str(self.charactor_overral_apear_in_session[character]) + '场')
             index += 1
-        wb.save(self.script_name+"_顺场表.xls")
+        wb.save(self.script_name + "_顺场表.xls")
 
     def create_shunchangjingbiao(self):
         self.create_shunjingbiao()
@@ -593,11 +599,10 @@ class Script:
         sequence_screening_id = self.get_sequence_screening_id()
         for i in range(len(self.shunjingbiao_args)):
             self.shunjingbiao_args[i].append(sequence_scene_id)
-            self.shunjingbiao_args[i]=tuple(self.shunjingbiao_args[i])
+            self.shunjingbiao_args[i] = tuple(self.shunjingbiao_args[i])
         for i in range(len(self.shunchangbiao_args)):
             self.shunchangbiao_args[i].append(sequence_screening_id)
-            self.shunchangbiao_args[i]=tuple(self.shunchangbiao_args[i])
-
+            self.shunchangbiao_args[i] = tuple(self.shunchangbiao_args[i])
 
     def write_project_info_to_sql(self):
         script_name = self.script_name.split('_')[0][:-12]
@@ -652,5 +657,6 @@ if __name__ == "__main__":
     script = Script('白鹿原201708101054.docx', mode=1)
     script = Script('让子弹飞201708101126.docx', mode=1)
     script=Script('疯狂的石头201708101529.docx',mode=1)
-    # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜剧本(标准格式).docx', 3, mode=0)
+    script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜201708111410.docx', mode=0)
+    # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\惊情墨尔本201708111458.docx', mode=2)
     # script.showinfo(show_session_detail=1)

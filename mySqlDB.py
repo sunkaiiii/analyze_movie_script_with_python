@@ -4,7 +4,8 @@ import MySQLdb
 ----------mySqlDB.py-------------
 处理数据库增、删、改、查的请求
 """
-db = MySQLdb.connect(host='192.168.1.130', user='root', password='root', db='fbt', port=3306)
+# db = MySQLdb.connect(host='192.168.1.130', user='root', password='root', db='fbt', port=3306)
+db=MySQLdb.connect(host='127.0.0.1',user='root',db='fbt',port=3306)
 db.set_character_set('utf8')  # 不设置这个读取和插入中文时会乱码
 
 
@@ -150,4 +151,4 @@ def read_lib_thesaurus(type=''):
 
 if __name__ == "__main__":
     # print(read_lib_thesaurus())
-    print(get_sequence_scene_id([12]))
+    print(get_project_id(['万人膜拜']))
