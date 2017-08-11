@@ -119,7 +119,7 @@ class Script:
         print('生成顺场景表')
         self.shunjingbiao_args = []
         self.shunchangbiao_args = []
-        self.all_page_num = 0;
+        self.all_page_num = 0
         self.cal_shunchangjingbiaoxinxi()
         self.create_shunchangjingbiao()
 
@@ -164,6 +164,8 @@ class Script:
             for i in range(0, character_range):
                 Global_Variables.name_list.append(user_dic[i][0])
                 # print(Global_Variables.name_list)
+        for word in Global_Variables.name_list:
+            jieba.add_word(word, 10000)
 
     def read_character_biographies(self, file_text):
         script = file_text
@@ -381,11 +383,15 @@ class Script:
 
     def cal_participle(self):
         participle_args = []
+        word_dic={}
         script_id = self.script_id
         for session in self.session_list:
             for type, word_list in session.session_emotion_words_dic.items():
                 for word in word_list:
-                    participle_args.append((word, session.session_number, script_id, type))
+                    word_dic.setdefault((word,session.session_number,type),0)
+                    word_dic[(word,session.session_number,type)]+=1
+        for word_item,count in word_dic.items():
+            participle_args.append((word_item[0],word_item[1],script_id,word_item[2],count))
         # for i in participle_args:
         #     print(i)
         return participle_args
@@ -487,7 +493,7 @@ class Script:
                         column_index += 1
                     main_role=main_role[:-1]
                     self.shunjingbiao_args.append(
-                        [i[0], self.script_id, str(round(i3.pagenum, 3)), i3.main_content,main_role])
+                        [i[0], i3.script_num, str(round(i3.pagenum, 3)), i3.main_content,main_role])
                     index += 1
                 table.write_merge(old_index, index - 1, 1, 1, i[0], style)
                 table.write_merge(old_index, index - 1, 2, 2, '', style)
@@ -508,21 +514,15 @@ class Script:
                     column_index += 1
                 main_role=main_role[:-1]
                 self.shunchangbiao_args.append([session.session_place, session.session_location,session.session_time,
-                                                self.script_id,
+                                                session.session_number,
                                                 str(round(float(len(session.session_content.split('\n'))) / 50.0, 3)),
                                                 session.session_main_content,main_role])
                 index += 1
             return table, index
 
-    def create_shunchangjingbiao(self):
+    def create_shunjingbiao(self):
         wb = Workbook()
-        table_shunjingbiao = wb.add_sheet('顺景表')
-        table_shunchangbiao = wb.add_sheet('顺场表')
-        table_shunjingbiao = self.create_shunjingbiao(table_shunjingbiao)
-        table_shunchangbiao = self.create_shunchangbiao(table_shunchangbiao)
-        wb.save(self.script_name + '_顺场景表' + '.xls')
-
-    def create_shunjingbiao(self, table):
+        table = wb.add_sheet('顺景表')
         table, index, style = self.create_base_excel(table, type=0)
         width = index
         index = 4
@@ -553,9 +553,11 @@ class Script:
                 string += i[0] + '：' + str(len(i[1])) + '场' + '、'
         string = string[:-1]
         table.write_merge(index, index, 1, width, string)
-        return table
+        wb.save(self.script_name+'_顺景表.xls')
 
-    def create_shunchangbiao(self, table):
+    def create_shunchangbiao(self):
+        wb = Workbook()
+        table = wb.add_sheet('顺场表')
         table, index, style = self.create_base_excel(table, type=1)
         width = index
         index = 4
@@ -567,7 +569,11 @@ class Script:
             table.write_merge(index, index, 1, width,
                               character + ':' + str(self.charactor_overral_apear_in_session[character]) + '场')
             index += 1
-        return table
+        wb.save(self.script_name+"_顺场表.xls")
+
+    def create_shunchangjingbiao(self):
+        self.create_shunjingbiao()
+        self.create_shunchangbiao()
 
     def get_project_id(self):
         project_name = self.script_name.split('_')[0][:-12]
@@ -623,9 +629,9 @@ class Script:
         print('写入顺场景表')
         mySqlDB.write_sequence_screenings((self.project_id, self.script_id, len(self.session_list), self.all_page_num,
                                            self.script_name, 1,
-                                           os.getcwd() + '\\' + self.script_name + '_顺场景表' + '.xls'))
+                                           os.getcwd() + '\\' + self.script_name + '_顺场表' + '.xls'))
         mySqlDB.write_sequence_scene((self.project_id, self.script_id, len(self.session_list), self.all_page_num,
-                                      self.script_name, 1, os.getcwd() + '\\' + self.script_name + '_顺场景表' + '.xls'))
+                                      self.script_name, 1, os.getcwd() + '\\' + self.script_name + '_顺景表' + '.xls'))
         mySqlDB.upadte_sequence_scene((self.script_id, self.script_id))
         mySqlDB.update_sequence_screenings((self.script_id, self.script_id))
         self.extend_sequnce_args()

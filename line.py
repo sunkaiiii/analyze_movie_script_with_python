@@ -81,5 +81,5 @@ class Line():
 
 if __name__ == "__main__":
     a = 1
-    test = Line('可他这是杀鸡给猴看！打狗还得看主人呢! 明明知道我是您的团练教头他还敢打！ 黄四郎:那，你就让他打了？')
+    test = Line('张牧之:那，你就让他打了？')
     test.showInfo()

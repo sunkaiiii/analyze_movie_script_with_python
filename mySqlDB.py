@@ -10,7 +10,7 @@ db.set_character_set('utf8')  # 不设置这个读取和插入中文时会乱码
 
 def write_script(args):
     c = db.cursor()
-    sql = """insert into script(script_name,type,word_count,script_number,version,project_id) values(%s,%s,%s,%s,%s,%s)"""
+    sql = """insert into script(script_name,type,word_count,screenings,version,project_id) values(%s,%s,%s,%s,%s,%s)"""
     c.execute(sql, args)
     db.commit()
     c.close()
@@ -26,7 +26,7 @@ def write_script_role_info(args):
 
 def write_script_detail_info(args):
     c = db.cursor()
-    sql = """insert into script_detail(script_id,script_number,role_id,content, role, period, scene, surroundings, role_number) values(%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+    sql = """insert into script_detail(script_id,screenings,role_id,content, role, period, scene, surroundings, role_number) values(%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
     c.executemany(sql, args)
     db.commit()
     c.close()
@@ -34,7 +34,7 @@ def write_script_detail_info(args):
 
 def write_participle_info(args):
     c = db.cursor()
-    sql = """insert into participle(word,screenings,script_id,emotion_type) values(%s,%s,%s,%s)"""
+    sql = """insert into participle(word,screenings,script_id,emotion_type,count) values(%s,%s,%s,%s,%s)"""
     c.executemany(sql, args)
     db.commit()
     c.close()
@@ -42,21 +42,21 @@ def write_participle_info(args):
 
 def write_lib_session_emotionword(args):
     c = db.cursor()
-    sql = """insert into lib_session_emotionword(word,emotion_type,who,script_id,script_number) values(%s,%s,%s,%s,%s)"""
+    sql = """insert into lib_session_emotionword(word,emotion_type,who,script_id,screenings) values(%s,%s,%s,%s,%s)"""
     c.executemany(sql, args)
     db.commit()
     c.close()
 
 def write_sequence_scene(args):
     c = db.cursor()
-    sql = """insert into sequence_scene(project_id,script_id,script_number,page_number,version,type,url) values(%s,%s,%s,%s,%s,%s,%s)"""
+    sql = """insert into sequence_scene(project_id,script_id,screenings,page_number,version,type,url) values(%s,%s,%s,%s,%s,%s,%s)"""
     c.execute(sql,args)
     db.commit()
     c.close()
 
 def write_sequence_screenings(args):
     c=db.cursor()
-    sql="""insert into sequence_screenings(project_id,script_id,script_number,page_number,version,type,url) values(%s,%s,%s,%s,%s,%s,%s)"""
+    sql="""insert into sequence_screenings(project_id,script_id,screenings,page_number,version,type,url) values(%s,%s,%s,%s,%s,%s,%s)"""
     c.execute(sql,args)
     db.commit()
     c.close()
@@ -64,7 +64,7 @@ def write_sequence_screenings(args):
 def write_sequence_scene_detail(args):
     '''写入顺景表详情库'''
     c = db.cursor()
-    sql = """insert into sequence_scene_detail(scene,script_number,page_number,content,main_role,sequence_scene_id) values(%s,%s,%s,%s,%s,%s)"""
+    sql = """insert into sequence_scene_detail(scene,screenings,page_number,content,main_role,sequence_scene_id) values(%s,%s,%s,%s,%s,%s)"""
     c.executemany(sql, args)
     db.commit()
     c.close()
@@ -73,7 +73,7 @@ def write_sequence_scene_detail(args):
 def write_sequence_screenings_detail(args):
     '''写入顺场表详情库'''
     c = db.cursor()
-    sql = """insert into sequence_screenings_detail(surrounding,scene,time,script_number,page_number,content,main_role,sequence_screenings_id) values(%s,%s,%s,%s,%s,%s,%s,%s)"""
+    sql = """insert into sequence_screenings_detail(surrounding,scene,time,screenings,page_number,content,main_role,sequence_screenings_id) values(%s,%s,%s,%s,%s,%s,%s,%s)"""
     c.executemany(sql, args)
     db.commit()
     c.close()
