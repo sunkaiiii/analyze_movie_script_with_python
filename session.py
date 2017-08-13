@@ -142,6 +142,7 @@ class Session():
         for word in self.session_ad_word:
             self.session_ad_word_count_dic.setdefault(word,0)
             self.session_ad_word_count_dic[word]+=1
+        print(self.session_ad_word_set)
 
     def cal_words_amount(self):
         '''

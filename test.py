@@ -17,4 +17,19 @@ from xlwt import *
 #     print(para.text)
 
 import os
-print(os.getcwd())
+file=open('ad.txt',encoding="utf8").read()
+# print(file)
+dic={}
+for i in file.split('\n'):
+    for i2 in i.split('|'):
+        if len(i2)==0:
+            continue
+        dic.setdefault(i2,0)
+        dic[i2]+=1
+dic=sorted(dic.items(),key=lambda x:x[1],reverse=True)
+args=[]
+for i in dic:
+    print(i)
+    args.append([i[0]])
+import mySqlDB
+mySqlDB.insert_ad_words(args)

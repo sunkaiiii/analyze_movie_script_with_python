@@ -148,7 +148,19 @@ def read_lib_thesaurus(type=''):
     c.close()
     return result
 
+def read_lib_ad():
+    sql="""select word from lib_ad"""
+    c=db.cursor()
+    c.execute(sql)
+    result=c.fetchall()
+    c.close()
+    return result
 
 if __name__ == "__main__":
-    # print(read_lib_thesaurus())
-    print(get_project_id(['万人膜拜']))
+    a=0
+def insert_ad_words(args):
+    c=db.cursor()
+    sql="""insert into lib_ad(word) values(%s)"""
+    c.executemany(sql,args)
+    db.commit()
+    c.close()
