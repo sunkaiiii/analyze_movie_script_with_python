@@ -57,4 +57,17 @@ def read_sensitive_word_base64():
     file.write(str)
     file.close()
 
-read_sensitive_word_base64()
+def write_sensitive_words_with_type():
+    file=open('敏感词库表统计.txt',encoding="utf8").read()
+    type_dic={}
+    for line in file.split("\n"):
+        print(line)
+        line=line.split(" ")
+        if(len(line)==3):
+            type_dic.setdefault(line[1],[])
+            type_dic[line[1]].append(line[2])
+    for i in type_dic.items():
+        print(i)
+
+write_sensitive_words_with_type()
+
