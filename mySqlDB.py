@@ -81,14 +81,14 @@ def write_sequence_screenings_detail(args):
 
 def upadte_sequence_scene(args):
     c=db.cursor()
-    sql="""update  sequence_scene set sequence_screenings_id=(select id from sequence_screenings where script_id=%s) where script_id=%s"""
+    sql="""update  sequence_scene set sequence_screenings_id=(select id from sequence_screenings where script_id=%s LIMIT 1) where script_id=%s"""
     c.execute(sql,args)
     db.commit()
     c.close()
 
 def update_sequence_screenings(args):
     c=db.cursor()
-    sql="""update sequence_screenings set sequence_scene_id=(select id from sequence_scene where script_id=%s) where script_id=%s"""
+    sql="""update sequence_screenings set sequence_scene_id=(select id from sequence_scene where script_id=%s LIMIT 1) where script_id=%s"""
     c.execute(sql,args)
     db.commit()
     c.close()
@@ -149,7 +149,7 @@ def read_lib_thesaurus(type=''):
     return result
 
 def read_lib_ad():
-    sql="""select word from lib_ad"""
+    sql="""select key_words from ad_key_words"""
     c=db.cursor()
     c.execute(sql)
     result=c.fetchall()
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     a=0
 def insert_ad_words(args):
     c=db.cursor()
-    sql="""insert into lib_ad(word) values(%s)"""
+    sql="""insert into ad_key_words(key_words) values(%s)"""
     c.executemany(sql,args)
     db.commit()
     c.close()

@@ -654,9 +654,12 @@ class Script:
 
 if __name__ == "__main__":
     # print(1)
+    import time
+    t=time.time()
     script = Script('白鹿原201708101054.docx', mode=1)
-    script = Script('让子弹飞201708101126.docx', mode=1)
-    script=Script('疯狂的石头201708101529.docx',mode=1)
-    script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜201708111410.docx', mode=0)
+    print("用时"+str(int(time.time()-t))+"秒")
+    # script = Script('让子弹飞201708101126.docx', mode=1)
+    # script=Script('疯狂的石头201708101529.docx',mode=1)
+    # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜201708111410.docx', mode=0)
     # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\惊情墨尔本201708111458.docx', mode=2)
     # script.showinfo(show_session_detail=1)
