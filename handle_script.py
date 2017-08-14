@@ -95,8 +95,8 @@ class Script:
         self.charactor_emetion_word_in_session = {}
         self.shunjingbiao = {}
         self.shunchangbiao = {}
-        self.all_ad_count=[]
-        self.session_ad_count=[]
+        self.all_ad_count = []
+        self.session_ad_count = []
         self.in_place = 0
         self.out_place = 0
         self.location_count = {}
@@ -127,7 +127,7 @@ class Script:
         self.cal_shunchangjingbiaoxinxi()
         self.create_shunchangjingbiao()
         print("计算广告信息")
-        self.session_ad_count=self.cal_ad_words_count()
+        self.session_ad_count = self.cal_ad_words_count()
 
         self.write_info_to_the_sql()
 
@@ -325,19 +325,20 @@ class Script:
                 if apear.appearance:
                     self.charactor_overral_apear_in_session[name] += 1
                     # print(self.charactor_overral_apear_in_session)
+
     def cal_ad_words_count(self):
         """
         统计广告词广告词
         return:返回（场次编号、广告词、广告词计数）
         """
-        args=[]
-        self.all_ad_count={} #先转换为字典方便存储
+        args = []
+        self.all_ad_count = {}  # 先转换为字典方便存储
         for session in self.session_list:
-            for word,count in session.session_ad_word_count_dic.items():
-                args.append((session.session_number,word,count))
-                self.all_ad_count.setdefault(word,0)
-                self.all_ad_count[word]+=1
-        self.all_ad_count=sorted(self.all_ad_count.items(),key=lambda x:x[1],reverse=True)
+            for word, count in session.session_ad_word_count_dic.items():
+                args.append((session.session_number, word, count))
+                self.all_ad_count.setdefault(word, 0)
+                self.all_ad_count[word] += 1
+        self.all_ad_count = sorted(self.all_ad_count.items(), key=lambda x: x[1], reverse=True)
         # for i in self.all_ad_count:
         #     print(i)
         # print(args)
@@ -457,9 +458,9 @@ class Script:
         生成插入session_ad_wods表的数据
         :return: 插入数据库的数据list
         """
-        args=[]
+        args = []
         for info in self.session_ad_count:
-            args.append((info[0],info[1],info[2],self.script_id))
+            args.append((info[0], info[1], info[2], self.script_id))
         return args
 
     def cal_script_ad_args(self):
@@ -467,10 +468,12 @@ class Script:
         生成插入script_ad_words表的数据
         :return: 插入数据库的list
         """
-        args=[]
+        args = []
         for info in self.all_ad_count:
-            args.append((info[0],info[1],self.script_id))
+            if info[1] > 3:
+                args.append((Global_Variables.ad_word[info[0]], info[1], self.script_id))
         return args
+
     def create_base_excel(self, table, type=0):
         '''type=0的时候为顺景表，type=1的时候是顺场表,结束后返回生成的Excel表头'''
         style = XFStyle()
@@ -683,10 +686,10 @@ class Script:
         mySqlDB.write_sequence_scene_detail(self.shunjingbiao_args)
         mySqlDB.write_sequence_screenings_detail(self.shunchangbiao_args)
         print("写入广告词")
-        session_ad_args=self.cal_session_ad_args()
-        script_ad_args=self.cal_script_ad_args()
-        mySqlDB.write_session_ad_words(session_ad_args)
-        mySqlDB.write_script_ad_words(script_ad_args)
+        # session_ad_args=self.cal_session_ad_args()
+        script_ad_args = self.cal_script_ad_args()
+        # mySqlDB.write_session_ad_words(session_ad_args)
+        mySqlDB.write_implanted_ad(script_ad_args)
         print("写入完成")
 
     def showinfo(self, show_session_detail=0, show_line_detail=0):
@@ -700,11 +703,12 @@ class Script:
 if __name__ == "__main__":
     # print(1)
     import time
+
     # t=time.time()
     # script = Script('白鹿原201708101054.docx', mode=1)
     # print("用时"+str(int(time.time()-t))+"秒")
     script = Script('让子弹飞201708101126.docx', mode=1)
-    script=Script('疯狂的石头201708101529.docx',mode=1)
+    script = Script('疯狂的石头201708101529.docx', mode=1)
     # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜201708111410.docx', mode=0)
     # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\惊情墨尔本201708111458.docx', mode=2)
     # script.showinfo(show_session_detail=1)

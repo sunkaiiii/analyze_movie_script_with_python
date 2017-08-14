@@ -29,9 +29,9 @@ def convert_userdic(user_dic):
     return user_dic_convert
 
 def get_ad_word():
-    words=[]
+    words={}
     for word in mySqlDB.read_lib_ad():
-        words.append(word[0])
+        words.setdefault(word[1],word[0])
     return words
 
 def get_sensitive_word():

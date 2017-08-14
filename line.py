@@ -6,7 +6,7 @@ import Global_Variables
 jieba.load_userdict('user_dic.txt')
 for word in Global_Variables.name_list:
     jieba.add_word(word,10000)
-for word in Global_Variables.ad_word:
+for word in Global_Variables.ad_word.keys():
     jieba.add_word(word,1000)
 for word in Global_Variables.sensitive_word:
     jieba.add_word(word,1000)
@@ -64,7 +64,7 @@ class Line():
                     self.emotion_word_dic[name].append(cut_word.word)
             if cut_word.word in Global_Variables.sensitive_word:
                 self.sensitive_word.append(cut_word.word)
-            if cut_word.word in Global_Variables.ad_word:
+            if cut_word.word in Global_Variables.ad_word.keys():
                 self.ad_word.append(cut_word.word)
             if cut_word.word in Global_Variables.name_list:
                 self.other_character.append(cut_word.word)

@@ -69,5 +69,5 @@ def write_sensitive_words_with_type():
     for i in type_dic.items():
         print(i)
 
-write_sensitive_words_with_type()
-
+# write_sensitive_words_with_type()
+read_ad_words()
