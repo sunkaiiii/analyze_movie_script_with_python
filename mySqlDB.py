@@ -79,6 +79,19 @@ def write_sequence_screenings_detail(args):
     db.commit()
     c.close()
 
+def write_session_ad_words(args):
+    c=db.cursor()
+    sql="""insert into session_ad_words(screnning,word,count,script_id) values(%s,%s,%s,%s)"""
+    c.executemany(sql,args)
+    db.commit()
+    c.close()
+def write_script_ad_words(args):
+    c=db.cursor()
+    sql="""insert into script_ad_words(word,count,script_id) values(%s,%s,%s)"""
+    c.executemany(sql,args)
+    db.commit()
+    c.close()
+
 def upadte_sequence_scene(args):
     c=db.cursor()
     sql="""update  sequence_scene set sequence_screenings_id=(select id from sequence_screenings where script_id=%s LIMIT 1) where script_id=%s"""

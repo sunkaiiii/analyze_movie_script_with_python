@@ -96,6 +96,7 @@ class Script:
         self.shunjingbiao = {}
         self.shunchangbiao = {}
         self.all_ad_count=[]
+        self.session_ad_count=[]
         self.in_place = 0
         self.out_place = 0
         self.location_count = {}
@@ -126,7 +127,7 @@ class Script:
         self.cal_shunchangjingbiaoxinxi()
         self.create_shunchangjingbiao()
         print("计算广告信息")
-        self.cal_ad_words_count()
+        self.session_ad_count=self.cal_ad_words_count()
 
         self.write_info_to_the_sql()
 
@@ -451,6 +452,25 @@ class Script:
         self.shunjingbiao = sorted(self.shunjingbiao.items(), key=lambda x: len(x[1]),
                                    reverse=True)  # 按场景出现多到少的顺序排序，返回一个二维list
 
+    def cal_session_ad_args(self):
+        """
+        生成插入session_ad_wods表的数据
+        :return: 插入数据库的数据list
+        """
+        args=[]
+        for info in self.session_ad_count:
+            args.append((info[0],info[1],info[2],self.script_id))
+        return args
+
+    def cal_script_ad_args(self):
+        """
+        生成插入script_ad_words表的数据
+        :return: 插入数据库的list
+        """
+        args=[]
+        for info in self.all_ad_count:
+            args.append((info[0],info[1],self.script_id))
+        return args
     def create_base_excel(self, table, type=0):
         '''type=0的时候为顺景表，type=1的时候是顺场表,结束后返回生成的Excel表头'''
         style = XFStyle()
@@ -662,6 +682,11 @@ class Script:
         self.extend_sequnce_args()
         mySqlDB.write_sequence_scene_detail(self.shunjingbiao_args)
         mySqlDB.write_sequence_screenings_detail(self.shunchangbiao_args)
+        print("写入广告词")
+        session_ad_args=self.cal_session_ad_args()
+        script_ad_args=self.cal_script_ad_args()
+        mySqlDB.write_session_ad_words(session_ad_args)
+        mySqlDB.write_script_ad_words(script_ad_args)
         print("写入完成")
 
     def showinfo(self, show_session_detail=0, show_line_detail=0):
