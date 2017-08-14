@@ -134,7 +134,7 @@ class Session():
         for word in self.session_sensitive_word:
             self.session_sensitive_word_count_dic.setdefault(word,0)
             self.session_sensitive_word_count_dic[word]+=1
-        print(self.session_sensitive_word_set)
+        # print(self.session_sensitive_word_set)
 
     def cal_ad_words(self):
         for line in self.line_list:

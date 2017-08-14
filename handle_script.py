@@ -95,6 +95,7 @@ class Script:
         self.charactor_emetion_word_in_session = {}
         self.shunjingbiao = {}
         self.shunchangbiao = {}
+        self.all_ad_count=[]
         self.in_place = 0
         self.out_place = 0
         self.location_count = {}
@@ -124,6 +125,8 @@ class Script:
         self.all_page_num = 0
         self.cal_shunchangjingbiaoxinxi()
         self.create_shunchangjingbiao()
+        print("计算广告信息")
+        self.cal_ad_words_count()
 
         self.write_info_to_the_sql()
 
@@ -321,6 +324,23 @@ class Script:
                 if apear.appearance:
                     self.charactor_overral_apear_in_session[name] += 1
                     # print(self.charactor_overral_apear_in_session)
+    def cal_ad_words_count(self):
+        """
+        统计广告词广告词
+        return:返回（场次编号、广告词、广告词计数）
+        """
+        args=[]
+        self.all_ad_count={} #先转换为字典方便存储
+        for session in self.session_list:
+            for word,count in session.session_ad_word_count_dic.items():
+                args.append((session.session_number,word,count))
+                self.all_ad_count.setdefault(word,0)
+                self.all_ad_count[word]+=1
+        self.all_ad_count=sorted(self.all_ad_count.items(),key=lambda x:x[1],reverse=True)
+        # for i in self.all_ad_count:
+        #     print(i)
+        # print(args)
+        return args
 
     def cal_script_detail(self):
         '''读取用于写入scrit_detal表的信息'''

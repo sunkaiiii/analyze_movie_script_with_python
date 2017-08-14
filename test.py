@@ -45,4 +45,16 @@ def read_sensitive_word():
     import mySqlDB
     mySqlDB.insert_sensitive_words(args)
 
-read_sensitive_word()
+def read_sensitive_word_base64():
+    import base64
+    file=open('C:\\Users\sunkai\Desktop\敏感词\\bannedwords-master\\pub_banned_words.txt')
+    file=file.read().split("\n")
+    str = ''
+    for word in file:
+        str+=base64.b64decode(word).decode()
+    print(str)
+    file=open("敏感词.txt",'w')
+    file.write(str)
+    file.close()
+
+read_sensitive_word_base64()
