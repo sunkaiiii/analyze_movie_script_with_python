@@ -34,7 +34,11 @@ def get_ad_word():
         words.append(word[0])
     return words
 
-
+def get_sensitive_word():
+    words=[]
+    for word in mySqlDB.read_sensitive_words():
+        words.append(word[0])
+    return words
 word_list_dic = save_userdic_to_file()  # 读取数据库的词库，并保存在本地供jieba分词学习（也可以保存在List中，用循环使用addword给jieba提供词库）
 name_list = []
 filename = 'name_bai.txt'
@@ -53,7 +57,7 @@ constellation = {'白羊座': 0, '金牛座': 1, '双子座': 2, '巨蟹座': 3,
                  '双鱼': 11}
 blood = {'A型': 0, 'B型': 1, 'O型': 2, 'AB型': 3,
          'A': 0, 'B': 1, 'O': 2, 'AB': 3}
-sensitive_word=['他妈']
+sensitive_word=get_sensitive_word()
 ad_word=get_ad_word()
 stop_word=set(open(stopword_file,encoding='utf-8').read().split('\n'))
 punctuation_mark = set(open(puncutation_file, encoding='utf-8').read().split('\n'))

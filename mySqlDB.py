@@ -155,12 +155,28 @@ def read_lib_ad():
     result=c.fetchall()
     c.close()
     return result
+def read_sensitive_words():
+    sql="""select sensitive_word from sensitive_word"""
+    c=db.cursor()
+    c.execute(sql)
+    result=c.fetchall()
+    c.close()
+    return result
 
-if __name__ == "__main__":
-    a=0
 def insert_ad_words(args):
     c=db.cursor()
     sql="""insert into ad_key_words(key_words) values(%s)"""
     c.executemany(sql,args)
     db.commit()
     c.close()
+
+def insert_sensitive_words(args):
+    c=db.cursor()
+    sql="""insert into sensitive_word(sensitive_word) values(%s)"""
+    c.executemany(sql,args)
+    db.commit()
+    c.close()
+if __name__ == "__main__":
+    result=read_sensitive_words()
+    for word in result:
+        print(word[0])
