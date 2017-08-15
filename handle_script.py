@@ -21,6 +21,11 @@ if not os.path.exists('out'):
 
 
 class character_biographies:
+    """
+    用于记录剧本人物小传的类
+    一个角色一个人物小传的实体对象
+    """
+
     def __init__(self, num=-1, name='', gender=0, role='', age=0, career='', constellation=0, blood=0, introduction='',
                  temperament=''):
         self.num = num
@@ -28,12 +33,12 @@ class character_biographies:
         self.gender = gender
         self.role = role
         self.age = age
-        self.career = career
-        self.constellation = constellation
-        self.blood = blood
-        self.introduction = introduction
-        self.temperament = temperament
-        self.relationship = {}
+        self.career = career  # 职业
+        self.constellation = constellation  # 星座
+        self.blood = blood  # 血型
+        self.introduction = introduction  # 人物简介
+        self.temperament = temperament  # 人物性格
+        self.relationship = {}  # 人物图谱（与其他角色关系，联系），未完成，效果惊人的差
         cut_word = jieba.cut(self.introduction)
         word_list = []
         for word in cut_word:
@@ -54,6 +59,8 @@ class character_biographies:
 
 
 class shunjingbiao:
+    '''存储顺景表信息的类'''
+
     def __init__(self, script_id=-1, script_num=-1, script_content='', main_content="", time='', role=[]):
         self.script_id = script_id
         self.script_num = script_num
@@ -66,10 +73,13 @@ class shunjingbiao:
 
 class Script:
     '''
-    记录整个剧本的信息，包含多个场景的类的实例
+    记录整个剧本的信息，包含多个场景（session）的类的实例
     '''
 
     def __init__(self, filename, mode=1):
+        '''最后时间不太够，所有的方法都放在了init上面执行了，有点乱……
+        #待修改部分
+        '''
         self.mode = mode
         self.script_name = ''
         print('读取剧本')
@@ -84,20 +94,22 @@ class Script:
         print('程序推测主角')
         self.find_main_charactor(self.file_text, self.mode)
         main_role = ''
-        for i in Global_Variables.name_list:
-            self.character_biographies_dic.setdefault(i, character_biographies())
-            main_role += i + ','
         print('推测主角为' + main_role)
         self.script_id = 0
-        self.session_list = []
-        self.charactor_overrall_word_count_dic = {}
-        self.charactor_overral_apear_in_session = {}
-        self.charactor_emetion_word_in_session = {}
+        self.session_list = []  # 存放所有场次信息的list
+        self.charactor_overrall_word_count_dic = {}  # 角色台词数
+        self.charactor_overral_apear_in_session = {}  # 角色出现场次数
+        self.charactor_emetion_word_in_session = {}  # 角色情感词
+
         self.shunjingbiao = {}
         self.shunchangbiao = {}
+
         self.all_ad_count = []
         self.session_ad_count = []
+
         self.all_sensitive_word_count_dic = {}
+
+        '''顺场景表的信息'''
         self.in_place = 0
         self.out_place = 0
         self.location_count = {}
@@ -105,9 +117,11 @@ class Script:
         self.out_place_time_count = {}
         self.role = {}
         self.timecount = {}
+
         self.charactor = Global_Variables.name_list
         for i in Global_Variables.name_list:
             self.charactor_overrall_word_count_dic[i] = 0
+
         self.all_charactor_count = {}
         print('处理场次信息')
         self.handle_session(self.file_text)
@@ -118,8 +132,13 @@ class Script:
         print('计算主要角色出场次数')
         self.cal_character_apear_count()
         print('写入项目信息到数据库')
+        '''如果没有这个项目名字（剧本名去掉时间戳），将不能继续程序'''
         self.project_id = self.get_project_id()
+        if self.project_id == -1:
+            return;  # 在没有项目的时候应当进行处理，比如发送个http request（内容未对接，功能暂时未做）
+        '''写入当前这个版本剧本的信息'''
         self.write_project_info_to_sql()
+        '''写入完成后获取剧本的id'''
         self.script_id = self.get_script_id()
         print('生成顺场景表')
         self.shunjingbiao_args = []
@@ -140,6 +159,13 @@ class Script:
     '''
 
     def find_main_charactor(self, file_text, mode=0):
+        """
+        两种剧本模式的推测主角方法不一
+        1、简版剧本使用统计剧本中说话的频次数（即xxx说中的xxx出现次数的排序，前五个即为主角）
+        2、标准版剧本使用一个开源大规模预料分析的额库，可以猜测没有在词库的情况下推测词（在剧本中，主角们被提到的次数通常是最多的，所以可以用来推测主角）
+        但在推测主角过程中，如果跟人物小传中所记录的内容不一样（比如万人膜拜这个剧本人物小传和剧本中姓名并不对应）会导致统计出来的结果出现问题
+        所以暂时没有启用这个推测功能（人物小传中应到加入一个别名，在别名内所有的称呼、昵称都应为这个角色，功能未做）
+        """
         if mode == 0:
             a = 1
             # result = hibiscusMain.Hibiscus().analyseNovel(self.file_text)
@@ -179,6 +205,13 @@ class Script:
             jieba.add_word(word, 10000)
 
     def read_character_biographies(self, file_text):
+        """
+        读取人物小传为传递过来的整个剧本的文本，通常人物小传都是在剧本的开头（应该是强制要求）
+        读取每一行，以‘:'（冒号）为标识切分，读取切分出来的标签，当符合人物小传的标签时，则认为是一个人物小传
+        初始化人物小传类，并记录信息
+        :param file_text: 剧本文本
+        :return: 去除掉人物小传之后的文本部分
+        """
         script = file_text
         session_list = script.split('\n\n')
         new_text = ''
@@ -196,7 +229,7 @@ class Script:
             session = session.split('\n')
             for line in session:
                 line = line.replace('：', ":").replace(' ', '').replace('\n', '').replace('\ufeff', '')
-                if ':' in line:
+                if ':' in line:  # 当发现':’之后，试图判断是不是一个人物小传
                     script_line = line
                     is_info = False
                     line = line.split(':')
@@ -277,6 +310,11 @@ class Script:
         # print(script)
 
     def read_script_file(self, filename):
+        """
+        读取剧本，并处理剧本名字（剧本名字是带有剧本名字+时间戳的）转化为 script类的script_name
+        :param filename: 上传的剧本的路径
+        :return: 读取的剧本文本内容
+        """
         name = os.path.splitext(filename)[0]
         self.script_name = name.split('\\')[len(name.split('\\')) - 1]
         script = ""

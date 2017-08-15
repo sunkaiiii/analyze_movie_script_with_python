@@ -140,7 +140,10 @@ def get_project_id(args):
     c.execute(sql, args)
     result = c.fetchone()
     c.close()
-    return result[0]
+    if result is not None:
+        return result[0]
+    else:
+        return -1;
 
 
 def get_script_id(args):

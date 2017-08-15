@@ -32,30 +32,41 @@ class Line():
         self.sensitive_word={}
         self.ad_word=[]
         self.who_said_no_cut = ""
-        if ':' in line_str or '：' in line_str:  # 当有冒号时，认为是一个对话
+        if ':' in line_str or '：' in line_str:  # 当剧本有冒号时，认为是一个对话
             self.type = 'talk'
             line_str = line_str.replace('：', ':')
             name = line_str.split(':')[0]
-            self.who_said_no_cut = name  # 当剧本不完全是XX:的形式而是带有定语或者别的词的时候，再进行一次切割
+            self.who_said_no_cut = name  # 当剧本不完全是“XX:”的形式而是带有定语或者别的词的时候，再进行一次切割
             name_words = pseg.cut(name)
             for word in name_words:
                 if word.word in Global_Variables.name_list:
                     self.who_said=word.word
                     continue
-                for word_name in Global_Variables.word_list_dic.keys():
+                for word_name in Global_Variables.word_list_dic.keys(): #遍历情感词分类，寻找是否出现情感词
                     self.emotion_word_dic.setdefault(word_name, [])
                     if word.word in Global_Variables.word_list_dic[word_name]:
                         self.emotion_word_dic[word_name].append(word.word)
-                if "n" in word.flag:
+                for key, words in Global_Variables.sensitive_word.items(): #广告词和敏感词同理
+                    if (word.word in words):
+                        self.sensitive_word.setdefault(key, [])
+                        self.sensitive_word[key].append(word.word)
+                if word.word in Global_Variables.ad_word.keys():
+                    self.ad_word.append(word.word)
+                if "n" in word.flag:       #统计剧本中出现的出现的动词和名词（暂时还没用到，先统计）
                     self.noun.append(word.word)
                 elif 'v' in word.flag:
                     self.verb.append(word.word)
-            self.content = line_str.replace(line_str.split(':')[0] + ':', "")
+            self.content = line_str.replace(line_str.split(':')[0] + ':', "") #将对话中 "xxxxx:yyyyy“的对话去掉说话的人，保留说话内容
             # self.content = line_str.strip(name + ':')
             # print(self.content)
         else:
             self.type = 'event'
             self.content = line_str
+        """
+        对对话、内容进行分词统计
+        包括情感词，广告词，敏感词
+        动词，名词（暂时没用到）
+        """
         cut_words = pseg.cut(self.content)
         for cut_word in cut_words:
             for name in Global_Variables.word_list_dic.keys():
@@ -89,5 +100,5 @@ class Line():
 
 if __name__ == "__main__":
     a = 1
-    test = Line('傻逼')
+    test = Line('sb')
     test.showInfo()
