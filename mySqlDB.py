@@ -93,7 +93,7 @@ def write_session_ad_words(args):
 
 def write_implanted_ad(args):
     c = db.cursor()
-    sql = """insert into implanted_ad(ad_id,appearances,script_id) values(%s,%s,%s)"""
+    sql = """insert into implanted_ad(ad_id,screenings,script_id) values(%s,%s,%s)"""
     c.executemany(sql, args)
     db.commit()
     c.close()
@@ -265,5 +265,10 @@ def cancel_all_write_action(script_id):
 
 
 if __name__ == "__main__":
-    script_id = 32
+    script_id = 40
     cancel_all_write_action([script_id])
+    script_id = 41
+    cancel_all_write_action([script_id])
+    script_id = 42
+    cancel_all_write_action([script_id])
+

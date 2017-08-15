@@ -94,6 +94,9 @@ class Script:
         print('程序推测主角')
         self.find_main_charactor(self.file_text, self.mode)
         main_role = ''
+        for name in Global_Variables.name_list:
+            main_role += name + ","
+        main_role = main_role[:-1]
         print('推测主角为' + main_role)
         self.script_id = 0
         self.session_list = []  # 存放所有场次信息的list
@@ -201,6 +204,11 @@ class Script:
             for i in range(0, character_range):
                 Global_Variables.name_list.append(user_dic[i][0])
                 # print(Global_Variables.name_list)
+
+            '''简单模式下也要初始化人物小传类，防止数据库写入的时候报错'''
+            for name in Global_Variables.name_list:
+                self.character_biographies_dic.setdefault(name, character_biographies())
+
         for word in Global_Variables.name_list:
             jieba.add_word(word, 10000)
 
@@ -518,9 +526,9 @@ class Script:
         :return: 插入数据库的list
         """
         args = []
-        for info in self.all_ad_count:
-            if info[1] > 3:
-                args.append((Global_Variables.ad_word[info[0]], info[1], self.script_id))
+        for session in self.session_list:
+            for word in session.session_ad_word_set:
+                args.append((Global_Variables.ad_word[word], session.session_number, self.script_id))
         return args
 
     def cal_script_sensitive_args(self):
@@ -747,7 +755,6 @@ class Script:
             mySqlDB.upadte_sequence_scene((self.script_id, self.script_id))
             mySqlDB.update_sequence_screenings((self.script_id, self.script_id))
             self.extend_sequnce_args()
-            print(self.shunjingbiao_args)
             mySqlDB.write_sequence_scene_detail(self.shunjingbiao_args)
             mySqlDB.write_sequence_screenings_detail(self.shunchangbiao_args)
             print("写入广告词")
@@ -775,10 +782,10 @@ if __name__ == "__main__":
     import time
 
     # t=time.time()
-    script = Script('白鹿原201708101054.docx', mode=1)
+    # script = Script('白鹿原201708101054.docx', mode=1)
     # print("用时"+str(int(time.time()-t))+"秒")
-    script = Script('让子弹飞201708101126.docx', mode=1)
-    script = Script('疯狂的石头201708101529.docx', mode=1)
-    # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜201708111410.docx', mode=0)
-    # script = Script('D:\文件与资料\Onedrive\文档\项目\FB\惊情墨尔本201708111458.docx', mode=2)
+    # script = Script('让子弹飞201708101126.docx', mode=1)
+    # script = Script('疯狂的石头201708101529.docx', mode=1)
+    script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜201708111410.docx', mode=0)
+    script = Script('D:\文件与资料\Onedrive\文档\项目\FB\惊情墨尔本201708111458.docx', mode=2)
     # script.showinfo(show_session_detail=1)

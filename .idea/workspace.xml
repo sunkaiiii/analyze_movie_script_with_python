@@ -11,89 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Global_Variables.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Global_Variables.py">
+      <file leaf-file-name="day_8_15.py" pinned="false" current-in-tab="true">
+        <entry file="file://$USER_HOME$/Desktop/day_8_15.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1458">
-              <caret line="72" column="18" lean-forward="false" selection-start-line="72" selection-start-column="18" selection-end-line="72" selection-end-column="18" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="webserviceTest.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/webserviceTest.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="21" column="30" lean-forward="false" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="handle_script.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/handle_script.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-9782">
-              <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-              <folding>
-                <element signature="e#15#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="hibiscusMain.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hibiscusMain.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="19" column="8" lean-forward="false" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="line.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/line.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="691">
-              <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="36" />
-              <folding>
-                <element signature="e#15#27#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="session.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/session.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5130">
-              <caret line="190" column="37" lean-forward="false" selection-start-line="190" selection-start-column="37" selection-end-line="190" selection-end-column="37" />
-              <folding>
-                <element signature="e#15#26#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mySqlDB.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mySqlDB.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="516">
-              <caret line="144" column="9" lean-forward="false" selection-start-line="144" selection-start-column="9" selection-end-line="144" selection-end-column="9" />
+            <state relative-caret-position="189">
+              <caret line="7" column="19" lean-forward="false" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -110,10 +32,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>shunchangbiao_args</find>
-      <find>par</find>
-      <find>mode==0</find>
-      <find>script_role</find>
       <find>jieba.add_word</find>
       <find>main——</find>
       <find>session_main_content</find>
@@ -138,8 +56,12 @@
       <find>Charactor</find>
       <find>other_character</find>
       <find>replace</find>
-      <find>character_biographies_dic</find>
       <find>name_list</find>
+      <find>character_biographies_dic</find>
+      <find>print(</find>
+      <find>script_ad_args</find>
+      <find>sensitive</find>
+      <find>implan</find>
     </findStrings>
     <replaceStrings>
       <replace>from Global_Variables import Global_Variables</replace>
@@ -171,14 +93,15 @@
         <option value="$PROJECT_DIR$/Global_Variables.py" />
         <option value="$PROJECT_DIR$/line.py" />
         <option value="$PROJECT_DIR$/session.py" />
-        <option value="$PROJECT_DIR$/mySqlDB.py" />
         <option value="$PROJECT_DIR$/handle_script.py" />
+        <option value="$PROJECT_DIR$/mySqlDB.py" />
+        <option value="$USER_HOME$/Desktop/day_8_15.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="188" />
-    <option name="y" value="-27" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="622" />
+    <option name="y" value="217" />
     <option name="width" value="976" />
     <option name="height" value="927" />
   </component>
@@ -229,7 +152,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.handle_script">
+  <component name="RunManager" selected="Python.day_8_15">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -310,6 +233,23 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
+    <configuration name="day_8_15" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="fb" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Desktop/day_8_15.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="handle_script" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -323,23 +263,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="fb" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/handle_script.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <configuration name="line" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="fb" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/line.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -397,18 +320,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.handle_script" />
-      <item index="1" class="java.lang.String" itemvalue="Python.line" />
-      <item index="2" class="java.lang.String" itemvalue="Python.session" />
-      <item index="3" class="java.lang.String" itemvalue="Python.test" />
-      <item index="4" class="java.lang.String" itemvalue="Python.mySqlDB" />
+      <item index="1" class="java.lang.String" itemvalue="Python.session" />
+      <item index="2" class="java.lang.String" itemvalue="Python.test" />
+      <item index="3" class="java.lang.String" itemvalue="Python.mySqlDB" />
+      <item index="4" class="java.lang.String" itemvalue="Python.day_8_15" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.handle_script" />
-        <item index="1" class="java.lang.String" itemvalue="Python.mySqlDB" />
-        <item index="2" class="java.lang.String" itemvalue="Python.session" />
-        <item index="3" class="java.lang.String" itemvalue="Python.test" />
-        <item index="4" class="java.lang.String" itemvalue="Python.line" />
+        <item index="0" class="java.lang.String" itemvalue="Python.day_8_15" />
+        <item index="1" class="java.lang.String" itemvalue="Python.handle_script" />
+        <item index="2" class="java.lang.String" itemvalue="Python.mySqlDB" />
+        <item index="3" class="java.lang.String" itemvalue="Python.session" />
+        <item index="4" class="java.lang.String" itemvalue="Python.test" />
       </list>
     </recent_temporary>
   </component>
@@ -461,13 +384,12 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1098" extended-state="6" />
-    <editor active="true" />
+    <frame x="622" y="217" width="976" height="927" extended-state="0" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35386223" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39330545" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5235669" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -494,7 +416,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/bayes_test_sklearn.py" />
     <entry file="file://$PROJECT_DIR$/bayes_test.py" />
     <entry file="file://$PROJECT_DIR$/bayes_test_sklearn.py" />
     <entry file="file://$PROJECT_DIR$/test2vec_sklearn_test.py" />
@@ -593,56 +514,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1458">
-          <caret line="72" column="18" lean-forward="false" selection-start-line="72" selection-start-column="18" selection-end-line="72" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Global_Variables.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
+        <state relative-caret-position="1404">
           <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/line.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="691">
-          <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="36" />
-          <folding>
-            <element signature="e#15#27#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/session.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5130">
-          <caret line="190" column="37" lean-forward="false" selection-start-line="190" selection-start-column="37" selection-end-line="190" selection-end-column="37" />
-          <folding>
-            <element signature="e#15#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hibiscusMain.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="19" column="8" lean-forward="false" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/mySqlDB.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="516">
-          <caret line="144" column="9" lean-forward="false" selection-start-line="144" selection-start-column="9" selection-end-line="144" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -657,11 +532,65 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/handle_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9782">
-          <caret line="13" column="0" lean-forward="true" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state relative-caret-position="69">
+          <caret line="783" column="19" lean-forward="true" selection-start-line="783" selection-start-column="19" selection-end-line="783" selection-end-column="19" />
           <folding>
             <element signature="e#15#29#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="72" column="18" lean-forward="false" selection-start-line="72" selection-start-column="18" selection-end-line="72" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hibiscusMain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="19" column="8" lean-forward="false" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/line.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="36" />
+          <folding>
+            <element signature="e#15#27#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/session.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="190" column="37" lean-forward="false" selection-start-line="190" selection-start-column="37" selection-end-line="190" selection-end-column="37" />
+          <folding>
+            <element signature="e#15#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mySqlDB.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="48" lean-forward="true" selection-start-line="8" selection-start-column="48" selection-end-line="8" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/day_8_15.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="7" column="19" lean-forward="false" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
