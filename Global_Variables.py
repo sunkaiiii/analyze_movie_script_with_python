@@ -35,9 +35,10 @@ def get_ad_word():
     return words
 
 def get_sensitive_word():
-    words=[]
+    words={}
     for word in mySqlDB.read_sensitive_words():
-        words.append(word[0])
+        words.setdefault(word[0],[])
+        words[word[0]].append(word[1])
     return words
 word_list_dic = save_userdic_to_file()  # 读取数据库的词库，并保存在本地供jieba分词学习（也可以保存在List中，用循环使用addword给jieba提供词库）
 name_list = []

@@ -97,6 +97,7 @@ class Script:
         self.shunchangbiao = {}
         self.all_ad_count = []
         self.session_ad_count = []
+        self.all_sensitive_word_count_dic = {}
         self.in_place = 0
         self.out_place = 0
         self.location_count = {}
@@ -128,6 +129,9 @@ class Script:
         self.create_shunchangjingbiao()
         print("计算广告信息")
         self.session_ad_count = self.cal_ad_words_count()
+        print("计算敏感词信息")
+        self.cal_all_senstive_word_count()
+        import time
 
         self.write_info_to_the_sql()
 
@@ -292,6 +296,7 @@ class Script:
             ss = session.Session(s, self.mode)
             self.session_list.append(ss)
             count += 1
+            # ss.show_info()
             if count % 20 == 0:
                 print('已处理' + str(count) + '场')
 
@@ -343,6 +348,12 @@ class Script:
         #     print(i)
         # print(args)
         return args
+
+    def cal_all_senstive_word_count(self):
+        for session in self.session_list:
+            for key, word_count in session.session_sensitive_word_count_dic.items():
+                self.all_sensitive_word_count_dic.setdefault(key, 0)
+                self.all_sensitive_word_count_dic[key] += word_count
 
     def cal_script_detail(self):
         '''读取用于写入scrit_detal表的信息'''
@@ -472,6 +483,17 @@ class Script:
         for info in self.all_ad_count:
             if info[1] > 3:
                 args.append((Global_Variables.ad_word[info[0]], info[1], self.script_id))
+        return args
+
+    def cal_script_sensitive_args(self):
+        """
+        生成插入script_sensitive_word表的数据
+        :return:用于插入数据库的list
+        """
+        args = []
+        sensitive_word_sort = sorted(self.all_sensitive_word_count_dic.items(), key=lambda x: x[1], reverse=True)
+        for word, count in sensitive_word_sort:
+            args.append((self.script_id, word, count))
         return args
 
     def create_base_excel(self, table, type=0):
@@ -662,34 +684,44 @@ class Script:
     def write_info_to_the_sql(self):
         print('写入数据库')
         script_roles = self.cal_script_role()
-        print("写入剧本角色表")
-        mySqlDB.write_script_role_info(script_roles)
         script_detail_args = self.cal_script_detail()
         participle_args = self.cal_participle()
-        print('计算主角在每场中的情感词')
-        session_emotionword_args = self.cal_session_role_word()
-        print('写入剧本信息表')
-        mySqlDB.write_script_detail_info(script_detail_args)
-        print("写入中间词表")
-        mySqlDB.write_participle_info(participle_args)
-        print("写入角色场景情感表")
-        mySqlDB.write_lib_session_emotionword(session_emotionword_args)
-        print('写入顺场景表')
-        mySqlDB.write_sequence_screenings((self.project_id, self.script_id, len(self.session_list), self.all_page_num,
-                                           self.script_name, 1,
-                                           os.getcwd() + '\\' + self.script_name + '_顺场表' + '.xls'))
-        mySqlDB.write_sequence_scene((self.project_id, self.script_id, len(self.session_list), self.all_page_num,
-                                      self.script_name, 1, os.getcwd() + '\\' + self.script_name + '_顺景表' + '.xls'))
-        mySqlDB.upadte_sequence_scene((self.script_id, self.script_id))
-        mySqlDB.update_sequence_screenings((self.script_id, self.script_id))
-        self.extend_sequnce_args()
-        mySqlDB.write_sequence_scene_detail(self.shunjingbiao_args)
-        mySqlDB.write_sequence_screenings_detail(self.shunchangbiao_args)
-        print("写入广告词")
-        # session_ad_args=self.cal_session_ad_args()
         script_ad_args = self.cal_script_ad_args()
-        # mySqlDB.write_session_ad_words(session_ad_args)
-        mySqlDB.write_implanted_ad(script_ad_args)
+        script_sensitive_word_args = self.cal_script_sensitive_args()
+        try:
+            print("写入剧本角色表")
+            mySqlDB.write_script_role_info(script_roles)
+            print('计算主角在每场中的情感词')
+            session_emotionword_args = self.cal_session_role_word()
+            print('写入剧本信息表')
+            mySqlDB.write_script_detail_info(script_detail_args)
+            print("写入中间词表")
+            mySqlDB.write_participle_info(participle_args)
+            print("写入角色场景情感表")
+            mySqlDB.write_lib_session_emotionword(session_emotionword_args)
+            print('写入顺场景表')
+            mySqlDB.write_sequence_screenings(
+                (self.project_id, self.script_id, len(self.session_list), self.all_page_num,
+                 self.script_name, 1,
+                 os.getcwd() + '\\' + self.script_name + '_顺场表' + '.xls'))
+            mySqlDB.write_sequence_scene((self.project_id, self.script_id, len(self.session_list), self.all_page_num,
+                                          self.script_name, 1, os.getcwd() + '\\' + self.script_name + '_顺景表' + '.xls'))
+            mySqlDB.upadte_sequence_scene((self.script_id, self.script_id))
+            mySqlDB.update_sequence_screenings((self.script_id, self.script_id))
+            self.extend_sequnce_args()
+            print(self.shunjingbiao_args)
+            mySqlDB.write_sequence_scene_detail(self.shunjingbiao_args)
+            mySqlDB.write_sequence_screenings_detail(self.shunchangbiao_args)
+            print("写入广告词")
+            # session_ad_args=self.cal_session_ad_args()
+            # mySqlDB.write_session_ad_words(session_ad_args)
+            mySqlDB.write_implanted_ad(script_ad_args)
+            print("写入敏感词")
+            mySqlDB.write_script_sensitive_wrod(script_sensitive_word_args)
+        except:
+            mySqlDB.cancel_all_write_action([self.script_id])
+            print("写入失败")
+            return
         print("写入完成")
 
     def showinfo(self, show_session_detail=0, show_line_detail=0):
@@ -705,7 +737,7 @@ if __name__ == "__main__":
     import time
 
     # t=time.time()
-    # script = Script('白鹿原201708101054.docx', mode=1)
+    script = Script('白鹿原201708101054.docx', mode=1)
     # print("用时"+str(int(time.time()-t))+"秒")
     script = Script('让子弹飞201708101126.docx', mode=1)
     script = Script('疯狂的石头201708101529.docx', mode=1)

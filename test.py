@@ -61,13 +61,17 @@ def write_sensitive_words_with_type():
     file=open('敏感词库表统计.txt',encoding="utf8").read()
     type_dic={}
     for line in file.split("\n"):
-        print(line)
         line=line.split(" ")
-        if(len(line)==3):
-            type_dic.setdefault(line[1],[])
-            type_dic[line[1]].append(line[2])
-    for i in type_dic.items():
-        print(i)
+        if(len(line)==2):
+            line[0]=line[0].replace("\ufeff","")
+            type_dic.setdefault(line[0],[])
+            type_dic[line[0]].append(line[1])
+    args=[]
+    for key,value in type_dic.items():
+        for word in value:
+            args.append((key,word))
+    import mySqlDB
+    mySqlDB.insert_sensitive_word(args)
 
-# write_sensitive_words_with_type()
-read_ad_words()
+write_sensitive_words_with_type()
+# read_ad_words()

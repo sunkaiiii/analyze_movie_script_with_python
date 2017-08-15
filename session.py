@@ -46,7 +46,7 @@ class Session():
         self.session_emotion_value=0
         self.session_emotion_words_dic = {}
         self.session_emotion_words_set_dic = {}
-        self.session_sensitive_word=[]
+        self.session_sensitive_word={}
         self.session_sensitive_word_set=()
         self.session_sensitive_word_count_dic={}
         self.session_ad_word=[]
@@ -128,12 +128,17 @@ class Session():
             # self.show_info()
 
     def cal_sensitive_words(self):
+        self.session_sensitive_word_set=[]
         for line in self.line_list:
-            self.session_sensitive_word.extend(line.sensitive_word)
-        self.session_sensitive_word_set=set(self.session_sensitive_word)
-        for word in self.session_sensitive_word:
-            self.session_sensitive_word_count_dic.setdefault(word,0)
-            self.session_sensitive_word_count_dic[word]+=1
+            for key,words in line.sensitive_word.items():
+                self.session_sensitive_word.setdefault(key,[])
+                self.session_sensitive_word[key].extend(words)
+                self.session_sensitive_word_set.extend(words)
+        self.session_sensitive_word_set=set(self.session_sensitive_word_set)
+        for key,words in self.session_sensitive_word.items():
+            for word in words:
+                self.session_sensitive_word_count_dic.setdefault(word,0)
+                self.session_sensitive_word_count_dic[word]+=1
         # print(self.session_sensitive_word_set)
 
     def cal_ad_words(self):
@@ -212,6 +217,8 @@ class Session():
         print('场景情感值:' + str(self.session_emotion_value))
         print('主要内容:'+str(self.session_main_content))
         print('敏感词为:'+str(self.session_sensitive_word))
+        print(self.session_sensitive_word_set)
+        print(self.session_sensitive_word_count_dic)
         print('广告词'+str(self.session_ad_word))
         for Charactor in self.session_charactor_dic.values():
             if len(Charactor.charactor_worlds)>0:
@@ -226,6 +233,6 @@ class Session():
 
 
 if __name__ == "__main__":
-    a = open('test.txt', encoding='utf-8').read()
-    a = Session(a, mode=1)
+    # a = open('test.txt', encoding='utf-8').read()
+    a = Session("傻逼\n傻逼\n傻逼", mode=1)
     a.show_info()

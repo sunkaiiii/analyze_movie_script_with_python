@@ -99,6 +99,14 @@ def write_implanted_ad(args):
     c.close()
 
 
+def write_script_sensitive_wrod(args):
+    c = db.cursor()
+    sql = """insert into script_sensitive_word(script_id,sensitive_word,count) values(%s,%s,%s)"""
+    c.executemany(sql, args)
+    db.commit()
+    c.close()
+
+
 def upadte_sequence_scene(args):
     c = db.cursor()
     sql = """update  sequence_scene set sequence_screenings_id=(select id from sequence_screenings where script_id=%s LIMIT 1) where script_id=%s"""
@@ -150,7 +158,10 @@ def get_sequence_scene_id(args):
     c.execute(sql, args)
     result = c.fetchone()
     c.close()
-    return result[0]
+    if result is not None:
+        return result[0]
+    else:
+        return -1;
 
 
 def get_sequence_screenings_id(args):
@@ -159,7 +170,10 @@ def get_sequence_screenings_id(args):
     c.execute(sql, args)
     result = c.fetchone()
     c.close()
-    return result[0]
+    if result is not None:
+        return result[0]
+    else:
+        return -1
 
 
 def read_lib_thesaurus(type=''):
@@ -184,7 +198,7 @@ def read_lib_ad():
 
 
 def read_sensitive_words():
-    sql = """select sensitive_word from sensitive_word"""
+    sql = """select sensitive_type,sensitive_word from lib_sensitive_word"""
     c = db.cursor()
     c.execute(sql)
     result = c.fetchall()
@@ -200,15 +214,53 @@ def insert_ad_words(args):
     c.close()
 
 
-def insert_sensitive_words(args):
+def insert_sensitive_word(args):
     c = db.cursor()
-    sql = """insert into sensitive_word(sensitive_word) values(%s)"""
+    sql = """insert into lib_sensitive_word(sensitive_type,sensitive_word) values(%s,%s)"""
     c.executemany(sql, args)
     db.commit()
     c.close()
 
 
+def cancel_all_write_action(script_id):
+    c = db.cursor()
+    sql = """delete from script_sensitive_word where script_id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+    sql = """delete from implanted_ad where script_id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+    scene_id = get_sequence_scene_id(script_id)
+    screenings_id = get_sequence_screenings_id(script_id)
+    sql = """delete from sequence_scene_detail where sequence_scene_id=""" + str(scene_id)
+    c.execute(sql)
+    db.commit()
+    sql = """delete from sequence_screenings_detail where sequence_screenings_id=""" + str(screenings_id)
+    c.execute(sql)
+    db.commit()
+    sql = """delete from sequence_scene where script_id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+    sql = """delete from sequence_screenings where script_id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+    sql = """delete from participle where script_id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+    sql = """delete from lib_session_emotionword where script_id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+    sql = """delete from script_detail where script_id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+    sql = """delete from script_role where script_id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+    sql = """delete from script where id=%s"""
+    c.execute(sql, script_id)
+    db.commit()
+
+
 if __name__ == "__main__":
-    result = read_lib_ad()
-    for word in result:
-        print(word[0])
+    script_id = 32
+    cancel_all_write_action([script_id])

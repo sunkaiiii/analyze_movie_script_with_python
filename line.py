@@ -8,8 +8,9 @@ for word in Global_Variables.name_list:
     jieba.add_word(word,10000)
 for word in Global_Variables.ad_word.keys():
     jieba.add_word(word,1000)
-for word in Global_Variables.sensitive_word:
-    jieba.add_word(word,1000)
+for key,words in Global_Variables.sensitive_word.items():
+    for word in words:
+        jieba.add_word(word,1000)
 
 '''
 ----------line.py------------
@@ -28,7 +29,7 @@ class Line():
         self.noun = []
         self.verb = []
         self.other_character = []
-        self.sensitive_word=[]
+        self.sensitive_word={}
         self.ad_word=[]
         self.who_said_no_cut = ""
         if ':' in line_str or '：' in line_str:  # 当有冒号时，认为是一个对话
@@ -62,8 +63,10 @@ class Line():
                 if cut_word.word in Global_Variables.word_list_dic[name]:
                     # print(name, cut_word.word)
                     self.emotion_word_dic[name].append(cut_word.word)
-            if cut_word.word in Global_Variables.sensitive_word:
-                self.sensitive_word.append(cut_word.word)
+            for key,words in Global_Variables.sensitive_word.items():
+                if(cut_word.word in words):
+                    self.sensitive_word.setdefault(key,[])
+                    self.sensitive_word[key].append(cut_word.word)
             if cut_word.word in Global_Variables.ad_word.keys():
                 self.ad_word.append(cut_word.word)
             if cut_word.word in Global_Variables.name_list:
@@ -81,9 +84,10 @@ class Line():
         print('noun' + str(self.noun))
         print('verb' + str(self.verb))
         print('other_chracter' + str(self.other_character))
+        print("敏感词"+str(self.sensitive_word))
 
 
 if __name__ == "__main__":
     a = 1
-    test = Line('张牧之:那，你就让他打了？')
+    test = Line('傻逼')
     test.showInfo()
