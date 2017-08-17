@@ -1,5 +1,4 @@
 # coding=utf-8
-import mySqlDB
 import session
 import os
 import Global_Variables
@@ -20,42 +19,6 @@ if not os.path.exists('out'):
     os.mkdir('out')
 
 
-class character_biographies:
-    """
-    用于记录剧本人物小传的类
-    一个角色一个人物小传的实体对象
-    """
-
-    def __init__(self, num=-1, name='', gender=0, role='', age=0, career='', constellation=0, blood=0, introduction='',
-                 temperament=''):
-        self.num = num
-        self.name = name
-        self.gender = gender
-        self.role = role
-        self.age = age
-        self.career = career  # 职业
-        self.constellation = constellation  # 星座
-        self.blood = blood  # 血型
-        self.introduction = introduction  # 人物简介
-        self.temperament = temperament  # 人物性格
-        self.relationship = {}  # 人物图谱（与其他角色关系，联系），未完成，效果惊人的差
-        cut_word = jieba.cut(self.introduction)
-        word_list = []
-        for word in cut_word:
-            if word in Global_Variables.stop_word:
-                continue
-            if word in Global_Variables.punctuation_mark:
-                continue
-            word_list.append(word)
-        for i in range(len(word_list)):
-            try:
-                if '和' in word_list[i] or '与' in word_list[i]:
-                    self.relationship.setdefault(word_list[i + 1], word_list[i + 2])
-                if '女主角' in word_list[i] or '男主角' in word_list[i]:
-                    self.relationship.setdefault(word_list[i], word_list[i + 1])
-            except:
-                continue
-                # print(self.relationship)
 
 
 class shunjingbiao:
@@ -84,13 +47,7 @@ class Script:
         self.script_name = ''
         print('读取剧本')
         self.file_text = self.read_script_file(filename)
-        self.character_biographies_dic = {}
         Global_Variables.name_list = []
-        if self.mode == 0 or self.mode == 2:
-            print('读取人物小传')
-            self.file_text = self.read_character_biographies(self.file_text)
-        if self.mode == 2:
-            self.mode = 1
         print('程序推测主角')
         self.find_main_charactor(self.file_text, self.mode)
         main_role = ''
@@ -205,117 +162,10 @@ class Script:
                 Global_Variables.name_list.append(user_dic[i][0])
                 # print(Global_Variables.name_list)
 
-            '''简单模式下也要初始化人物小传类，防止数据库写入的时候报错'''
-            for name in Global_Variables.name_list:
-                self.character_biographies_dic.setdefault(name, character_biographies())
 
         for word in Global_Variables.name_list:
             jieba.add_word(word, 10000)
 
-    def read_character_biographies(self, file_text):
-        """
-        读取人物小传为传递过来的整个剧本的文本，通常人物小传都是在剧本的开头（应该是强制要求）
-        读取每一行，以‘:'（冒号）为标识切分，读取切分出来的标签，当符合人物小传的标签时，则认为是一个人物小传
-        初始化人物小传类，并记录信息
-        :param file_text: 剧本文本
-        :return: 去除掉人物小传之后的文本部分
-        """
-        script = file_text
-        session_list = script.split('\n\n')
-        new_text = ''
-        for session in session_list:
-            num = -1
-            name = ''
-            gender = 0
-            role = ''
-            age = 0
-            career = ''
-            constellation = 0
-            blood = 0
-            introduction = ''
-            temperament = ''
-            session = session.split('\n')
-            for line in session:
-                line = line.replace('：', ":").replace(' ', '').replace('\n', '').replace('\ufeff', '')
-                if ':' in line:  # 当发现':’之后，试图判断是不是一个人物小传
-                    script_line = line
-                    is_info = False
-                    line = line.split(':')
-                    info = line[0]
-                    for index in range(0, len(Global_Variables.character_biographies)):
-                        if info in Global_Variables.character_biographies[index]:
-                            data = line[1]
-                            if index == 0:
-                                num = int(data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', ''))
-                                is_info = True
-                            elif index == 1:
-                                name = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
-                                Global_Variables.name_list.append(name)
-                                is_info = True
-                            elif index == 2:
-                                gender = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
-                                is_info = True
-                                if '男' in gender:
-                                    gender = 0
-                                else:
-                                    gender = 1
-                            elif index == 3:
-                                role = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
-                                is_info = True
-                            elif index == 4:
-                                age = int(data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff',
-                                                                                                          '').replace(
-                                    '岁', '').replace('。', ''))
-                                is_info = True
-                            elif index == 5:
-                                career = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')
-                                is_info = True
-                            elif index == 6:
-                                constellation = Global_Variables.constellation[
-                                    data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')]
-                                is_info = True
-                            elif index == 7:
-                                blood = Global_Variables.blood[
-                                    data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff', '')]
-                                is_info = True
-                            elif index == 8:
-                                introduction = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff',
-                                                                                                               '')
-                                is_info = True
-                            elif index == 9:
-                                temperament = data.replace('.', '').replace('、', '').replace(' ', '').replace('\ufeff',
-                                                                                                              '')
-                                is_info = True
-                    if not is_info:
-                        new_text += script_line + '\n'
-                else:
-                    new_text += line + '\n'
-            '''检查输出'''
-            # print(str(num),
-            #       str(name),
-            #       str(gender),
-            #       str(role),
-            #       str(age),
-            #       str(career),
-            #       str(constellation),
-            #       str(blood),
-            #       str(introduction),
-            #       str(temperament))
-            if num != -1:
-                self.character_biographies_dic.setdefault(name,
-                                                          character_biographies(num, name, gender, role, age, career,
-                                                                                constellation, blood,
-                                                                                introduction, temperament))
-            new_text += '\n'
-        # print(new_text)
-        new_text = new_text.replace('人物小传', '')
-        # print(self.character_biographies_dic)
-        # self.find_main_charactor(filename)
-        # print(Global_Variables.name_list)
-        return new_text
-
-
-        # print(script)
 
     def read_script_file(self, filename):
         """
@@ -412,11 +262,6 @@ class Script:
             role = ""
             role_id = ''
             role_number = 0
-            for name in session.session_charactor_dic.keys():
-                if session.session_charactor_dic[name].appearance:
-                    role += name + '|'
-                    role_number += 1
-                    role_id += str(mySqlDB.get_script_role_id(name)) + '|'
             role = role[:-1]
             role_id = role_id[:-1]
             if len(session.session_time) > 0:
@@ -692,18 +537,6 @@ class Script:
         self.create_shunjingbiao()
         self.create_shunchangbiao()
 
-    def get_project_id(self):
-        project_name = self.script_name.split('_')[0][:-12]
-        return mySqlDB.get_project_id([project_name])
-
-    def get_script_id(self):
-        return mySqlDB.get_script_id([self.script_name])
-
-    def get_sequence_scene_id(self):
-        return mySqlDB.get_sequence_scene_id([self.script_id])
-
-    def get_sequence_screening_id(self):
-        return mySqlDB.get_sequence_screenings_id([self.script_id])
 
     def extend_sequnce_args(self):
         sequence_scene_id = self.get_sequence_scene_id()
@@ -715,59 +548,7 @@ class Script:
             self.shunchangbiao_args[i].append(sequence_screening_id)
             self.shunchangbiao_args[i] = tuple(self.shunchangbiao_args[i])
 
-    def write_project_info_to_sql(self):
-        script_name = self.script_name.split('_')[0][:-12]
-        type = '4,5'  # 编造的数据
-        word_count = 0
-        for count in self.charactor_overrall_word_count_dic.values():
-            word_count += int(count)
-        script_number = len(self.session_list)
-        version = self.script_name
-        project_id = self.project_id
-        args = (script_name, type, word_count, script_number, version, project_id)
-        mySqlDB.write_script(args)
 
-    def write_info_to_the_sql(self):
-        print('写入数据库')
-        script_roles = self.cal_script_role()
-        script_detail_args = self.cal_script_detail()
-        participle_args = self.cal_participle()
-        script_ad_args = self.cal_script_ad_args()
-        script_sensitive_word_args = self.cal_script_sensitive_args()
-        try:
-            print("写入剧本角色表")
-            mySqlDB.write_script_role_info(script_roles)
-            print('计算主角在每场中的情感词')
-            session_emotionword_args = self.cal_session_role_word()
-            print('写入剧本信息表')
-            mySqlDB.write_script_detail_info(script_detail_args)
-            print("写入中间词表")
-            mySqlDB.write_participle_info(participle_args)
-            print("写入角色场景情感表")
-            mySqlDB.write_lib_session_emotionword(session_emotionword_args)
-            print('写入顺场景表')
-            mySqlDB.write_sequence_screenings(
-                (self.project_id, self.script_id, len(self.session_list), self.all_page_num,
-                 self.script_name, 1,
-                 os.getcwd() + '\\' + self.script_name + '_顺场表' + '.xls'))
-            mySqlDB.write_sequence_scene((self.project_id, self.script_id, len(self.session_list), self.all_page_num,
-                                          self.script_name, 1, os.getcwd() + '\\' + self.script_name + '_顺景表' + '.xls'))
-            mySqlDB.upadte_sequence_scene((self.script_id, self.script_id))
-            mySqlDB.update_sequence_screenings((self.script_id, self.script_id))
-            self.extend_sequnce_args()
-            mySqlDB.write_sequence_scene_detail(self.shunjingbiao_args)
-            mySqlDB.write_sequence_screenings_detail(self.shunchangbiao_args)
-            print("写入广告词")
-            # session_ad_args=self.cal_session_ad_args()
-            # mySqlDB.write_session_ad_words(session_ad_args)
-            mySqlDB.write_implanted_ad(script_ad_args)
-            print("写入敏感词")
-            mySqlDB.write_script_sensitive_wrod(script_sensitive_word_args)
-        except:
-            mySqlDB.cancel_all_write_action([self.script_id])
-            print("写入失败")
-            return
-        print("写入完成")
 
     def showinfo(self, show_session_detail=0, show_line_detail=0):
         for k, v in self.charactor_overrall_word_count_dic.items():
@@ -786,6 +567,4 @@ if __name__ == "__main__":
     # print("用时"+str(int(time.time()-t))+"秒")
     # script = Script('让子弹飞201708101126.docx', mode=1)
     # script = Script('疯狂的石头201708101529.docx', mode=1)
-    script = Script('D:\文件与资料\Onedrive\文档\项目\FB\万人膜拜201708111410.docx', mode=0)
-    script = Script('D:\文件与资料\Onedrive\文档\项目\FB\惊情墨尔本201708111458.docx', mode=2)
     # script.showinfo(show_session_detail=1)

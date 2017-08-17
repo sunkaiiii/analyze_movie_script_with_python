@@ -10,7 +10,28 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="handle_script.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/handle_script.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="16982">
+              <caret line="559" column="0" lean-forward="false" selection-start-line="559" selection-start-column="0" selection-end-line="559" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Global_Variables.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Global_Variables.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1313">
+              <caret line="51" column="24" lean-forward="false" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -21,8 +42,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>jieba.add_word</find>
-      <find>main——</find>
       <find>session_main_content</find>
       <find>ad_word</find>
       <find>session_ad_word_count_dic</find>
@@ -51,6 +70,8 @@
       <find>script_ad_args</find>
       <find>sensitive</find>
       <find>implan</find>
+      <find>mysql</find>
+      <find>character_biographies</find>
     </findStrings>
     <replaceStrings>
       <replace>from Global_Variables import Global_Variables</replace>
@@ -79,12 +100,12 @@
         <option value="$USER_HOME$/Anaconda3/Lib/site-packages/pyExcelerator/__init__.py" />
         <option value="$USER_HOME$/Desktop/filter.py" />
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/Global_Variables.py" />
         <option value="$PROJECT_DIR$/line.py" />
         <option value="$PROJECT_DIR$/session.py" />
-        <option value="$PROJECT_DIR$/handle_script.py" />
         <option value="$PROJECT_DIR$/mySqlDB.py" />
         <option value="$USER_HOME$/Desktop/day_8_15.py" />
+        <option value="$PROJECT_DIR$/handle_script.py" />
+        <option value="$PROJECT_DIR$/Global_Variables.py" />
       </list>
     </option>
   </component>
@@ -374,8 +395,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="2182" height="1402" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25277779" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25277779" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -453,24 +475,10 @@
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/MySQLdb/cursors.py" />
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/MySQLdb/connections.py" />
     <entry file="file://$USER_HOME$/Anaconda3/Lib/base64.py" />
-    <entry file="file://$PROJECT_DIR$/Global_Variables.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1404">
-          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/webserviceTest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
           <caret line="21" column="30" lean-forward="false" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/handle_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="783" column="19" lean-forward="true" selection-start-line="783" selection-start-column="19" selection-end-line="783" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -507,6 +515,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1023">
           <caret line="33" column="0" lean-forward="true" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/handle_script.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16982">
+          <caret line="559" column="0" lean-forward="false" selection-start-line="559" selection-start-column="0" selection-end-line="559" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Global_Variables.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1313">
+          <caret line="51" column="24" lean-forward="false" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
           <folding />
         </state>
       </provider>
