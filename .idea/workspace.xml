@@ -14,9 +14,11 @@
       <file leaf-file-name="handle_script.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/handle_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16982">
-              <caret line="559" column="0" lean-forward="false" selection-start-line="559" selection-start-column="0" selection-end-line="559" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="33">
+              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <folding>
+                <element signature="e#15#29#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -24,8 +26,18 @@
       <file leaf-file-name="Global_Variables.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Global_Variables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1313">
-              <caret line="51" column="24" lean-forward="false" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
+            <state relative-caret-position="-799">
+              <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="line.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/line.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2513">
+              <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -55,7 +67,6 @@
       <find>session_sensitive_word</find>
       <find>session_list</find>
       <find>handle</find>
-      <find>ad</find>
       <find>sorted</find>
       <find>计算敏感词</find>
       <find>script_id</find>
@@ -72,6 +83,7 @@
       <find>implan</find>
       <find>mysql</find>
       <find>character_biographies</find>
+      <find>ad</find>
     </findStrings>
     <replaceStrings>
       <replace>from Global_Variables import Global_Variables</replace>
@@ -94,7 +106,6 @@
         <option value="$PROJECT_DIR$/chinese_token/positive.txt" />
         <option value="$PROJECT_DIR$/emotion/pos.txt" />
         <option value="$PROJECT_DIR$/mySqlTest.py" />
-        <option value="$PROJECT_DIR$/webserviceTest.py" />
         <option value="$PROJECT_DIR$/train_emotion_word.py" />
         <option value="$PROJECT_DIR$/hibiscusMain.py" />
         <option value="$USER_HOME$/Anaconda3/Lib/site-packages/pyExcelerator/__init__.py" />
@@ -105,6 +116,7 @@
         <option value="$PROJECT_DIR$/mySqlDB.py" />
         <option value="$USER_HOME$/Desktop/day_8_15.py" />
         <option value="$PROJECT_DIR$/handle_script.py" />
+        <option value="$PROJECT_DIR$/webserviceTest.py" />
         <option value="$PROJECT_DIR$/Global_Variables.py" />
       </list>
     </option>
@@ -427,8 +439,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/bayes_test.py" />
-    <entry file="file://$PROJECT_DIR$/bayes_test_sklearn.py" />
     <entry file="file://$PROJECT_DIR$/test2vec_sklearn_test.py" />
     <entry file="file://$PROJECT_DIR$/bayes_test.py" />
     <entry file="file://$PROJECT_DIR$/test2vec_sklearn_test.py" />
@@ -475,31 +485,10 @@
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/MySQLdb/cursors.py" />
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/MySQLdb/connections.py" />
     <entry file="file://$USER_HOME$/Anaconda3/Lib/base64.py" />
-    <entry file="file://$PROJECT_DIR$/webserviceTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="21" column="30" lean-forward="false" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="72" column="18" lean-forward="false" selection-start-line="72" selection-start-column="18" selection-end-line="72" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hibiscusMain.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="19" column="8" lean-forward="false" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/line.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -521,16 +510,58 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/handle_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16982">
-          <caret line="559" column="0" lean-forward="false" selection-start-line="559" selection-start-column="0" selection-end-line="559" selection-end-column="0" />
+        <state relative-caret-position="33">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding>
+            <element signature="e#15#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1782">
+          <caret line="72" column="18" lean-forward="false" selection-start-line="72" selection-start-column="18" selection-end-line="72" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/webserviceTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="21" column="30" lean-forward="false" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ad.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/user_dic.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-905376">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/line.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2513">
+          <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Global_Variables.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1313">
-          <caret line="51" column="24" lean-forward="false" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
+        <state relative-caret-position="-799">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>

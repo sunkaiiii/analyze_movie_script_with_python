@@ -1,5 +1,3 @@
-import mySqlDB
-
 
 def save_userdic_to_file():
     user_dic = mySqlDB.read_lib_thesaurus()

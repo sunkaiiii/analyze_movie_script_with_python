@@ -8,17 +8,12 @@ import hibiscusMain
 from xlwt import *
 
 jieba.load_userdict('user_dic.txt')
-jieba.add_word('男主角', 1000)
-jieba.add_word('女主角', 1000)
-
 """
 ----------handle_scipt.py-------------
              记录整个剧本信息
 """
 if not os.path.exists('out'):
     os.mkdir('out')
-
-
 
 
 class shunjingbiao:
@@ -91,15 +86,6 @@ class Script:
         self.cal_all_character()
         print('计算主要角色出场次数')
         self.cal_character_apear_count()
-        print('写入项目信息到数据库')
-        '''如果没有这个项目名字（剧本名去掉时间戳），将不能继续程序'''
-        self.project_id = self.get_project_id()
-        if self.project_id == -1:
-            return;  # 在没有项目的时候应当进行处理，比如发送个http request（内容未对接，功能暂时未做）
-        '''写入当前这个版本剧本的信息'''
-        self.write_project_info_to_sql()
-        '''写入完成后获取剧本的id'''
-        self.script_id = self.get_script_id()
         print('生成顺场景表')
         self.shunjingbiao_args = []
         self.shunchangbiao_args = []
@@ -110,13 +96,7 @@ class Script:
         self.session_ad_count = self.cal_ad_words_count()
         print("计算敏感词信息")
         self.cal_all_senstive_word_count()
-        import time
 
-        self.write_info_to_the_sql()
-
-    '''
-    当传入的是mode=1也就是简版剧本的时候，暂时的操作是先读取一遍剧本，寻找主要角色
-    '''
 
     def find_main_charactor(self, file_text, mode=0):
         """
