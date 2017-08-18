@@ -1,15 +1,4 @@
 
-def save_userdic_to_file():
-    user_dic = mySqlDB.read_lib_thesaurus()
-    user_dic_str = ""
-    for word in user_dic:
-        # print(word)
-        user_dic_str += word[0] + ' ' + '1000' + '\n'
-    f = open('user_dic.txt', 'w', encoding='utf8')
-    f.write(user_dic_str)
-    f.close()
-    user_dic_convert = convert_userdic(user_dic)
-    return user_dic_convert
 
 
 def convert_userdic(user_dic):
@@ -26,19 +15,8 @@ def convert_userdic(user_dic):
     # print(count)
     return user_dic_convert
 
-def get_ad_word():
-    words={}
-    for word in mySqlDB.read_lib_ad():
-        words.setdefault(word[1],word[0])
-    return words
 
-def get_sensitive_word():
-    words={}
-    for word in mySqlDB.read_sensitive_words():
-        words.setdefault(word[0],[])
-        words[word[0]].append(word[1])
-    return words
-word_list_dic = save_userdic_to_file()  # 读取数据库的词库，并保存在本地供jieba分词学习（也可以保存在List中，用循环使用addword给jieba提供词库）
+word_list_dic =   # 读取数据库的词库，并保存在本地供jieba分词学习（也可以保存在List中，用循环使用addword给jieba提供词库）
 name_list = []
 filename = 'name_bai.txt'
 puncutation_file = 'punctuation_mark.txt'
@@ -48,7 +26,7 @@ time = ['日', '晚上', '昼', '夜', '晨', '凌晨', '清晨', '早晨', '上
 place = ['外', '内', '室内', '室外', '户内', '户外']
 out_place=['外', '室外','户外']
 in_place=['内','室内','户内']
-sensitive_word=get_sensitive_word()
-ad_word=get_ad_word()
+sensitive_word=
+ad_word=
 stop_word=set(open(stopword_file,encoding='utf-8').read().split('\n'))
 punctuation_mark = set(open(puncutation_file, encoding='utf-8').read().split('\n'))
