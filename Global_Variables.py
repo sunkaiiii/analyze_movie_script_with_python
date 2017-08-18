@@ -1,6 +1,21 @@
+user_dic_file_name="user_dic.txt"
+sensitive_word_file="sensitive_words.txt"
+def read_user_dic():
+    file=open(user_dic_file_name,encoding="utf8").read().split("\n")
+    for i in range(len(file)):
+        file[i]=file[i].replace("\ufeff","")
+    return file
 
-
-
+def read_sensitive_word():
+    file=open(sensitive_word_file,encoding="utf8").read().split("\n")
+    sensitive_dic={}
+    for line in file:
+        if len(line.split(' '))<2:
+            continue
+        word_type,word=line.split(" ")
+        sensitive_dic.setdefault(word_type,[])
+        sensitive_dic[word_type].append(word)
+    return sensitive_dic
 def convert_userdic(user_dic):
     user_dic_convert = {}
     for section in user_dic:
@@ -16,7 +31,8 @@ def convert_userdic(user_dic):
     return user_dic_convert
 
 
-word_list_dic =   # 读取数据库的词库，并保存在本地供jieba分词学习（也可以保存在List中，用循环使用addword给jieba提供词库）
+word_list =read_user_dic()
+print(word_list)
 name_list = []
 filename = 'name_bai.txt'
 puncutation_file = 'punctuation_mark.txt'
@@ -26,7 +42,7 @@ time = ['日', '晚上', '昼', '夜', '晨', '凌晨', '清晨', '早晨', '上
 place = ['外', '内', '室内', '室外', '户内', '户外']
 out_place=['外', '室外','户外']
 in_place=['内','室内','户内']
-sensitive_word=
-ad_word=
+sensitive_word=read_sensitive_word()
+# ad_word=
 stop_word=set(open(stopword_file,encoding='utf-8').read().split('\n'))
 punctuation_mark = set(open(puncutation_file, encoding='utf-8').read().split('\n'))

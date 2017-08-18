@@ -4,6 +4,8 @@ import jieba.posseg as pseg
 import Global_Variables
 
 jieba.load_userdict('user_dic.txt')
+for word in Global_Variables.word_list:
+    jieba.add_word(word,1000)
 for word in Global_Variables.name_list:
     jieba.add_word(word,10000)
 for word in Global_Variables.ad_word.keys():

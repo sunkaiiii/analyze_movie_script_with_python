@@ -26,8 +26,8 @@
       <file leaf-file-name="Global_Variables.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Global_Variables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="508">
-              <caret line="28" column="15" lean-forward="false" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
+            <state relative-caret-position="-527">
+              <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -36,8 +36,8 @@
       <file leaf-file-name="line.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/line.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2673">
-              <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="36" />
+            <state relative-caret-position="165">
+              <caret line="7" column="29" lean-forward="false" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -111,12 +111,12 @@
         <option value="$USER_HOME$/Anaconda3/Lib/site-packages/pyExcelerator/__init__.py" />
         <option value="$USER_HOME$/Desktop/filter.py" />
         <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/line.py" />
         <option value="$PROJECT_DIR$/session.py" />
         <option value="$PROJECT_DIR$/mySqlDB.py" />
         <option value="$USER_HOME$/Desktop/day_8_15.py" />
         <option value="$PROJECT_DIR$/handle_script.py" />
         <option value="$PROJECT_DIR$/webserviceTest.py" />
+        <option value="$PROJECT_DIR$/line.py" />
         <option value="$PROJECT_DIR$/Global_Variables.py" />
       </list>
     </option>
@@ -174,7 +174,24 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.handle_script">
+  <component name="RunManager" selected="Python.Global_Variables">
+    <configuration name="Global_Variables" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="fb" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Global_Variables.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -323,37 +340,20 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="fb" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.handle_script" />
       <item index="1" class="java.lang.String" itemvalue="Python.session" />
-      <item index="2" class="java.lang.String" itemvalue="Python.test" />
-      <item index="3" class="java.lang.String" itemvalue="Python.mySqlDB" />
-      <item index="4" class="java.lang.String" itemvalue="Python.day_8_15" />
+      <item index="2" class="java.lang.String" itemvalue="Python.mySqlDB" />
+      <item index="3" class="java.lang.String" itemvalue="Python.day_8_15" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Global_Variables" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.handle_script" />
-        <item index="1" class="java.lang.String" itemvalue="Python.day_8_15" />
-        <item index="2" class="java.lang.String" itemvalue="Python.mySqlDB" />
-        <item index="3" class="java.lang.String" itemvalue="Python.session" />
-        <item index="4" class="java.lang.String" itemvalue="Python.test" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Global_Variables" />
+        <item index="1" class="java.lang.String" itemvalue="Python.handle_script" />
+        <item index="2" class="java.lang.String" itemvalue="Python.day_8_15" />
+        <item index="3" class="java.lang.String" itemvalue="Python.mySqlDB" />
+        <item index="4" class="java.lang.String" itemvalue="Python.session" />
       </list>
     </recent_temporary>
   </component>
@@ -517,14 +517,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/line.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2673">
-          <caret line="83" column="36" lean-forward="false" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/handle_script.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-16942">
@@ -535,10 +527,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/line.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="7" column="29" lean-forward="false" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Global_Variables.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="508">
-          <caret line="28" column="15" lean-forward="false" selection-start-line="28" selection-start-column="15" selection-end-line="28" selection-end-column="15" />
+        <state relative-caret-position="-527">
+          <caret line="9" column="17" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
           <folding />
         </state>
       </provider>
