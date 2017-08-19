@@ -4,11 +4,12 @@ import jieba.posseg as pseg
 import Global_Variables
 
 jieba.load_userdict('user_dic.txt')
-for word in Global_Variables.word_list:
-    jieba.add_word(word,1000)
+for words in Global_Variables.word_list_dic.keys():
+    for word in words:
+        jieba.add_word(word,1000)
 for word in Global_Variables.name_list:
     jieba.add_word(word,10000)
-for word in Global_Variables.ad_word.keys():
+for word in Global_Variables.ad_word:
     jieba.add_word(word,1000)
 for key,words in Global_Variables.sensitive_word.items():
     for word in words:
@@ -52,7 +53,7 @@ class Line():
                     if (word.word in words):
                         self.sensitive_word.setdefault(key, [])
                         self.sensitive_word[key].append(word.word)
-                if word.word in Global_Variables.ad_word.keys():
+                if word.word in Global_Variables.ad_word:
                     self.ad_word.append(word.word)
                 if "n" in word.flag:       #统计剧本中出现的出现的动词和名词（暂时还没用到，先统计）
                     self.noun.append(word.word)
@@ -80,7 +81,7 @@ class Line():
                 if(cut_word.word in words):
                     self.sensitive_word.setdefault(key,[])
                     self.sensitive_word[key].append(cut_word.word)
-            if cut_word.word in Global_Variables.ad_word.keys():
+            if cut_word.word in Global_Variables.ad_word:
                 self.ad_word.append(cut_word.word)
             if cut_word.word in Global_Variables.name_list:
                 self.other_character.append(cut_word.word)

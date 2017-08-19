@@ -353,7 +353,7 @@ class Script:
         args = []
         for session in self.session_list:
             for word in session.session_ad_word_set:
-                args.append((Global_Variables.ad_word[word], session.session_number, self.script_id))
+                args.append((word, session.session_number, self.script_id))
         return args
 
     def cal_script_sensitive_args(self):
@@ -543,7 +543,7 @@ if __name__ == "__main__":
     import time
 
     # t=time.time()
-    # script = Script('白鹿原201708101054.docx', mode=1)
+    script = Script('白鹿原201708101054.docx', mode=1)
     # print("用时"+str(int(time.time()-t))+"秒")
     # script = Script('让子弹飞201708101126.docx', mode=1)
     # script = Script('疯狂的石头201708101529.docx', mode=1)
