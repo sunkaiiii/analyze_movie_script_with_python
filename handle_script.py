@@ -40,6 +40,7 @@ class Script:
         '''
         self.mode = mode
         self.script_name = ''
+        self.save_path="out\\"
         print('读取剧本')
         self.file_text = self.read_script_file(filename)
         Global_Variables.name_list = []
@@ -50,7 +51,6 @@ class Script:
             main_role += name + ","
         main_role = main_role[:-1]
         print('推测主角为' + main_role)
-        self.script_id = 0
         self.session_list = []  # 存放所有场次信息的list
         self.charactor_overrall_word_count_dic = {}  # 角色台词数
         self.charactor_overral_apear_in_session = {}  # 角色出现场次数
@@ -156,6 +156,9 @@ class Script:
         name = os.path.splitext(filename)[0]
         self.script_name = name.split('\\')[len(name.split('\\')) - 1]
         script = ""
+        self.save_path+=self.script_name+"\\"
+        if not os.path.exists(self.save_path):
+            os.mkdir(self.save_path)
         # script=open(filename,encoding='utf-8').read()
         document = Document(filename)
         for para in document.paragraphs:
@@ -264,22 +267,23 @@ class Script:
         #     print(i)
         return script_detail_args
 
-    def cal_script_role(self):
+
+    def write_script_role(self):
         '''读取用于写入script_role表的信息'''
-        script_roles = []
+        script_roles = ""
         for role_name, word_count in self.charactor_overrall_word_count_dic.items():
             # print(role_name,self.charactor_overral_apear_in_session[role_name],word_count)
-            character_biographies = self.character_biographies_dic[role_name]
-            script_roles.append(
-                (role_name, character_biographies.num, character_biographies.gender,
-                 character_biographies.age, character_biographies.career, character_biographies.constellation,
-                 character_biographies.temperament, character_biographies.introduction, self.script_id, int(word_count),
-                 int(self.charactor_overral_apear_in_session[role_name])))
-        return script_roles
+            script_roles+=role_name+'\t'+str(word_count)+'\t'+str(self.charactor_overral_apear_in_session[role_name])+'\n'
+        f=open(self.save_path+'角色信息.txt','w',encoding="utf8")
+        f.write(script_roles)
+        f.close()
 
-    def cal_session_role_word(self):
+
+
+
+    def write_session_role_word(self):
         '''计用于写入数据库的角色情感词'''
-        args = []
+        args = ""
         for session in self.session_list:
             self.charactor_emetion_word_in_session.setdefault(session.session_number, [])
             for Charactor in session.session_charactor_dic.values():
@@ -287,8 +291,11 @@ class Script:
                 # print(self.charactor_emetion_word_in_session)
                 for key, value in Charactor.charactor_emotion_dic.items():
                     for word in value:
-                        args.append((word, key, Charactor.name, self.script_id, session.session_number))
+                        args+=key+'\t'+word+'\t'+Charactor.name+'\t'+str(session.session_number)+'\n'
         # print(args)
+        f=open(self.save_path+'角色情感词.txt','w',encoding="utf8")
+        f.write(args)
+        f.close()
         return (args)
 
     def cal_participle(self):

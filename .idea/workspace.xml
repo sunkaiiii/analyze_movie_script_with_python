@@ -14,8 +14,8 @@
       <file leaf-file-name="handle_script.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/handle_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="368" column="0" lean-forward="true" selection-start-line="368" selection-start-column="0" selection-end-line="368" selection-end-column="0" />
+            <state relative-caret-position="539">
+              <caret line="297" column="16" lean-forward="false" selection-start-line="297" selection-start-column="16" selection-end-line="297" selection-end-column="16" />
               <folding>
                 <element signature="e#15#29#0" expanded="true" />
               </folding>
@@ -76,12 +76,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>session_main_content</find>
-      <find>ad_word</find>
-      <find>session_ad_word_count_dic</find>
-      <find>cal_ad</find>
-      <find>cal_ad_words_count</find>
-      <find>ad_key_words</find>
       <find>Global_Variables.ad_w</find>
       <find>lib_ad</find>
       <find>session_emotion_words_dic</find>
@@ -106,6 +100,12 @@
       <find>character_biographies</find>
       <find>ad</find>
       <find>Global_Variables.ad_word</find>
+      <find>self.script_id</find>
+      <find>self.script_name</find>
+      <find>script_name</find>
+      <find>cal_script_role</find>
+      <find>write_sc</find>
+      <find>cal_session_role_word</find>
     </findStrings>
     <replaceStrings>
       <replace>from Global_Variables import Global_Variables</replace>
@@ -138,8 +138,8 @@
         <option value="$PROJECT_DIR$/session.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/Global_Variables.py" />
-        <option value="$PROJECT_DIR$/handle_script.py" />
         <option value="$PROJECT_DIR$/line.py" />
+        <option value="$PROJECT_DIR$/handle_script.py" />
       </list>
     </option>
   </component>
@@ -429,11 +429,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="2182" height="1402" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25277779" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4079481" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4079481" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -566,8 +567,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/handle_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="368" column="0" lean-forward="true" selection-start-line="368" selection-start-column="0" selection-end-line="368" selection-end-column="0" />
+        <state relative-caret-position="539">
+          <caret line="297" column="16" lean-forward="false" selection-start-line="297" selection-start-column="16" selection-end-line="297" selection-end-column="16" />
           <folding>
             <element signature="e#15#29#0" expanded="true" />
           </folding>
