@@ -5,7 +5,6 @@ import Global_Variables
 from docx import Document
 import jieba
 import hibiscusMain
-from xlwt import *
 
 jieba.load_userdict('user_dic.txt')
 """
@@ -34,18 +33,17 @@ class Script:
     记录整个剧本的信息，包含多个场景（session）的类的实例
     '''
 
-    def __init__(self, filename, mode=1):
+    def __init__(self, filename):
         '''最后时间不太够，所有的方法都放在了init上面执行了，有点乱……
         #待修改部分
         '''
-        self.mode = mode
         self.script_name = ''
-        self.save_path="out\\"
+        self.save_path = "out\\"
         print('读取剧本')
         self.file_text = self.read_script_file(filename)
         Global_Variables.name_list = []
         print('程序推测主角')
-        self.find_main_charactor(self.file_text, self.mode)
+        self.find_main_charactor(self.file_text)
         main_role = ''
         for name in Global_Variables.name_list:
             main_role += name + ","
@@ -63,7 +61,6 @@ class Script:
         self.session_ad_count = []
 
         self.all_sensitive_word_count_dic = {}
-
 
         self.charactor = Global_Variables.name_list
         for i in Global_Variables.name_list:
@@ -89,9 +86,7 @@ class Script:
         self.cal_all_senstive_word_count()
         self.wrtie_script_sensitive_args()
 
-
-
-    def find_main_charactor(self, file_text, mode=0):
+    def find_main_charactor(self, file_text, mode=1):
         """
         两种剧本模式的推测主角方法不一
         1、简版剧本使用统计剧本中说话的频次数（即xxx说中的xxx出现次数的排序，前五个即为主角）
@@ -135,10 +130,8 @@ class Script:
                 Global_Variables.name_list.append(user_dic[i][0])
                 # print(Global_Variables.name_list)
 
-
         for word in Global_Variables.name_list:
             jieba.add_word(word, 10000)
-
 
     def read_script_file(self, filename):
         """
@@ -149,7 +142,7 @@ class Script:
         name = os.path.splitext(filename)[0]
         self.script_name = name.split('\\')[len(name.split('\\')) - 1]
         script = ""
-        self.save_path+=self.script_name+"\\"
+        self.save_path += self.script_name + "\\"
         if not os.path.exists(self.save_path):
             os.mkdir(self.save_path)
         # script=open(filename,encoding='utf-8').read()
@@ -228,7 +221,7 @@ class Script:
                 self.all_sensitive_word_count_dic[key] += word_count
 
     def write_script_detail(self):
-        '''读取用于写入scrit_detal表的信息'''
+        '''输出剧本场景详情'''
         script_detail_args = ""
         for session in self.session_list:
             '''此处变量名与数据库中字段名对应，方便使用'''
@@ -238,8 +231,8 @@ class Script:
             role_number = 0
             for character in session.session_charactor_dic.values():
                 if character.appearance:
-                    role_number+=1
-                    role+=character.name+'|'
+                    role_number += 1
+                    role += character.name + '|'
             role = role[:-1]
             if len(session.session_time) > 0:
                 if session.session_time not in Global_Variables.time:
@@ -255,29 +248,27 @@ class Script:
             else:
                 surroundings = 0
             # role_number = len(session.session_all_charactor_set)
-            script_detail_args+=str(script_number)+'\t'+str(period)+'\t'+str(scene)+'\t'+str(surroundings)+'\t'+role+'\t'+str(role_number)+'\n'
+            script_detail_args += str(script_number) + '\t' + str(period) + '\t' + str(scene) + '\t' + str(
+                surroundings) + '\t' + role + '\t' + str(role_number) + '\t' + session.session_main_content + '\n'
         # for i in script_detail_args:
         #     print(i)
-        file=open(self.save_path+'剧本场景信息.txt','w',encoding="utf8")
+        file = open(self.save_path + '剧本场景信息.txt', 'w', encoding="utf8")
         file.write(script_detail_args)
         file.close()
 
-
     def write_script_role(self):
-        '''读取用于写入script_role表的信息'''
+        '''输出剧本角色信息'''
         script_roles = ""
         for role_name, word_count in self.charactor_overrall_word_count_dic.items():
             # print(role_name,self.charactor_overral_apear_in_session[role_name],word_count)
-            script_roles+=role_name+'\t'+str(word_count)+'\t'+str(self.charactor_overral_apear_in_session[role_name])+'\n'
-        f=open(self.save_path+'角色信息.txt','w',encoding="utf8")
+            script_roles += role_name + '\t' + str(word_count) + '\t' + str(
+                self.charactor_overral_apear_in_session[role_name]) + '\n'
+        f = open(self.save_path + '角色信息.txt', 'w', encoding="utf8")
         f.write(script_roles)
         f.close()
 
-
-
-
     def write_session_role_word(self):
-        '''计用于写入数据库的角色情感词'''
+        '''输出剧本角色情感词'''
         args = ""
         for session in self.session_list:
             self.charactor_emetion_word_in_session.setdefault(session.session_number, [])
@@ -286,14 +277,15 @@ class Script:
                 # print(self.charactor_emetion_word_in_session)
                 for key, value in Charactor.charactor_emotion_dic.items():
                     for word in value:
-                        args+=key+'\t'+word+'\t'+Charactor.name+'\t'+str(session.session_number)+'\n'
+                        args += key + '\t' + word + '\t' + Charactor.name + '\t' + str(session.session_number) + '\n'
         # print(args)
-        f=open(self.save_path+'角色情感词.txt','w',encoding="utf8")
+        f = open(self.save_path + '角色情感词.txt', 'w', encoding="utf8")
         f.write(args)
         f.close()
         return (args)
 
     def write_participle(self):
+        '''输出情感词分词内容'''
         participle_args = ""
         word_dic = {}
         for session in self.session_list:
@@ -302,39 +294,32 @@ class Script:
                     word_dic.setdefault((word, session.session_number, type), 0)
                     word_dic[(word, session.session_number, type)] += 1
         for word_item, count in word_dic.items():
-            participle_args+=str(word_item[0])+'\t'+str(word_item[1])+'\t'+str(word_item[2])+'\t'+str(count)+'\n'
+            participle_args += str(word_item[0]) + '\t' + str(word_item[1]) + '\t' + str(word_item[2]) + '\t' + str(
+                count) + '\n'
         # for i in participle_args:
         #     print(i)
-        file=open(self.save_path+'分词信息.txt','w',encoding="utf8")
+        file = open(self.save_path + '分词信息.txt', 'w', encoding="utf8")
         file.write(participle_args)
         file.close()
 
     def write_session_ad_args(self):
-        """
-        生成插入session_ad_wods表的数据
-        :return: 插入数据库的数据list
-        """
+        """输出剧本广告词信息"""
         args = ""
         for info in self.session_ad_count:
-            args+=str(info[0])+'\t'+str(info[1])+'\t'+str(info[2])+'\n'
-        file=open(self.save_path+'场景广告信息.txt','w',encoding="utf8")
+            args += str(info[0]) + '\t' + str(info[1]) + '\t' + str(info[2]) + '\n'
+        file = open(self.save_path + '场景广告信息.txt', 'w', encoding="utf8")
         file.write(args)
         file.close()
 
     def wrtie_script_sensitive_args(self):
-        """
-        生成插入script_sensitive_word表的数据
-        :return:用于插入数据库的list
-        """
+        """输出剧本敏感词信息"""
         args = ""
         sensitive_word_sort = sorted(self.all_sensitive_word_count_dic.items(), key=lambda x: x[1], reverse=True)
         for word, count in sensitive_word_sort:
-            args+=word+'\t'+str(count)+'\n'
-        file=open(self.save_path+'剧本敏感词信息.txt','w',encoding="utf8")
+            args += word + '\t' + str(count) + '\n'
+        file = open(self.save_path + '剧本敏感词信息.txt', 'w', encoding="utf8")
         file.write(args)
         file.close()
-
-
 
     def showinfo(self, show_session_detail=0, show_line_detail=0):
         for k, v in self.charactor_overrall_word_count_dic.items():
@@ -349,8 +334,8 @@ if __name__ == "__main__":
     import time
 
     # t=time.time()
-    script = Script('白鹿原201708101054.docx', mode=1)
+    script = Script('白鹿原201708101054.docx')
     # print("用时"+str(int(time.time()-t))+"秒")
-    script = Script('让子弹飞201708101126.docx', mode=1)
-    script = Script('疯狂的石头201708101529.docx', mode=1)
+    script = Script('让子弹飞201708101126.docx')
+    script = Script('疯狂的石头201708101529.docx')
     # script.showinfo(show_session_detail=1)
