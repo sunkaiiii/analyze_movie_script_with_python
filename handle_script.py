@@ -78,10 +78,17 @@ class Script:
         self.cal_all_character()
         print('计算主要角色出场次数')
         self.cal_character_apear_count()
+        self.write_script_detail()
+        self.write_script_role()
+        self.write_session_role_word()
+        self.write_participle()
         print("计算广告信息")
         self.session_ad_count = self.cal_ad_words_count()
+        self.write_session_ad_args()
         print("计算敏感词信息")
         self.cal_all_senstive_word_count()
+        self.wrtie_script_sensitive_args()
+
 
 
     def find_main_charactor(self, file_text, mode=0):
@@ -220,18 +227,20 @@ class Script:
                 self.all_sensitive_word_count_dic.setdefault(key, 0)
                 self.all_sensitive_word_count_dic[key] += word_count
 
-    def cal_script_detail(self):
+    def write_script_detail(self):
         '''读取用于写入scrit_detal表的信息'''
-        script_detail_args = []
+        script_detail_args = ""
         for session in self.session_list:
             '''此处变量名与数据库中字段名对应，方便使用'''
             script_number = session.session_number
             content = session.session_content
             role = ""
-            role_id = ''
             role_number = 0
+            for character in session.session_charactor_dic.values():
+                if character.appearance:
+                    role_number+=1
+                    role+=character.name+'|'
             role = role[:-1]
-            role_id = role_id[:-1]
             if len(session.session_time) > 0:
                 if session.session_time not in Global_Variables.time:
                     Global_Variables.time.append(session.session_time)
@@ -246,11 +255,12 @@ class Script:
             else:
                 surroundings = 0
             # role_number = len(session.session_all_charactor_set)
-            script_detail_args.append(
-                (script_number, role_id, content, role, period, scene, surroundings, role_number))
+            script_detail_args+=str(script_number)+'\t'+str(period)+'\t'+str(scene)+'\t'+str(surroundings)+'\t'+role+'\t'+str(role_number)+'\n'
         # for i in script_detail_args:
         #     print(i)
-        return script_detail_args
+        file=open(self.save_path+'剧本场景信息.txt','w',encoding="utf8")
+        file.write(script_detail_args)
+        file.close()
 
 
     def write_script_role(self):
@@ -292,7 +302,7 @@ class Script:
                     word_dic.setdefault((word, session.session_number, type), 0)
                     word_dic[(word, session.session_number, type)] += 1
         for word_item, count in word_dic.items():
-            participle_args+=word_item[0]+'\t'+word_item[1]+'\t'+word_item[2]+'\t'+count+'\n'
+            participle_args+=str(word_item[0])+'\t'+str(word_item[1])+'\t'+str(word_item[2])+'\t'+str(count)+'\n'
         # for i in participle_args:
         #     print(i)
         file=open(self.save_path+'分词信息.txt','w',encoding="utf8")
@@ -306,7 +316,7 @@ class Script:
         """
         args = ""
         for info in self.session_ad_count:
-            args+=info[0]+'\t'+info[1]+'\t'+info[2]+'\n'
+            args+=str(info[0])+'\t'+str(info[1])+'\t'+str(info[2])+'\n'
         file=open(self.save_path+'场景广告信息.txt','w',encoding="utf8")
         file.write(args)
         file.close()
@@ -319,7 +329,7 @@ class Script:
         args = ""
         sensitive_word_sort = sorted(self.all_sensitive_word_count_dic.items(), key=lambda x: x[1], reverse=True)
         for word, count in sensitive_word_sort:
-            args+=word+'\t'+count+'\n'
+            args+=word+'\t'+str(count)+'\n'
         file=open(self.save_path+'剧本敏感词信息.txt','w',encoding="utf8")
         file.write(args)
         file.close()
@@ -341,6 +351,6 @@ if __name__ == "__main__":
     # t=time.time()
     script = Script('白鹿原201708101054.docx', mode=1)
     # print("用时"+str(int(time.time()-t))+"秒")
-    # script = Script('让子弹飞201708101126.docx', mode=1)
-    # script = Script('疯狂的石头201708101529.docx', mode=1)
+    script = Script('让子弹飞201708101126.docx', mode=1)
+    script = Script('疯狂的石头201708101529.docx', mode=1)
     # script.showinfo(show_session_detail=1)
