@@ -5,6 +5,7 @@ import Global_Variables
 from docx import Document
 import jieba
 import hibiscusMain
+import multiprocessing
 
 jieba.load_userdict('user_dic.txt')
 """
@@ -39,8 +40,24 @@ class Script:
         '''
         self.script_name = ''
         self.save_path = "out\\"
+        self.session_list = []  # 存放所有场次信息的list
+        self.charactor_overrall_word_count_dic = {}  # 角色台词数
+        self.charactor_overral_apear_in_session = {}  # 角色出现场次数
+        self.charactor_emetion_word_in_session = {}  # 角色情感词
+        self.filename=filename
+        self.shunjingbiao = {}
+        self.shunchangbiao = {}
+        self.all_ad_count = []
+        self.session_ad_count = []
+        self.all_sensitive_word_count_dic = {}
+        self.charactor = Global_Variables.name_list
+        # for i in Global_Variables.name_list:
+        #     self.charactor_overrall_word_count_dic[i] = 0
+        self.all_charactor_count = {}
+
+    def cal_all_info(self):
         print('读取剧本')
-        self.file_text = self.read_script_file(filename)
+        self.file_text = self.read_script_file(self.filename)
         Global_Variables.name_list = []
         print('程序推测主角')
         self.find_main_charactor(self.file_text)
@@ -49,24 +66,6 @@ class Script:
             main_role += name + ","
         main_role = main_role[:-1]
         print('推测主角为' + main_role)
-        self.session_list = []  # 存放所有场次信息的list
-        self.charactor_overrall_word_count_dic = {}  # 角色台词数
-        self.charactor_overral_apear_in_session = {}  # 角色出现场次数
-        self.charactor_emetion_word_in_session = {}  # 角色情感词
-
-        self.shunjingbiao = {}
-        self.shunchangbiao = {}
-
-        self.all_ad_count = []
-        self.session_ad_count = []
-
-        self.all_sensitive_word_count_dic = {}
-
-        self.charactor = Global_Variables.name_list
-        for i in Global_Variables.name_list:
-            self.charactor_overrall_word_count_dic[i] = 0
-
-        self.all_charactor_count = {}
         print('处理场次信息')
         self.handle_session(self.file_text)
         print('统计角色台词数')
@@ -75,16 +74,22 @@ class Script:
         self.cal_all_character()
         print('计算主要角色出场次数')
         self.cal_character_apear_count()
+        print("计算敏感词信息")
+        self.cal_all_senstive_word_count()
+        print("计算广告信息")
+        self.session_ad_count = self.cal_ad_words_count()
+
+    def write_info(self):
         self.write_script_detail()
         self.write_script_role()
         self.write_session_role_word()
         self.write_participle()
-        print("计算广告信息")
-        self.session_ad_count = self.cal_ad_words_count()
         self.write_session_ad_args()
-        print("计算敏感词信息")
-        self.cal_all_senstive_word_count()
         self.wrtie_script_sensitive_args()
+
+    def test_muiltiprocess(self):
+        self.cal_all_info()
+        self.write_info()
 
     def find_main_charactor(self, file_text, mode=1):
         """
@@ -158,7 +163,7 @@ class Script:
         for s in split_script:
             if (len(s) <= 7):
                 continue
-            ss = session.Session(s, self.mode)
+            ss = session.Session(s)
             self.session_list.append(ss)
             count += 1
             # ss.show_info()
@@ -171,6 +176,7 @@ class Script:
         """
         for session in self.session_list:
             for keys, session_charactor_info in session.session_charactor_dic.items():
+                self.charactor_overrall_word_count_dic.setdefault(keys,0)
                 self.charactor_overrall_word_count_dic[keys] += session_charactor_info.charactor_world_amount
 
     def cal_all_character(self):
@@ -330,12 +336,12 @@ class Script:
 
 
 if __name__ == "__main__":
-    # print(1)
-    import time
-
-    # t=time.time()
     script = Script('白鹿原201708101054.docx')
-    # print("用时"+str(int(time.time()-t))+"秒")
-    script = Script('让子弹飞201708101126.docx')
-    script = Script('疯狂的石头201708101529.docx')
-    # script.showinfo(show_session_detail=1)
+    p1=multiprocessing.Process(target=script.test_muiltiprocess)
+    script2 = Script('让子弹飞201708101126.docx')
+    p2=multiprocessing.Process(target=script2.test_muiltiprocess)
+    script3 = Script('疯狂的石头201708101529.docx')
+    p3=multiprocessing.Process(target=script3.test_muiltiprocess)
+    p1.start()
+    p2.start()
+    p3.start()
